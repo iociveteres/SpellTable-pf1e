@@ -2,17 +2,20 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-         <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="styles.css">
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
         <title>spelltable</title>
     </head>
     
     <body>
-        
+        <!--
+        <div class="topFixedBar">
+
+        </div>
+    -->
         <div class="table_div">
-            <table>
+            <table id="table_spells">
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -29,6 +32,7 @@
                         <th>Duration</th>
                         <th>Saving Throw</th>
                         <th>Spell Resistance</th>
+                        <th>Description</th>
                         <!--<th>Description</th>-->
                     </tr>
                 </thead>
@@ -38,6 +42,7 @@
             </table>
         </div>
         
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
         <script src="script.js"></script> <!-- Link to the javascript file -->
     </body>
 </html>

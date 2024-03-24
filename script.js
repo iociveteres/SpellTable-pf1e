@@ -1,3 +1,7 @@
+//import {DataTable} from "./node_modules/simple-datatables"
+
+let dataTable = null;
+
 document.addEventListener("DOMContentLoaded", function () {
     fetch("spellList.json")
         .then(function (response) {
@@ -7,20 +11,24 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(function (spells) {
             console.log(spells.length);
             let jsonPretty = JSON.stringify(spells, null, 2);
-            console.log(jsonPretty)
+            //console.log(jsonPretty)
 
             
             //result = spells.filter((spell) => spell["Name"].includes("Aram "));
             let placeholder = document.querySelector("#data-output");
             let out = "";
+
+            let uniqueNames = findUniqueValuesByKey(spells, "Casting time");
+            console.log([...uniqueNames]); // Output: ['John', 'Jane']
+
             for (let spell of spells) {
-                let Subschool = spell.Subschool == "None" ? " " :spell.Subschool
-                let Descriptors = spell.Descriptors == "None" ? " " :spell.Descriptors
-                let Price = spell.Price == 0 ? " " : spell.Price
-                let Effect = spell.Effect == "None" ? " " : spell.Effect
-                let Target = spell.Target == "None" ? " ": spell.Target
-                let SavingThrow = spell["Saving throw"] === undefined ? " " : spell["Saving throw"]
-                let SpellResistance = spell["Spell Resistance"] === undefined ? " " : spell["Spell Resistance"]
+                let Subschool = spell.Subschool == "None" ? "" :spell.Subschool
+                let Descriptors = spell.Descriptors == "None" ? "" :spell.Descriptors
+                let Price = spell.Price == 0 ? "" : spell.Price
+                let Effect = spell.Effect == "None" ? "" : spell.Effect
+                let Target = spell.Target == "None" ? "": spell.Target
+                let SavingThrow = spell["Saving throw"] === undefined ? "" : spell["Saving throw"]
+                let SpellResistance = spell["Spell Resistance"] === undefined ? "" : spell["Spell Resistance"]
 
                 let access_ways = "";
                 try {
@@ -29,19 +37,19 @@ document.addEventListener("DOMContentLoaded", function () {
                       return item.join(' ');
                     }).join('\n');
                   }).join('\n');
-                //console.log(result)
                 access_ways = result;
                 } catch (err) {
                     console.error("Error: ", spell.Name)
                 }
+
                 out += `
                     <tr>
-                        <td><div title="${spell.Description}">${spell.Name}</div></td>
+                        <td>${spell.Name}</td>
                         <td>${spell.School}</td>
                         <td>${Subschool}</td>
                         <td>${Descriptors}</td>
-                        <td style="white-space:pre-wrap; word-wrap:break-word">${access_ways}</td>
-                        <td>${spell["Casting time"]}</td>
+                        <td style="white-space:pre; word-wrap:break-word">${access_ways}</td>
+                        <td data-sort="${parseTime(spell["Casting time"])}">${spell["Casting time"]}</td>
                         <td>${spell.Components}</td>
                         
                         <td>${spell.Range}</td>
@@ -49,13 +57,213 @@ document.addEventListener("DOMContentLoaded", function () {
                         <td>${Target}</td>
                         <td>${spell.Duration}</td>
                         <td>${SavingThrow}</td>
-                        <td>${SpellResistance}</td>               
+                        <td>${SpellResistance}</td>  
+                        <td></td>             
                     </tr>
                 `;
             }
-
             placeholder.innerHTML = out;
+            
+
+            dataTable = new window.simpleDatatables.DataTable("#table_spells", {
+                    searchable: true,
+                    sortable: true,
+                    fixedHeight: true,
+                    perPage: 100,
+                    // columns: [
+                    //     // Disable sorting on the fourth and fifth columns
+                    //     { select: [4], sortable: false },
+                
+                    //     // Hide the sixth column
+                    //     { select: 5, hidden: false},
+                
+                    //     // Append a button to the seventh column
+                    //     // {
+                    //     //     select: 6,
+                    //     //     type: 'string',
+                    //     //     render: function(data, td, rowIndex, cellIndex) {
+                    //     //         return `${data}<button type='button' data-row='${rowIndex}'>Select</button>`;
+                    //     //     }
+                    //     // }
+                    // ]
+            });
         });
 });
+
+function findUniqueValuesByKey(array, key) {
+    let uniqueValues = new Set();
+    array.forEach(obj => uniqueValues.add(obj[key]));
+    return uniqueValues;
+}
+
+function parseTime(time) {
+    const timeUnits = [
+        "free action", "immediate action", "swift action", "move action", "standard action",
+        "full-round action", "full round", "round", "minute", "hour", "day", "week"
+    ];
+
+    let parts;
+    if (time.includes(";")) { // try to split by any special characters 
+        parts = time.split(";")
+    } else if (time.includes(",")) { 
+        parts = time.split(",")
+    } else if (time.includes("(")) {
+        parts = time.split("(")
+        parts[1] = parts[1].slice(0, -1);
+    } else if (time.includes("/")) {
+        parts = time.split("/")
+        parts[1] = '/' + parts[1]
+    } else if (time.includes("or")) {
+        parts = time.split("or")
+    } else if (time.includes("see")) { // case where there is only special text
+        parts = Array("", time);
+    } else { // comma
+        parts = Array(time)
+    } 
+    // it can be optimised by handling any non special first
+    let timePart = parts[0].trim();
+    let specialPart = parts[1] ? parts[1].trim() : null;
+
+    let timeValue;
+    let timeUnitCode;
+
+    for (let [i, unit] of timeUnits.entries()) {
+        if (timePart.includes(unit)) {
+            let timePartSplit = timePart.split(unit);
+            timeValue = parseInt(timePartSplit[0].trim().replace(/\D+/g, ''));
+            timeUnitCode = i // for easier comparison
+            break;
+        }
+    }
+
+    timeUnitCode = timeUnitCode ? timeUnitCode : 100;
+
+    return timeUnitCode * 100 + timeValue;
+}
+
+function compareTime(time1, time2) {
+    return parseTime(time1) - parseTime(time2)
+}
+
+function parseTimeItems(items) { // 6-8 ms for 5.6k els
+    const timeUnits = [
+        "free action", "immediate action", "swift action", "move action", "standard action",
+        "full-round action", "full round", "round", "minute", "hour", "day", "week"
+    ];
+
+    let parsedItems = [];
+
+    items.forEach(item => {
+        let parts;
+        if (item.includes(";")) { // try to split by any special characters 
+            parts = item.split(";")
+        } else if (item.includes(",")) { 
+            parts = item.split(",")
+        } else if (item.includes("(")) {
+            parts = item.split("(")
+            parts[1] = parts[1].slice(0, -1);
+        } else if (item.includes("/")) {
+            parts = item.split("/")
+            parts[1] = '/' + parts[1]
+        } else if (item.includes("or")) {
+            parts = item.split("or")
+        } else if (item.includes("see")) { // case where there is only special text
+            parts = Array("", item);
+        } else { // comma
+            parts = Array(item)
+        } 
+        // it can be optimised by handling any non special first
+        let timePart = parts[0].trim();
+        let specialPart = parts[1] ? parts[1].trim() : null;
+
+        let timeValue;
+        let timeUnit;
+        let timeUnitCode;
+
+        for (let [i, unit] of timeUnits.entries()) {
+            if (timePart.includes(unit)) {
+                let timePartSplit = timePart.split(unit);
+                timeValue = parseInt(timePartSplit[0].trim().replace(/\D+/g, ''));
+                timeUnit = unit;
+                timeUnitCode = i // for easier comparison
+                break;
+            }
+        }
+
+        if (!timeValue || !timeUnit) {
+            timeValue = timePart;
+        }
+        timeUnitCode = timeUnitCode ? timeUnitCode : 100,
+
+        parsedItems.push({
+            timeValue: timeUnit ? timeValue : null,
+            timeUnit: timeUnit ? timeUnit : null,
+            specialPart: specialPart,
+            timeUnitCode: timeUnit ? timeUnitCode : 100,
+            value: timeUnitCode * 100 + timeValue
+        });
+    });
+
+    return parsedItems;
+}
+
+// Sample items
+let items = [
+    "1 minute",
+    "1 standard action",
+    "1 round",
+    "10 minutes",
+    "1 hour",
+    "30 minutes",
+    "24 hours",
+    "1 swift action",
+    "1 standard action or immediate action; see text",
+    "1 immediate action",
+    "2 minutes",
+    "10 minutes; see text",
+    "8 hours",
+    "1 full-round action",
+    "1 standard action",
+    "at least 10 minutes; see text",
+    "2 hours",
+    "6 hours",
+    "1 full round",
+    "10 minutes or more; see text",
+    "see below",
+    "see text",
+    "1 full-round action",
+    "1 full-round action, special see below",
+    "10 minutes, plus length of memory to be altered",
+    "3 rounds",
+    "6 rounds",
+    "1 standard action",
+    "1 week (8 hours/day)",
+    "20 minutes",
+    "1 minute per page",
+    "2 rounds",
+    "1 minute/lb. created",
+    "1 round; see text",
+    "1 minute/HD of target",
+    "10 minute/HD of target",
+    "1 day",
+    "1 round or 4 hours; see text",
+    "3 full rounds",
+    "1 swift action or 1 immediate action; see text",
+    "12 hours",
+    "1 week",
+    "1 standard action or see text",
+    "10 minutes (see text)"
+];
+// for (let index = 0; index < 7; index++) {
+//     items.push.apply(items, items)
+// }
+// Parse the items
+console.time('parse')
+let parsedItems = parseTimeItems(items);
+console.timeEnd('parse')
+
+console.time('compare')
+console.timeEnd('compare')
+console.log(parsedItems);
 // <td>${Price}</td>
 // <td><div title="${spell.Description}" class="description">${spell.Description}</div></td>
