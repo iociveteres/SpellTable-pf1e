@@ -4,7 +4,9 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="styles.css">
-        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
+        <!--
+            <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
+        -->
         <title>spelltable</title>
     </head>
     
@@ -13,26 +15,26 @@
         <div class="topFixedBar">
 
         </div>
-    -->
+        -->
         <div class="table_div">
             <table id="table_spells">
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>School</th>
-                        <th>Subschool</th>
-                        <th>Descriptors</th>
-                        <th>Access ways</th>
-                        <th>Casting Time</th>
-                        <th>Components</th>
-                        <!--<th>Price</th>-->
-                        <th>Range</th>
-                        <th>Effect</th>
-                        <th>Target</th>
-                        <th>Duration</th>
-                        <th>Saving Throw</th>
-                        <th>Spell Resistance</th>
-                        <th>Description</th>
+                        <th dir="asc"><button>Name</button></th>
+                        <th dir="no" ><button>School</button></th>
+                        <th dir="no" ><button>Subschool</button></th>
+                        <th dir="no" ><button>Descriptors</button></th>
+                        <th dir="no" ><button>Access ways</button></th>
+                        <th dir="no" ><button>Casting Time</button></th>
+                        <th dir="no" ><button>Components</button></th>
+                        <!--<th>Price<th>-->              
+                        <th dir="no" ><button>Range</button></th>
+                        <th dir="no" ><button>Effect</button></th>
+                        <th dir="no" ><button>Target</button></th>
+                        <th dir="no" ><button>Duration</button></th>
+                        <th dir="no" ><button>Saving Throw</button></th>
+                        <th dir="no" ><button>Spell Resistance</button></th>
+                        <th dir="no" ><button>Description</button></th>
                         <!--<th>Description</th>-->
                     </tr>
                 </thead>
@@ -42,7 +44,9 @@
             </table>
         </div>
         
+        <!--
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
-        <script src="script.js"></script> <!-- Link to the javascript file -->
+        -->
+        <script type="module" src="script.js"></script> <!-- Link to the javascript file -->
     </body>
 </html>

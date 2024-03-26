@@ -1,6 +1,15 @@
-//import {DataTable} from "./node_modules/simple-datatables"
+import { sortTable } from './sorting.js'
 
-let dataTable = null;
+let table = document.getElementById('table_spells')
+table.querySelectorAll("th").forEach((th, position) => {
+    th.querySelector("button").addEventListener("click", evt => {
+        let newDir = sortTable(table, position, th.getAttribute("dir"));  
+        table.querySelectorAll("th").forEach((th) => {
+            th.setAttribute("dir", "no")
+        });
+        th.setAttribute("dir", newDir);
+    })
+});
 
 document.addEventListener("DOMContentLoaded", function () {
     fetch("spellList.json")
@@ -13,15 +22,15 @@ document.addEventListener("DOMContentLoaded", function () {
             let jsonPretty = JSON.stringify(spells, null, 2);
             //console.log(jsonPretty)
 
-            
+            console.time('parse')
             //result = spells.filter((spell) => spell["Name"].includes("Aram "));
             let placeholder = document.querySelector("#data-output");
             let out = "";
 
             let uniqueNames = findUniqueValuesByKey(spells, "Casting time");
-            console.log([...uniqueNames]); // Output: ['John', 'Jane']
+            console.log([...uniqueNames]); 
 
-            for (let spell of spells) {
+            for (let spell of spells) { 
                 let Subschool = spell.Subschool == "None" ? "" :spell.Subschool
                 let Descriptors = spell.Descriptors == "None" ? "" :spell.Descriptors
                 let Price = spell.Price == 0 ? "" : spell.Price
@@ -63,38 +72,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 `;
             }
             placeholder.innerHTML = out;
-            
-
-            dataTable = new window.simpleDatatables.DataTable("#table_spells", {
-                    searchable: true,
-                    sortable: true,
-                    fixedHeight: true,
-                    perPage: 100,
-                    // columns: [
-                    //     // Disable sorting on the fourth and fifth columns
-                    //     { select: [4], sortable: false },
-                
-                    //     // Hide the sixth column
-                    //     { select: 5, hidden: false},
-                
-                    //     // Append a button to the seventh column
-                    //     // {
-                    //     //     select: 6,
-                    //     //     type: 'string',
-                    //     //     render: function(data, td, rowIndex, cellIndex) {
-                    //     //         return `${data}<button type='button' data-row='${rowIndex}'>Select</button>`;
-                    //     //     }
-                    //     // }
-                    // ]
-            });
+            console.timeEnd('parse')
         });
 });
+
 
 function findUniqueValuesByKey(array, key) {
     let uniqueValues = new Set();
     array.forEach(obj => uniqueValues.add(obj[key]));
     return uniqueValues;
 }
+
 
 function parseTime(time) {
     const timeUnits = [
@@ -137,13 +125,11 @@ function parseTime(time) {
     }
 
     timeUnitCode = timeUnitCode ? timeUnitCode : 100;
+    timeValue = timeValue ? timeValue : 0;
 
     return timeUnitCode * 100 + timeValue;
 }
 
-function compareTime(time1, time2) {
-    return parseTime(time1) - parseTime(time2)
-}
 
 function parseTimeItems(items) { // 6-8 ms for 5.6k els
     const timeUnits = [
@@ -262,8 +248,6 @@ console.time('parse')
 let parsedItems = parseTimeItems(items);
 console.timeEnd('parse')
 
-console.time('compare')
-console.timeEnd('compare')
 console.log(parsedItems);
 // <td>${Price}</td>
 // <td><div title="${spell.Description}" class="description">${spell.Description}</div></td>
