@@ -1,13 +1,22 @@
-import { sortTable } from './sorting.js'
+import { sortTable } from './sort.js'
+import { filterTable } from './filter.js';
 
 let table = document.getElementById('table_spells')
+let filterInputs = Array();
 table.querySelectorAll("th").forEach((th, position) => {
+    filterInputs.push(th.querySelector("input"));
+
     th.querySelector("button").addEventListener("click", evt => {
         let newDir = sortTable(table, position, th.getAttribute("dir"));  
         table.querySelectorAll("th").forEach((th) => {
             th.setAttribute("dir", "no")
         });
         th.setAttribute("dir", newDir);
+    })
+
+    th.querySelector("input").addEventListener("input", evt => {
+        let filterValues = filterInputs.map((filter) => filter.value);
+        filterTable(table, position, filterValues);  
     })
 });
 

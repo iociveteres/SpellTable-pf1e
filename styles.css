@@ -45,6 +45,9 @@ table th button {
 	font-family: serif;
 }
 
+table th input {
+	box-sizing: border-box;
+	width: 100%;
 }
 
 thead {
