@@ -55,12 +55,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 try {
                 let result = Object.entries(spell["access_ways"]).map(([key, value]) => {
                     return value.map(item => {
-                      return item.join(' ');
+                            return item.join(' ');
+                        }).join('\n');
                     }).join('\n');
-                  }).join('\n');
-                access_ways = result;
+                    access_ways = result;
                 } catch (err) {
                     console.error("Error: ", spell.Name)
+                }
+                let threeDotsDiv = "";
+                if (countNewLines(access_ways) >= 3) {
+                    threeDotsDiv = `<div style="position:absolute; bottom:0px; right:2px; font-weight: bold;">...</div>`
                 }
 
                 out += `
@@ -69,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         <td>${spell.School}</td>
                         <td>${Subschool}</td>
                         <td>${Descriptors}</td>
-                        <td style="white-space:pre; word-wrap:break-word">${access_ways}</td>
+                        <td style="position:relative; white-space:pre; word-wrap:break-word; z-index:1"><div style="width:inherit; height:60px; line-height:20px; overflow:hidden; " title="${access_ways}">${threeDotsDiv}${access_ways}</div></td>
                         <td data-sort="${parseTime(spell["Casting time"])}">${spell["Casting time"]}</td>
                         <td>${spell.Components}</td>
                         
@@ -106,6 +110,10 @@ function findUniqueValuesByKey(array, key) {
     return uniqueValues;
 }
 
+function countNewLines(str) {
+    var matches = str.match(/\n/g);
+    return matches ? matches.length : 0;
+}
 
 function parseTime(time) {
     const timeUnits = [

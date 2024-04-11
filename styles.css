@@ -51,6 +51,7 @@ table th input {
 }
 
 thead {
+	z-index: 100;
     position: sticky;
     top: 0px;
 }
