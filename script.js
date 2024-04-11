@@ -1,6 +1,8 @@
 import { sortTable } from './sort.js'
 import { filterTable } from './filter.js';
 
+
+
 let table = document.getElementById('table_spells')
 let filterInputs = Array();
 table.querySelectorAll("th").forEach((th, position) => {
@@ -14,10 +16,11 @@ table.querySelectorAll("th").forEach((th, position) => {
         th.setAttribute("dir", newDir);
     })
 
-    th.querySelector("input").addEventListener("input", evt => {
+    th.querySelector("input").addEventListener("input", debounce(evt => {
+        clearTempRows(table);
         let filterValues = filterInputs.map((filter) => filter.value);
         filterTable(table, position, filterValues);  
-    })
+    }, 300));
 });
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -84,6 +87,17 @@ document.addEventListener("DOMContentLoaded", function () {
             console.timeEnd('parse')
         });
 });
+
+
+function debounce(func, delay=300) {
+    let timeoutId;
+    return function(...args) {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+            func.apply(this, args);
+        }, delay);
+    };
+}
 
 
 function findUniqueValuesByKey(array, key) {
@@ -258,5 +272,6 @@ let parsedItems = parseTimeItems(items);
 console.timeEnd('parse')
 
 console.log(parsedItems);
+// console.log(parsedItems);
 // <td>${Price}</td>
 // <td><div title="${spell.Description}" class="description">${spell.Description}</div></td>
