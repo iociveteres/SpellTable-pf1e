@@ -43,6 +43,8 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log([...uniqueNames]); 
 
             for (let spell of spells) { 
+                
+                let PFSLegal = spell["PFS legal"] == true ? "✔" : " ";
                 let Subschool = spell.Subschool == "None" ? "" :spell.Subschool
                 let Descriptors = spell.Descriptors == "None" ? "" :spell.Descriptors
                 let Price = spell.Price == 0 ? "" : spell.Price
@@ -84,6 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         <td>${SavingThrow}</td>
                         <td>${SpellResistance}</td>  
                         <td></td>             
+                        <td>${PFSLegal}</td>                                    
                     </tr>
                 `;
             }
