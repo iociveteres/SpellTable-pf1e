@@ -15,7 +15,7 @@ function sortTable(table, colnum, direction) {
     console.time('sort')
     let compareFunc;
     switch (colnum) {
-        case 5:
+        case 6:
             compareFunc = compareTime
             break
         default:
