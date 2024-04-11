@@ -79,6 +79,46 @@ table select:focus{
 	outline: none;
 }
 
+
+.hidden-row {
+	display: none;
+}
+  
+.show-row {
+	display: table-row;
+}
+
+.dropdown {
+	display: flex;
+	align-items: center;
+	background-color: #F0F0F08F;
+}
+
+
+.dropdown-description {
+	width: 40%;
+	/* height: 100px; */
+	margin-left: 15%;
+	padding: 5px;
+	text-align: start;
+	/* border: 1px solid black; */
+}
+
+.dropdown-access-ways {
+	font-family: serif;
+	width: 30%;
+	/* height: 100px; */
+	margin-left: 0.5%;
+	padding: 5px;
+	text-align: center;
+	/* line-height: 20px; */
+	/* border: 1px solid black; */
+}
+
+.vertical {
+	border-left: 2px solid black;
+}
+
 .description {
 	height:70px; 
     overflow: hidden;

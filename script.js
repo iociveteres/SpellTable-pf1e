@@ -9,6 +9,7 @@ table.querySelectorAll("th").forEach((th, position) => {
     filterInputs.push(th.querySelector("input"));
 
     th.querySelector("button").addEventListener("click", evt => {
+        clearTempRows(table);
         let newDir = sortTable(table, position, th.getAttribute("dir"));  
         table.querySelectorAll("th").forEach((th) => {
             th.setAttribute("dir", "no")
@@ -23,10 +24,10 @@ table.querySelectorAll("th").forEach((th, position) => {
     }, 300));
 });
 
+
 document.addEventListener("DOMContentLoaded", function () {
-    fetch("spellList.json")
+    fetch("spellList_v1.1.json")
         .then(function (response) {
-            
             return response.json();
         })
         .then(function (spells) {
@@ -52,7 +53,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 let Target = spell.Target == "None" ? "": spell.Target
                 let SavingThrow = spell["Saving throw"] === undefined ? "" : spell["Saving throw"]
                 let SpellResistance = spell["Spell Resistance"] === undefined ? "" : spell["Spell Resistance"]
-
+                let ShortDescription = spell["Short description"] === undefined ? "" : spell["Short description"]
+                let FullDescription = spell["Description"] === undefined ? "" : spell["Description"]
                 let access_ways = "";
                 try {
                 let result = Object.entries(spell["access_ways"]).map(([key, value]) => {
@@ -70,28 +72,89 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 out += `
-                    <tr>
+                    <tr class="data-row">
                         <td>${spell.Name}</td>
+                        <td title="${FullDescription}">${ShortDescription}</td>  
                         <td>${spell.School}</td>
                         <td>${Subschool}</td>
                         <td>${Descriptors}</td>
                         <td style="position:relative; white-space:pre; word-wrap:break-word; z-index:1"><div style="width:inherit; height:60px; line-height:20px; overflow:hidden; " title="${access_ways}">${threeDotsDiv}${access_ways}</div></td>
                         <td data-sort="${parseTime(spell["Casting time"])}">${spell["Casting time"]}</td>
                         <td>${spell.Components}</td>
-                        
                         <td>${spell.Range}</td>
                         <td>${Effect}</td>
                         <td>${Target}</td>
                         <td>${spell.Duration}</td>
                         <td>${SavingThrow}</td>
-                        <td>${SpellResistance}</td>  
-                        <td></td>             
+                        <td>${SpellResistance}</td>
                         <td>${PFSLegal}</td>                                    
                     </tr>
                 `;
             }
             placeholder.innerHTML = out;
             console.timeEnd('parse')
+
+            // fix col width
+            var cells = table.getElementsByTagName("td");
+            var max_widths = [];
+            for (var i = 0; i < cells.length; i++) {
+              var cell_width = cells[i].offsetWidth;
+              var col_index = cells[i].cellIndex;
+              if (!max_widths[col_index] || cell_width > max_widths[col_index]) {
+                max_widths[col_index] = cell_width;
+              }
+            }
+            // Apply the maximum width found for each column
+            var headers = table.getElementsByTagName("th");
+            for (var i = 0; i < headers.length; i++) {
+              headers[i].style.width = max_widths[i] + "px";
+            }
+
+            let rows = Array.from(table.querySelectorAll(`tr`));;
+            rows = rows.slice(1);
+            rows.forEach((tr, position) => {
+                tr.addEventListener("click", evt => {
+                        let innerDivs;
+                        let nextRow = tr.nextElementSibling;
+                        if (!nextRow.classList.contains('show-row') && !nextRow.classList.contains('hidden-row')) {
+                            let newRow = document.createElement('tr');
+                           
+                            let newCell = document.createElement('td');
+                            newCell.colSpan = "100";                            
+                            let fullDescription = tr.querySelector(`td:nth-child(${2})`).getAttribute("title");
+                            let accessWays = tr.querySelector(`td:nth-child(${6})`).textContent.replace("...", "");
+                            let parentDiv = document.createElement('div');
+                            parentDiv.classList.add("dropdown");
+                            
+                            innerDivs = `
+                                <div class="dropdown-description">
+                                    ${fullDescription}
+                                </div>
+                                <div class="dropdown-access-ways">
+                                    <pre>${accessWays}</pre>
+                                </div>`;
+                            parentDiv.innerHTML = innerDivs;
+
+                            newCell.appendChild(parentDiv);
+                            newRow.appendChild(newCell);
+                            // newRow.classList.add('description-row')
+                            newRow.classList.add('show-row');
+                            tr.parentNode.insertBefore(newRow, nextRow);
+                        } else {
+                            nextRow.classList.toggle('hidden-row');
+                            nextRow.classList.toggle('show-row');
+                        }  
+                });
+            }); 
+
+            let tableData = extractDataFromTable('table_spells');
+            let uniqueValuesByColumn = {};
+            Object.keys(tableData).forEach(column => {
+                let values = tableData[column];
+                let uniqueValues = findUniqueValues(values, column);
+                uniqueValuesByColumn[column] = uniqueValues;
+            });
+            console.log(uniqueValuesByColumn);
         });
 });
 
