@@ -10,6 +10,19 @@ function compareGeneric(a, b) {
 function compareTime(time1, time2) {
     return Number(time1.getAttribute("data-sort")) - Number(time2.getAttribute("data-sort"))
 }
+
+function compareRange(range1, range2) {
+    if (range1.getAttribute("data-sort-dist") !== "null" && range2.getAttribute("data-sort-dist") !== "null") {
+        return Number(range1.getAttribute("data-sort-dist")) - Number(range2.getAttribute("data-sort-dist"))
+    } else {
+        return Number(range1.getAttribute("data-sort-code")) - Number(range2.getAttribute("data-sort-code"))
+    }
+}
+
+function compareDuration(dur1, dur2) {
+    return Number(dur1.getAttribute("data-sort")) - Number(dur2.getAttribute("data-sort"))
+}
+
   
 function sortTable(table, colnum, direction) {
     console.time('sort')
@@ -17,6 +30,12 @@ function sortTable(table, colnum, direction) {
     switch (colnum) {
         case 6:
             compareFunc = compareTime
+            break
+        case 8:
+            compareFunc = compareRange
+            break
+        case 11:
+            compareFunc = compareDuration
             break
         default:
             compareFunc = compareGeneric
@@ -52,4 +71,3 @@ function sortTable(table, colnum, direction) {
 export {
     sortTable
 }
-
