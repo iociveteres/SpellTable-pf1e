@@ -1,8 +1,6 @@
 import { sortTable } from './sort.js'
 import { filterTable } from './filter.js';
 
-
-
 let table = document.getElementById('table_spells')
 let filterInputs = Array();
 table.querySelectorAll("th").forEach((th, position) => {
@@ -32,23 +30,16 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .then(function (spells) {
             console.log(spells.length);
-            let jsonPretty = JSON.stringify(spells, null, 2);
-            //console.log(jsonPretty)
-
             console.time('parse')
-            //result = spells.filter((spell) => spell["Name"].includes("Aram "));
             let placeholder = document.querySelector("#data-output");
             let out = "";
 
-            let uniqueNames = findUniqueValuesByKey(spells, "Casting time");
-            console.log([...uniqueNames]); 
 
             for (let spell of spells) { 
                 
                 let PFSLegal = spell["PFS legal"] == true ? "✔" : " ";
                 let Subschool = spell.Subschool == "None" ? "" :spell.Subschool
                 let Descriptors = spell.Descriptors == "None" ? "" :spell.Descriptors
-                let Price = spell.Price == 0 ? "" : spell.Price
                 let Effect = spell.Effect == "None" ? "" : spell.Effect
                 let Target = spell.Target == "None" ? "": spell.Target
                 let SavingThrow = spell["Saving throw"] === undefined ? "" : spell["Saving throw"]
@@ -113,39 +104,11 @@ document.addEventListener("DOMContentLoaded", function () {
             let rows = Array.from(table.querySelectorAll(`tr`));;
             rows = rows.slice(1);
             rows.forEach((tr, position) => {
-                tr.addEventListener("click", evt => {
-                        let innerDivs;
-                        let nextRow = tr.nextElementSibling;
-                        if (!nextRow.classList.contains('show-row') && !nextRow.classList.contains('hidden-row')) {
-                            let newRow = document.createElement('tr');
-                           
-                            let newCell = document.createElement('td');
-                            newCell.colSpan = "100";                            
-                            let fullDescription = tr.querySelector(`td:nth-child(${2})`).getAttribute("title");
-                            let accessWays = tr.querySelector(`td:nth-child(${6})`).textContent.replace("...", "");
-                            let parentDiv = document.createElement('div');
-                            parentDiv.classList.add("dropdown");
-                            
-                            innerDivs = `
-                                <div class="dropdown-description">
-                                    ${fullDescription}
-                                </div>
-                                <div class="dropdown-access-ways">
-                                    <pre>${accessWays}</pre>
-                                </div>`;
-                            parentDiv.innerHTML = innerDivs;
-
-                            newCell.appendChild(parentDiv);
-                            newRow.appendChild(newCell);
-                            // newRow.classList.add('description-row')
-                            newRow.classList.add('show-row');
-                            tr.parentNode.insertBefore(newRow, nextRow);
-                        } else {
-                            nextRow.classList.toggle('hidden-row');
-                            nextRow.classList.toggle('show-row');
-                        }  
+                let clickStartTime;
+                // not to trigger creating additional row on selecting text
+                tr.addEventListener('mousedown', evt => {
+                    clickStartTime = new Date().getTime(); 
                 });
-            }); 
 
             let tableData = extractDataFromTable('table_spells');
             let uniqueValuesByColumn = {};
@@ -155,6 +118,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 uniqueValuesByColumn[column] = uniqueValues;
             });
             console.log(uniqueValuesByColumn);
+                tr.addEventListener('mouseup', evt => {
+                    const clickDuration = new Date().getTime() - clickStartTime;
+                    if (clickDuration < 300) { 
+                        makeDescriptionRow(tr)
+                    } 
+                });
+            }); 
         });
 });
 
@@ -174,7 +144,41 @@ function findUniqueValuesByKey(array, key) {
     let uniqueValues = new Set();
     array.forEach(obj => uniqueValues.add(obj[key]));
     return uniqueValues;
+function makeDescriptionRow(tr) {
+    let innerDivs;
+    let nextRow = tr.nextElementSibling;
+    if (!nextRow.classList.contains('show-row') && !nextRow.classList.contains('hidden-row')) {
+        let newRow = document.createElement('tr');
+       
+        let newCell = document.createElement('td');
+        newCell.colSpan = "100";                            
+        let fullDescription = tr.querySelector(`td:nth-child(${2})`).getAttribute("title");
+        let accessWays = tr.querySelector(`td:nth-child(${6})`).textContent.replace("...", "");
+        let parentDiv = document.createElement('div');
+        parentDiv.classList.add("dropdown");
+        
+        innerDivs = `
+            div class="dropdown-links">
+                ${fullDescription}
+            </div>
+            <div class="dropdown-description">
+                ${fullDescription}
+            </div>
+            <div class="dropdown-access-ways">
+                <pre>${accessWays}</pre>
+            </div>`;
+        parentDiv.innerHTML = innerDivs;
+
+        newCell.appendChild(parentDiv);
+        newRow.appendChild(newCell);
+        newRow.classList.add('show-row');
+        tr.parentNode.insertBefore(newRow, nextRow);
+    } else {
+        nextRow.classList.toggle('hidden-row');
+        nextRow.classList.toggle('show-row');
+    }  
 }
+
 
 function countNewLines(str) {
     var matches = str.match(/\n/g);
