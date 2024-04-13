@@ -17,7 +17,7 @@ body{
 }
 
 .table_div{
-	width: 98%;
+	width: 99%;
 	margin-left: auto;
 	margin-right: auto;
 }
@@ -56,6 +56,7 @@ thead {
     top: 0px;
 }
 
+
 table td{
 	padding: 3px;
 	border:  thin solid #d4d4d4;
@@ -79,6 +80,14 @@ table select:focus{
 	outline: none;
 }
 
+.table1 th:nth-child(2), .table1 td:nth-child(2) {
+    width: 15%;
+}
+
+.table1 th:nth-child(6), .table1 td:nth-child(6) {
+    width: 170px;
+}
+
 
 .hidden-row {
 	display: none;
@@ -97,22 +106,17 @@ table select:focus{
 
 .dropdown-description {
 	width: 40%;
-	/* height: 100px; */
 	margin-left: 15%;
 	padding: 5px;
 	text-align: start;
-	/* border: 1px solid black; */
 }
 
 .dropdown-access-ways {
 	font-family: serif;
 	width: 30%;
-	/* height: 100px; */
 	margin-left: 0.5%;
 	padding: 5px;
 	text-align: center;
-	/* line-height: 20px; */
-	/* border: 1px solid black; */
 }
 
 .vertical {
