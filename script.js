@@ -187,42 +187,6 @@ function countNewLines(str) {
     return matches ? matches.length : 0;
 }
 
-function parseTime(time) {
-    const timeUnits = [
-        "free action", "immediate action", "swift action", "move action", "standard action",
-        "full-round action", "full round", "round", "minute", "hour", "day", "week"
-    ];
-
-    let parts;
-    if (time.includes(";")) { // try to split by any special characters 
-        parts = time.split(";")
-    } else if (time.includes(",")) { 
-        parts = time.split(",")
-    } else if (time.includes("(")) {
-        parts = time.split("(")
-        parts[1] = parts[1].slice(0, -1);
-    } else if (time.includes("/")) {
-        parts = time.split("/")
-        parts[1] = '/' + parts[1]
-    } else if (time.includes("or")) {
-        parts = time.split("or")
-    } else if (time.includes("see")) { // case where there is only special text
-        parts = Array("", time);
-    } else { // comma
-        parts = Array(time)
-    } 
-    // it can be optimised by handling any non special first
-    let timePart = parts[0].trim();
-    let specialPart = parts[1] ? parts[1].trim() : null;
-
-    let timeValue;
-    let timeUnitCode;
-
-    for (let [i, unit] of timeUnits.entries()) {
-        if (timePart.includes(unit)) {
-            let timePartSplit = timePart.split(unit);
-            timeValue = parseInt(timePartSplit[0].trim().replace(/\D+/g, ''));
-            timeUnitCode = i // for easier comparison
 
 function clearTempRows(table) {
     let rows = table.querySelectorAll('tr');
@@ -236,14 +200,53 @@ function clearTempRows(table) {
         }
     });
 }
+
+const timeUnits1 = new Map([
+    ["free action", 1], 
+    ["immediate action", 2], 
+    ["swift action", 3], 
+    ["move action", 4], 
+    ["standard action", 5],
+    ["full-round action", 6], 
+    ["full round", 7], 
+    ["round", 8], 
+    ["minute", 9], 
+    ["hour", 10], 
+    ["day", 11], 
+    ["week", 12],
+    ["see", 13],
+    ["special", 14]
+]);
+
+const regexTime = /(\d+)\s*(round|minute|hour|day|week)/i;
+
+function parseTime(input) {
+    let result = { code: null, length: null };
+
+    for (let [key, value] of timeUnits1) {
+        if (input.includes(key)) {
+            result.code = value;
+            switch (result.code) {
+                case 7:
+                case 8:
+                case 9:
+                case 10:
+                case 11: 
+                case 12:
+                    let match = input.match(regexTime);
+                    if (match && match[1]) {
+                        result.length = parseInt(match[1]);
+                    }
+                    break;
+                default:
+                    result.length = 1;
+                    break;
+            }
             break;
         }
     }
 
-    timeUnitCode = timeUnitCode ? timeUnitCode : 100;
-    timeValue = timeValue ? timeValue : 0;
-
-    return timeUnitCode * 100 + timeValue;
+    return result.code * 100 + result.length;
 }
 
 
@@ -305,19 +308,6 @@ function parseRange(input) {
     return result;
 }
 
-        if (!timeValue || !timeUnit) {
-            timeValue = timePart;
-        }
-        timeUnitCode = timeUnitCode ? timeUnitCode : 100,
-
-        parsedItems.push({
-            timeValue: timeUnit ? timeValue : null,
-            timeUnit: timeUnit ? timeUnit : null,
-            specialPart: specialPart,
-            timeUnitCode: timeUnit ? timeUnitCode : 100,
-            value: timeUnitCode * 100 + timeValue
-        });
-    });
 const durationUnits = new Map([
     ["instantaneous", 0], 
     ["concentration", 1], 
