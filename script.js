@@ -92,16 +92,16 @@ document.addEventListener("DOMContentLoaded", function () {
             var cells = table.getElementsByTagName("td");
             var max_widths = [];
             for (var i = 0; i < cells.length; i++) {
-              var cell_width = cells[i].offsetWidth;
-              var col_index = cells[i].cellIndex;
-              if (!max_widths[col_index] || cell_width > max_widths[col_index]) {
-                max_widths[col_index] = cell_width;
-              }
+                var cell_width = cells[i].offsetWidth;
+                var col_index = cells[i].cellIndex;
+                if (!max_widths[col_index] || cell_width > max_widths[col_index]) {
+                    max_widths[col_index] = cell_width;
+                }
             }
-            // Apply the maximum width found for each column
+            // apply the maximum width found for each column
             var headers = table.getElementsByTagName("th");
             for (var i = 0; i < headers.length; i++) {
-              headers[i].style.width = max_widths[i] + "px";
+                headers[i].style.width = max_widths[i] + "px";  
             }
 
             // on click add row with description
@@ -114,14 +114,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     clickStartTime = new Date().getTime(); 
                 });
 
-            let tableData = extractDataFromTable('table_spells');
-            let uniqueValuesByColumn = {};
-            Object.keys(tableData).forEach(column => {
-                let values = tableData[column];
-                let uniqueValues = findUniqueValues(values, column);
-                uniqueValuesByColumn[column] = uniqueValues;
-            });
-            console.log(uniqueValuesByColumn);
                 tr.addEventListener('mouseup', evt => {
                     const clickDuration = new Date().getTime() - clickStartTime;
                     if (clickDuration < 300) { 
@@ -143,17 +135,11 @@ function debounce(func, delay=300) {
     };
 }
 
-
-function findUniqueValuesByKey(array, key) {
-    let uniqueValues = new Set();
-    array.forEach(obj => uniqueValues.add(obj[key]));
-    return uniqueValues;
 function makeDescriptionRow(tr) {
     let innerDivs;
     let nextRow = tr.nextElementSibling;
     if (!nextRow.classList.contains('show-row') && !nextRow.classList.contains('hidden-row')) {
         let newRow = document.createElement('tr');
-       
         let newCell = document.createElement('td');
         newCell.colSpan = "100";                            
         let fullDescription = tr.querySelector(`td:nth-child(${2})`).getAttribute("title");
@@ -235,6 +221,19 @@ function parseTime(time) {
             let timePartSplit = timePart.split(unit);
             timeValue = parseInt(timePartSplit[0].trim().replace(/\D+/g, ''));
             timeUnitCode = i // for easier comparison
+
+function clearTempRows(table) {
+    let rows = table.querySelectorAll('tr');
+
+    // Loop through each row
+    rows.forEach(row => {
+        // Check if the row has the specified classes
+        if (row.classList.contains('hidden-row') || row.classList.contains('show-row')) {
+            // If it does, remove the row
+            row.remove();
+        }
+    });
+}
             break;
         }
     }
@@ -246,48 +245,6 @@ function parseTime(time) {
 }
 
 
-function parseTimeItems(items) { // 6-8 ms for 5.6k els
-    const timeUnits = [
-        "free action", "immediate action", "swift action", "move action", "standard action",
-        "full-round action", "full round", "round", "minute", "hour", "day", "week"
-    ];
-
-    let parsedItems = [];
-
-    items.forEach(item => {
-        let parts;
-        if (item.includes(";")) { // try to split by any special characters 
-            parts = item.split(";")
-        } else if (item.includes(",")) { 
-            parts = item.split(",")
-        } else if (item.includes("(")) {
-            parts = item.split("(")
-            parts[1] = parts[1].slice(0, -1);
-        } else if (item.includes("/")) {
-            parts = item.split("/")
-            parts[1] = '/' + parts[1]
-        } else if (item.includes("or")) {
-            parts = item.split("or")
-        } else if (item.includes("see")) { // case where there is only special text
-            parts = Array("", item);
-        } else { // comma
-            parts = Array(item)
-        } 
-        // it can be optimised by handling any non special first
-        let timePart = parts[0].trim();
-        let specialPart = parts[1] ? parts[1].trim() : null;
-
-        let timeValue;
-        let timeUnit;
-        let timeUnitCode;
-
-        for (let [i, unit] of timeUnits.entries()) {
-            if (timePart.includes(unit)) {
-                let timePartSplit = timePart.split(unit);
-                timeValue = parseInt(timePartSplit[0].trim().replace(/\D+/g, ''));
-                timeUnit = unit;
-                timeUnitCode = i // for easier comparison
-                break;
             }
         }
 
@@ -307,63 +264,3 @@ function parseTimeItems(items) { // 6-8 ms for 5.6k els
 
     return parsedItems;
 }
-
-// Sample items
-let items = [
-    "1 minute",
-    "1 standard action",
-    "1 round",
-    "10 minutes",
-    "1 hour",
-    "30 minutes",
-    "24 hours",
-    "1 swift action",
-    "1 standard action or immediate action; see text",
-    "1 immediate action",
-    "2 minutes",
-    "10 minutes; see text",
-    "8 hours",
-    "1 full-round action",
-    "1 standard action",
-    "at least 10 minutes; see text",
-    "2 hours",
-    "6 hours",
-    "1 full round",
-    "10 minutes or more; see text",
-    "see below",
-    "see text",
-    "1 full-round action",
-    "1 full-round action, special see below",
-    "10 minutes, plus length of memory to be altered",
-    "3 rounds",
-    "6 rounds",
-    "1 standard action",
-    "1 week (8 hours/day)",
-    "20 minutes",
-    "1 minute per page",
-    "2 rounds",
-    "1 minute/lb. created",
-    "1 round; see text",
-    "1 minute/HD of target",
-    "10 minute/HD of target",
-    "1 day",
-    "1 round or 4 hours; see text",
-    "3 full rounds",
-    "1 swift action or 1 immediate action; see text",
-    "12 hours",
-    "1 week",
-    "1 standard action or see text",
-    "10 minutes (see text)"
-];
-// for (let index = 0; index < 7; index++) {
-//     items.push.apply(items, items)
-// }
-// Parse the items
-console.time('parse')
-let parsedItems = parseTimeItems(items);
-console.timeEnd('parse')
-
-console.log(parsedItems);
-// console.log(parsedItems);
-// <td>${Price}</td>
-// <td><div title="${spell.Description}" class="description">${spell.Description}</div></td>
