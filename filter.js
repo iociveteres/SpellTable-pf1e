@@ -7,7 +7,7 @@ lp.overwrite(Token.XOR, '^');
 lp.overwrite(Token.NOT, '!');
 
 const lastGoodFilters = new Map();
-
+const compRegex = new RegExp(/[=<>]/);
 
 function filterTable(table, colnum, filters) {
     console.debug('filter: ' + (filters))
@@ -27,7 +27,12 @@ function filterTable(table, colnum, filters) {
         // filter if string is not empty
         if (filter) {
             // for convinience replace "wizard" with "sorcere/wizard", etc
-            let improvedFilter = replacePartialWays(filter)
+            let improvedFilter;
+            if (position == 5)
+                improvedFilter = replacePartialWays(filter);
+            else
+                improvedFilter = filter;
+
             // if expression throws exception when parsed use last saved for this col
             try {
                 lp.parse(improvedFilter);
@@ -35,14 +40,43 @@ function filterTable(table, colnum, filters) {
             } catch (error) {
                 lp.parse(lastGoodFilters.get(position));
             }
+
             // use created filter to filter respective column
             let qs = `td:nth-child(${position + 1})`;
             let f = lp.filterFunction((row, value) => {
-                let t = row.querySelector(qs).innerText;
-                if (t.toLowerCase().includes(value.toLowerCase()))
-                    return true;
-                return false;
+                    let t = row.querySelector(qs).innerText;
+                    if (position == 5) {
+                        // split access ways and search every part for starting with logic tree node
+                        // needed because antipaladin has paladin as a substring
+                        let arr = t.toLowerCase().split("\n");
+                        let foundElement = null;
+                        if (arr.some((item, index) => {
+                            foundElement = { item, index };
+                            if (item.startsWith(value.toLowerCase())) {
+                            //     if (compRegex.test(filter)) {
+                            //         let operators = ['=', '<', '>']
+                            //     }
+                                return true;
+                            }
+                        }))
+                        return true;                                             
+                    } else {
+                        if (t.toLowerCase().includes(value.toLowerCase()))
+                            return true;
+                    }
+                    
+                    // this works slower than split+some
+                    // let index = 0;
+                    // while (index < t.length) {
+                    //     if (t.startsWith(value.toLowerCase(), index)) 
+                    //         return true;
+                    //     index = t.indexOf('\n', index) + 1
+                    //     if (index == 0) 
+                    //         break;
+                    // }
+                    return false;
             });
+            
             result = result.filter(f); 
             console.debug(lp.stringify());
         }

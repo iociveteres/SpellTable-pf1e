@@ -64,13 +64,6 @@ table td{
 	background-color: #fff;
 }
 
-table a{
-	text-decoration: none;
-	color: darkred;
-	background-color: #ffecef;
-	padding: 10px 15px;
-}
-
 table a:active{
 	background-color: #ccf4d6;
 	color:  green;
@@ -103,17 +96,23 @@ table select:focus{
 	background-color: #F0F0F08F;
 }
 
+.dropdown-links {
+	width: 7%;
+	margin-left: 5%;
+	padding: 5px;
+	text-align: start;
+}
 
 .dropdown-description {
 	width: 40%;
-	margin-left: 15%;
+	margin-left: 5%;
 	padding: 5px;
 	text-align: start;
 }
 
 .dropdown-access-ways {
 	font-family: serif;
-	width: 30%;
+	width: 25%;
 	margin-left: 0.5%;
 	padding: 5px;
 	text-align: center;
@@ -126,4 +125,10 @@ table select:focus{
 .description {
 	height:70px; 
     overflow: hidden;
+}
+
+a {
+	display: inline-block;
+	padding: 10px 20px;
+	text-decoration: underline;
 }

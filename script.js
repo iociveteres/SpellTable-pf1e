@@ -34,9 +34,12 @@ document.addEventListener("DOMContentLoaded", function () {
             let placeholder = document.querySelector("#data-output");
             let out = "";
 
+            // let uniqueNames = findUniqueValuesByKey(spells, "Casting time");
+            // console.log([...uniqueNames]); 
 
             for (let spell of spells) { 
-                
+                let linkAon = spell["Url aon"];
+                let linkD20 = spell["Url d20"];
                 let PFSLegal = spell["PFS legal"] == true ? "✔" : " ";
                 let Subschool = spell.Subschool == "None" ? "" :spell.Subschool
                 let Descriptors = spell.Descriptors == "None" ? "" :spell.Descriptors
@@ -55,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     }).join('\n');
                     access_ways = result;
                 } catch (err) {
-                    console.error("Error: ", spell.Name)
+                    //console.error("Error: ", spell.Name)
                 }
                 let threeDotsDiv = "";
                 if (countNewLines(access_ways) >= 3) {
@@ -101,6 +104,7 @@ document.addEventListener("DOMContentLoaded", function () {
               headers[i].style.width = max_widths[i] + "px";
             }
 
+            // on click add row with description
             let rows = Array.from(table.querySelectorAll(`tr`));;
             rows = rows.slice(1);
             rows.forEach((tr, position) => {
@@ -156,10 +160,20 @@ function makeDescriptionRow(tr) {
         let accessWays = tr.querySelector(`td:nth-child(${6})`).textContent.replace("...", "");
         let parentDiv = document.createElement('div');
         parentDiv.classList.add("dropdown");
+
+        let aD20 = "";
+        let aAon = "";
+        let linkAon = tr.querySelector(`td:nth-child(${1})`).getAttribute("linkAon");
+        if (linkAon !== "None")
+            aAon = `<a href="${linkAon}" target="_new">AoNprd</a>`;
+        let linkD20 = tr.querySelector(`td:nth-child(${1})`).getAttribute("linkD20");
+        if (linkD20 !== "None")
+            aD20 = `<a href="${linkD20}" target="_new">d20pfsrd</a>`;
         
         innerDivs = `
-            div class="dropdown-links">
-                ${fullDescription}
+            <div class="dropdown-links">
+                ${aAon} \n
+                ${aD20}
             </div>
             <div class="dropdown-description">
                 ${fullDescription}
