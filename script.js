@@ -65,9 +65,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     threeDotsDiv = `<div style="position:absolute; bottom:0px; right:2px; font-weight: bold;">...</div>`
                 }
 
+                let range = parseRange(spell.Range);
+
                 out += `
                     <tr class="data-row">
-                        <td>${spell.Name}</td>
+                        <td linkAon="${linkAon}" linkD20="${linkD20}">${spell.Name}</td>
                         <td title="${FullDescription}">${ShortDescription}</td>  
                         <td>${spell.School}</td>
                         <td>${Subschool}</td>
@@ -75,10 +77,10 @@ document.addEventListener("DOMContentLoaded", function () {
                         <td style="position:relative; white-space:pre; word-wrap:break-word; z-index:1"><div style="width:inherit; height:60px; line-height:20px; overflow:hidden; " title="${access_ways}">${threeDotsDiv}${access_ways}</div></td>
                         <td data-sort="${parseTime(spell["Casting time"])}">${spell["Casting time"]}</td>
                         <td>${spell.Components}</td>
-                        <td>${spell.Range}</td>
+                        <td data-sort-code="${range.code}" data-sort-dist="${range.distance}">${spell.Range}</td>
                         <td>${Effect}</td>
                         <td>${Target}</td>
-                        <td>${spell.Duration}</td>
+                        <td data-sort="${parseDuration(spell.Duration)}">${spell.Duration}</td>
                         <td>${SavingThrow}</td>
                         <td>${SpellResistance}</td>
                         <td>${PFSLegal}</td>                                    
@@ -245,8 +247,63 @@ function clearTempRows(table) {
 }
 
 
+const rangeUnits = new Map([
+    ["personal", 0], 
+    ["touch", 1], 
+    ["close", 2], 
+    ["medium", 3], 
+    ["long", 4],
+    ["ft.", 5], 
+    ["feet", 5], 
+    ["mile", 6], 
+    ["hex", 7], 
+    ["unlimited", 8], 
+    ["see text", 9],
+    ["", 10]
+]);
+
+const regexFt = /(\d+)\s*(ft\.|feet|hex)/i;
+const regexMiles = /(\d+)\s*(mile)/i;
+
+function parseRange(input) {
+    let result = { code: null, distance: null };
+    
+    for (let [key, value] of rangeUnits) {
+        if (input.includes(key)) {
+            result.code = value;
+            switch (result.code) {
+                case 2:
+                    result.distance = 25;
+                    break;
+                case 3:
+                    result.distance = 100;
+                    break;
+                case 4:
+                    result.distance = 400;
+                    break;
+                case 5:
+                case 7: {
+                    let match = input.match(regexFt);
+                    if (match && match[1]) {
+                        result.distance = parseInt(match[1]);
+                        break;
+                    }
+                }
+                case 6: {
+                    let match = input.match(regexMiles);
+                    if (match && match[1]) {
+                        result.distance = parseInt(match[1]) * 1000;
+                        break;
+                    }
+                }
+                default:
+                    break;
             }
+            break;
         }
+    }
+    return result;
+}
 
         if (!timeValue || !timeUnit) {
             timeValue = timePart;
@@ -261,6 +318,67 @@ function clearTempRows(table) {
             value: timeUnitCode * 100 + timeValue
         });
     });
+const durationUnits = new Map([
+    ["instantaneous", 0], 
+    ["concentration", 1], 
+    [" round/level", 2], 
+    [" round", 3], 
+    [" minute/level", 4], 
+    [" min./level", 4], 
+    [" minute", 5], 
+    [" minutes/level", 6], 
+    [" min./level", 6], 
+    [" minutes", 7], 
+    [" hour/level", 8],
+    [" hour", 9], 
+    [" day/level", 10], 
+    [" day", 11], 
+    [" week/level", 12], 
+    [" week", 13], 
+    [" month", 14], 
+    [" battle", 15], 
+    ["until triggered", 16],
+    ["permanent", 17], 
+    ["see", 18],
+    ["special", 19]
+]);
 
-    return parsedItems;
+const regexDur = /(\d+)\s*(round| min| hour| day| battle)/i;
+
+function parseDuration(input) {
+    let result = { code: 100, length: null };
+    
+    for (let [key, value] of durationUnits) {
+        if (input.includes(key)) {
+            if (input.includes(" minutes") && !input.includes(" minutes/"))
+                result.code = 7;
+            else if (input.includes(" minutes/"))
+                result.code = 6;
+            else
+                result.code = value;
+            switch (result.code) {
+                case 2:
+                case 3:
+                case 5:
+                case 6:
+                case 7: 
+                case 9:
+                case 11:
+                case 12:
+                case 13:
+                case 14:
+                case 15:
+                    let match = input.match(regexDur);
+                    if (match && match[1]) {
+                        result.length = parseInt(match[1]);
+                    }
+                    break;
+                default:
+                    result.length = 1;
+                    break;
+            }
+            break;
+        }
+    }
+    return result.code * 100 + result.length;
 }
