@@ -49,40 +49,17 @@ function filterTable(table, colnum, filters) {
             }
 
             // use created filter to filter respective column
-            let f = lp.filterFunction((row, value) => {
             let qs = `td:nth-child(${position + 2})`;
+            let f = lp.filterFunction((row, filter) => {
                     let t = row.querySelector(qs).innerText;
-                    if (position == 5) {
-                        // split access ways and search every part for starting with logic tree node
-                        // needed because antipaladin has paladin as a substring
-                        let arr = t.toLowerCase().split("\n");
-                        let foundElement = null;
-                        if (arr.some((item, index) => {
-                            foundElement = { item, index };
-                            if (item.startsWith(value.toLowerCase())) {
-                            //     if (compRegex.test(filter)) {
-                            //         let operators = ['=', '<', '>']
-                            //     }
-                                return true;
-                            }
-                        }))
-                        return true;                                             
                     if (position + 2 == colIndex.get("Access ways")) {
-                                           
+                        if (filterAccessWays(t, filter))
+                            return true;
                     } else {
-                        if (t.toLowerCase().includes(value.toLowerCase()))
+                        if (t.toLowerCase().includes(filter.toLowerCase()))
                             return true;
                     }
-                    
-                    // this works slower than split+some
-                    // let index = 0;
-                    // while (index < t.length) {
-                    //     if (t.startsWith(value.toLowerCase(), index)) 
-                    //         return true;
-                    //     index = t.indexOf('\n', index) + 1
-                    //     if (index == 0) 
-                    //         break;
-                    // }
+                
                     return false;
             });
             
@@ -141,6 +118,41 @@ function constructOrFilterRegex(strings) {
     regexString = replacePartialWays(regexString);
     return regexString;
 }
+
+
+function filterAccessWays(innerText, filter) {
+    // split access ways and search every part for starting with logic tree node
+    // needed because antipaladin has paladin as a substring
+    let lookforClassLevel = (item, index) => {
+        //foundElement = { item, index };
+        if (item.startsWith(filter.toLowerCase())) {
+        //     if (compRegex.test(filter)) {
+        //         let operators = ['=', '<', '>']
+        //     }
+            return true;
+        }
+    };
+
+    let lookforLevel = (item, index) => {
+        if (item.includes(filter.toLowerCase())) {
+            return true;
+        }
+    };
+
+    let lookforFunc;
+    let digitRegex = /^\d+$/;
+    if (digitRegex.test(filter)) 
+        lookforFunc = lookforLevel;
+    else
+        lookforFunc = lookforClassLevel;
+
+    let arr = innerText.toLowerCase().split("\n");
+    //let foundElement = null;
+    let foundSomeShit = arr.some(lookforFunc);
+
+    return foundSomeShit; 
+}
+
 
 
 export {
