@@ -1,5 +1,6 @@
 import { sortTable } from './sort.js'
 import { filterTable } from './filter.js';
+import { colIndex } from './utils.js';
 
 let table = document.getElementById('table_spells')
 let filterInputs = Array();
@@ -24,7 +25,7 @@ table.querySelectorAll("th").forEach((th, position) => {
     }
 });
 
-import { colIndex } from './utils.js';
+
 
 document.addEventListener("DOMContentLoaded", function () {
     fetch("spellList_v1.1.json")
@@ -114,6 +115,17 @@ document.addEventListener("DOMContentLoaded", function () {
             let rows = Array.from(table.querySelectorAll(`tr`));;
             rows = rows.slice(1);
             rows.forEach((tr, position) => {
+                // let checkbox = tr.querySelector('td:first-child input[type="checkbox"]');
+                // checkbox.addEventListener('change', evt => {
+                //     if (evt.target.checked) {
+                        
+                //         console.log("check");
+                //     } else {
+                //         console.log("uncheck");
+                //     }
+                // });
+
+
                 let clickStartTime;
                 // not to trigger creating additional row on selecting text
                 tr.addEventListener('mousedown', evt => {
@@ -157,10 +169,10 @@ function makeDescriptionRow(tr) {
 
         let aD20 = "";
         let aAon = "";
-        let linkAon = tr.querySelector(`td:nth-child(${colIndex.get("Description")})`).getAttribute("linkAon");
+        let linkAon = tr.querySelector(`td:nth-child(${colIndex.get("Name")})`).getAttribute("linkAon");
         if (linkAon !== "None")
             aAon = `<a href="${linkAon}" target="_new">AoNprd</a>`;
-        let linkD20 = tr.querySelector(`td:nth-child(${colIndex.get("Description")})`).getAttribute("linkD20");
+        let linkD20 = tr.querySelector(`td:nth-child(${colIndex.get("Name")})`).getAttribute("linkD20");
         if (linkD20 !== "None")
             aD20 = `<a href="${linkD20}" target="_new">d20pfsrd</a>`;
         
