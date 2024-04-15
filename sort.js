@@ -1,3 +1,5 @@
+import { colIndex, divideChecked } from './utils.js';
+
 function compareGeneric(a, b) {
     // return -1/0/1 based on what you "know" a and b
     // are here. Numbers, text, some custom case-insensitive
@@ -27,14 +29,14 @@ function compareDuration(dur1, dur2) {
 function sortTable(table, colnum, direction) {
     console.time('sort')
     let compareFunc;
-    switch (colnum) {
-        case 6:
+    switch (colnum + 1) {
+        case colIndex.get("Casting Time"):
             compareFunc = compareTime
             break
-        case 8:
+        case colIndex.get("Range"):
             compareFunc = compareRange
             break
-        case 11:
+        case colIndex.get("Duration"):
             compareFunc = compareDuration
             break
         default:
@@ -45,24 +47,31 @@ function sortTable(table, colnum, direction) {
   
     // but ignore the heading row:
     rows = rows.slice(1);
-  
+
+    // only unchecked rows need sorting
+    let {checkedRows, uncheckedRows} = divideChecked(rows);
+
     // set up the queryselector for getting the indicated
     // column from a row, so we can compare using its value:
     let qs = `td:nth-child(${colnum + 1})`;
   
     let d = direction == "asc" ? -1 : 1;
     // and then just... sort the rows:
-    rows.sort( (r1,r2) => {
+    uncheckedRows.sort( (r1,r2) => {
         // get each row's relevant column
         let t1 = r1.querySelector(qs);
         let t2 = r2.querySelector(qs);
     
         // and then effect sorting by comparing their content:
-        return d * compareFunc(t1, t2); // I changed it to 
+        return d * compareFunc(t1, t2); 
       });
 
     // and then the magic part that makes the sorting appear on-page:
-    rows.forEach(row => table.appendChild(row));
+    // append checked rows first
+    checkedRows.forEach(row => table.appendChild(row));
+
+    // append sorted unchecked rows
+    uncheckedRows.forEach(row => table.appendChild(row));
     console.timeEnd('sort')
 
     return direction == "asc" ? "desc" : "asc";

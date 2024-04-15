@@ -1,4 +1,5 @@
 import './logipar.js';
+import { colIndex, divideChecked } from './utils.js';
 
 const lp = new window.Logipar();
 lp.overwrite(Token.AND, '&');
@@ -18,9 +19,12 @@ function filterTable(table, colnum, filters) {
     // but ignore the heading row:
     rows = rows.slice(1);
     
+    // only unchecked rows need filtering
+    let {checkedRows, uncheckedRows} = divideChecked(rows);
+
     // hide all rows
-    rows.forEach(row => row.style.display = "none");
-    let result = rows;
+    uncheckedRows.forEach(row => row.style.display = "none");
+    let result = uncheckedRows;
 
     // iteratively filter out rows 
     filters.forEach((filter, position) => {
@@ -28,10 +32,13 @@ function filterTable(table, colnum, filters) {
         if (filter) {
             // for convinience replace "wizard" with "sorcere/wizard", etc
             let improvedFilter;
-            if (position == 5)
-                improvedFilter = replacePartialWays(filter);
-            else
-                improvedFilter = filter;
+            switch (position + 2) { // +1 is from Pin without input, +1 because array index starts from 0, really dislike it
+                case colIndex.get("Access ways"):
+                    improvedFilter = replacePartialWays(filter);
+                    break
+                default:
+                    improvedFilter = filter;
+            }              
 
             // if expression throws exception when parsed use last saved for this col
             try {
@@ -42,8 +49,8 @@ function filterTable(table, colnum, filters) {
             }
 
             // use created filter to filter respective column
-            let qs = `td:nth-child(${position + 1})`;
             let f = lp.filterFunction((row, value) => {
+            let qs = `td:nth-child(${position + 2})`;
                     let t = row.querySelector(qs).innerText;
                     if (position == 5) {
                         // split access ways and search every part for starting with logic tree node
@@ -60,6 +67,8 @@ function filterTable(table, colnum, filters) {
                             }
                         }))
                         return true;                                             
+                    if (position + 2 == colIndex.get("Access ways")) {
+                                           
                     } else {
                         if (t.toLowerCase().includes(value.toLowerCase()))
                             return true;
@@ -81,9 +90,13 @@ function filterTable(table, colnum, filters) {
             console.debug(lp.stringify());
         }
     });
-
+    // append checked rows first
+    checkedRows.forEach(row => table.appendChild(row));
     // show again rows matching all filters
-    result.forEach(row => row.style.display = "table-row");
+    result.forEach(row => {
+        row.style.display = "table-row";
+        table.appendChild(row);
+    });
     console.timeEnd('filter')
 }
 

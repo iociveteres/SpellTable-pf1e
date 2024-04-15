@@ -4,24 +4,27 @@ import { filterTable } from './filter.js';
 let table = document.getElementById('table_spells')
 let filterInputs = Array();
 table.querySelectorAll("th").forEach((th, position) => {
-    filterInputs.push(th.querySelector("input"));
+    if (position!= 0) {
+        filterInputs.push(th.querySelector("input"));
+        
+        th.querySelector("button").addEventListener("click", evt => {
+            clearTempRows(table);
+            let newDir = sortTable(table, position, th.getAttribute("dir"));  
+            table.querySelectorAll("th").forEach((th) => {
+                th.setAttribute("dir", "no")
+            });
+            th.setAttribute("dir", newDir);
+        })
 
-    th.querySelector("button").addEventListener("click", evt => {
-        clearTempRows(table);
-        let newDir = sortTable(table, position, th.getAttribute("dir"));  
-        table.querySelectorAll("th").forEach((th) => {
-            th.setAttribute("dir", "no")
-        });
-        th.setAttribute("dir", newDir);
-    })
-
-    th.querySelector("input").addEventListener("input", debounce(evt => {
-        clearTempRows(table);
-        let filterValues = filterInputs.map((filter) => filter.value);
-        filterTable(table, position, filterValues);  
-    }, 300));
+        th.querySelector("input").addEventListener("input", debounce(evt => {
+            clearTempRows(table);
+            let filterValues = filterInputs.map((filter) => filter.value);
+            filterTable(table, position, filterValues);  
+        }, 300));
+    }
 });
 
+import { colIndex } from './utils.js';
 
 document.addEventListener("DOMContentLoaded", function () {
     fetch("spellList_v1.1.json")
@@ -69,6 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 out += `
                     <tr class="data-row">
+                        <td><input type="checkbox" /></td>
                         <td linkAon="${linkAon}" linkD20="${linkD20}">${spell.Name}</td>
                         <td title="${FullDescription}">${ShortDescription}</td>  
                         <td>${spell.School}</td>
@@ -113,7 +117,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 let clickStartTime;
                 // not to trigger creating additional row on selecting text
                 tr.addEventListener('mousedown', evt => {
-                    clickStartTime = new Date().getTime(); 
+                    // if (evt.target !== tr.firstElementChild)
+                    if (!evt.target.closest('td:first-child'))
+                        clickStartTime = new Date().getTime(); 
                 });
 
                 tr.addEventListener('mouseup', evt => {
@@ -144,17 +150,17 @@ function makeDescriptionRow(tr) {
         let newRow = document.createElement('tr');
         let newCell = document.createElement('td');
         newCell.colSpan = "100";                            
-        let fullDescription = tr.querySelector(`td:nth-child(${2})`).getAttribute("title");
-        let accessWays = tr.querySelector(`td:nth-child(${6})`).textContent.replace("...", "");
+        let fullDescription = tr.querySelector(`td:nth-child(${colIndex.get("Description")})`).getAttribute("title");
+        let accessWays = tr.querySelector(`td:nth-child(${colIndex.get("Access ways")})`).textContent.replace("...", "");
         let parentDiv = document.createElement('div');
         parentDiv.classList.add("dropdown");
 
         let aD20 = "";
         let aAon = "";
-        let linkAon = tr.querySelector(`td:nth-child(${1})`).getAttribute("linkAon");
+        let linkAon = tr.querySelector(`td:nth-child(${colIndex.get("Description")})`).getAttribute("linkAon");
         if (linkAon !== "None")
             aAon = `<a href="${linkAon}" target="_new">AoNprd</a>`;
-        let linkD20 = tr.querySelector(`td:nth-child(${1})`).getAttribute("linkD20");
+        let linkD20 = tr.querySelector(`td:nth-child(${colIndex.get("Description")})`).getAttribute("linkD20");
         if (linkD20 !== "None")
             aD20 = `<a href="${linkD20}" target="_new">d20pfsrd</a>`;
         
@@ -190,13 +196,20 @@ function countNewLines(str) {
 
 function clearTempRows(table) {
     let rows = table.querySelectorAll('tr');
-
-    // Loop through each row
+    
+    let prevRowChecked;
     rows.forEach(row => {
         // Check if the row has the specified classes
-        if (row.classList.contains('hidden-row') || row.classList.contains('show-row')) {
+        if (!prevRowChecked && (row.classList.contains('hidden-row') || row.classList.contains('show-row'))) {
             // If it does, remove the row
             row.remove();
+        }
+
+        let checkbox = row.querySelector('td:first-child input[type="checkbox"]');
+        if (checkbox && checkbox.checked) {
+            prevRowChecked = true;
+        } else {
+            prevRowChecked = false;
         }
     });
 }

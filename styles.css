@@ -72,12 +72,12 @@ table a:active{
 table select:focus{
 	outline: none;
 }
-
-.table1 th:nth-child(2), .table1 td:nth-child(2) {
+tw
+.table1 th:nth-child(3), .table1 td:nth-child(3) {
     width: 15%;
 }
 
-.table1 th:nth-child(6), .table1 td:nth-child(6) {
+.table1 th:nth-child(7), .table1 td:nth-child(7) {
     width: 170px;
 }
 
