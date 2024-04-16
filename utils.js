@@ -1,4 +1,4 @@
-let thElements = Array.from(document.getElementById('table_spells').querySelectorAll('th'));
+let thElements = Array.from(document.getElementById('table-spells').querySelectorAll('th'));
 export const colIndex = new Map();
 
 thElements.forEach((th, index) => {

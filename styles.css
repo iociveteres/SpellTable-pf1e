@@ -5,6 +5,7 @@ body{
 	color: #555;
 	margin: 0;
 	padding: 0;
+	overflow-y: scroll;
 }
 
 .topFixedBar
@@ -16,10 +17,11 @@ body{
 	z-index: 1000;
 }
 
-.table_div{
-	width: 99%;
-	margin-left: auto;
-	margin-right: auto;
+.table-div {
+    width: 99%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 20px;
 }
 
 table{
@@ -32,7 +34,7 @@ table th{
 	padding: 0!important;
 	background-color: #f4f4f4;
 	border:  thin solid #d4d4d4;
-	height: 40px;
+	height: 45px;
 }
 
 table th button {
@@ -73,11 +75,11 @@ table select:focus{
 	outline: none;
 }
 tw
-.table1 th:nth-child(3), .table1 td:nth-child(3) {
+.spelltable th:nth-child(3), .spelltable td:nth-child(3) {
     width: 15%;
 }
 
-.table1 th:nth-child(7), .table1 td:nth-child(7) {
+.spelltable th:nth-child(7), .spelltable td:nth-child(7) {
     width: 170px;
 }
 

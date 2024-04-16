@@ -2,7 +2,7 @@ import { sortTable } from './sort.js'
 import { filterTable } from './filter.js';
 import { colIndex } from './utils.js';
 
-let table = document.getElementById('table_spells')
+let table = document.getElementById('table-spells')
 let filterInputs = Array();
 table.querySelectorAll("th").forEach((th, position) => {
     if (position!= 0) {
