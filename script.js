@@ -15,17 +15,21 @@ table.querySelectorAll("th").forEach((th, position) => {
                 th.setAttribute("dir", "no")
             });
             th.setAttribute("dir", newDir);
+            document.getElementById("spellcount").innerText = String(countRows(table) + " spells")
         })
 
         th.querySelector("input").addEventListener("input", debounce(evt => {
             clearTempRows(table);
             let filterValues = filterInputs.map((filter) => filter.value);
             filterTable(table, position, filterValues);  
+            document.getElementById("spellcount").innerText = String(countRows(table) + " spells")
         }, 300));
     }
 });
 
-
+document.getElementById('toggle-top-bar').addEventListener("click", evt => {
+    toggleTopFixedBar();
+})
 
 document.addEventListener("DOMContentLoaded", function () {
     fetch("spellList_v1.1.json")
@@ -93,6 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 `;
             }
             placeholder.innerHTML = out;
+            document.getElementById("spellcount").innerText = String(countRows(table) + " spells")
             console.timeEnd('parse')
 
             // fix col width
@@ -225,6 +230,27 @@ function clearTempRows(table) {
         }
     });
 }
+
+
+function countRows(table) {
+    let rows = table.querySelectorAll('tr');
+
+    let visibleRowCount = 0;
+    for (let i = 1; i < rows.length; i++) {
+        if (rows[i].style.display !== 'none') {
+
+            visibleRowCount++;
+        }
+    }
+    return visibleRowCount;
+}
+
+
+function toggleTopFixedBar() {
+    var topFixedBar = document.getElementById("top-bar");
+    topFixedBar.classList.toggle('hidden');
+}
+
 
 const timeUnits1 = new Map([
     ["free action", 1], 

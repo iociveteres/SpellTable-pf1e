@@ -17,6 +17,10 @@ body{
     align-items: center;
 }
 
+.hidden {
+    visibility: hidden;
+    position: absolute;
+}
 
 #heading { 
 	font-size: 150%;
@@ -138,4 +142,31 @@ a {
 	display: inline-block;
 	padding: 10px 20px;
 	text-decoration: underline;
+}
+
+#sticky-bottom {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+	height: 20px;
+    width: 100%;
+	z-index: 90;
+    background-color: #f0f0f0; 
+    border-top: 1px solid #ccc;
+	display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+	padding-right: 15px;
+	box-sizing: border-box;
+}
+
+#toggle-top-bar {
+    text-decoration: underline;
+    cursor: pointer;
+	border: none;
+}
+
+#donate, :visited {
+	color: rgb(50, 50, 50);
 }
