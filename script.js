@@ -1,6 +1,6 @@
 import { sortTable } from './sort.js'
 import { filterTable } from './filter.js';
-import { colIndex } from './utils.js';
+import { colIndex, timeUnits, rangeUnits, durationUnits } from './utils.js';
 
 let table = document.getElementById('table-spells')
 let filterInputs = Array();
@@ -252,29 +252,13 @@ function toggleTopFixedBar() {
 }
 
 
-const timeUnits1 = new Map([
-    ["free action", 1], 
-    ["immediate action", 2], 
-    ["swift action", 3], 
-    ["move action", 4], 
-    ["standard action", 5],
-    ["full-round action", 6], 
-    ["full round", 7], 
-    ["round", 8], 
-    ["minute", 9], 
-    ["hour", 10], 
-    ["day", 11], 
-    ["week", 12],
-    ["see", 13],
-    ["special", 14]
-]);
 
 const regexTime = /(\d+)\s*(round|minute|hour|day|week)/i;
 
 function parseTime(input) {
     let result = { code: null, length: null };
 
-    for (let [key, value] of timeUnits1) {
+    for (let [key, value] of timeUnits) {
         if (input.includes(key)) {
             result.code = value;
             switch (result.code) {
@@ -299,22 +283,6 @@ function parseTime(input) {
 
     return result.code * 100 + result.length;
 }
-
-
-const rangeUnits = new Map([
-    ["personal", 0], 
-    ["touch", 1], 
-    ["close", 2], 
-    ["medium", 3], 
-    ["long", 4],
-    ["ft.", 5], 
-    ["feet", 5], 
-    ["mile", 6], 
-    ["hex", 7], 
-    ["unlimited", 8], 
-    ["see text", 9],
-    ["", 10]
-]);
 
 const regexFt = /(\d+)\s*(ft\.|feet|hex)/i;
 const regexMiles = /(\d+)\s*(mile)/i;
@@ -359,30 +327,6 @@ function parseRange(input) {
     return result;
 }
 
-const durationUnits = new Map([
-    ["instantaneous", 0], 
-    ["concentration", 1], 
-    [" round/level", 2], 
-    [" round", 3], 
-    [" minute/level", 4], 
-    [" min./level", 4], 
-    [" minute", 5], 
-    [" minutes/level", 6], 
-    [" min./level", 6], 
-    [" minutes", 7], 
-    [" hour/level", 8],
-    [" hour", 9], 
-    [" day/level", 10], 
-    [" day", 11], 
-    [" week/level", 12], 
-    [" week", 13], 
-    [" month", 14], 
-    [" battle", 15], 
-    ["until triggered", 16],
-    ["permanent", 17], 
-    ["see", 18],
-    ["special", 19]
-]);
 
 const regexDur = /(\d+)\s*(round| min| hour| day| battle)/i;
 

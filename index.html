@@ -20,21 +20,21 @@
                 <thead>
                     <tr style="display: table-row">
                         <th dir="no" >Pin</th>
-                        <th dir="asc"><input type="text"><button>Name</button></th>
-                        <th dir="no" ><input type="text"><button>Description</button></th>
-                        <th dir="no" ><input type="text"><button>School</button></th>
-                        <th dir="no" ><input type="text"><button>Subschool</button></th>
-                        <th dir="no" ><input type="text"><button>Descriptors</button></th>
-                        <th dir="no" ><input type="text"><button>Access ways</button></th>
-                        <th dir="no" ><input type="text"><button>Casting Time</button></th>
-                        <th dir="no" ><input type="text"><button>Components</button></th>                      
-                        <th dir="no" ><input type="text"><button>Range</button></th>
-                        <th dir="no" ><input type="text"><button>Effect</button></th>
-                        <th dir="no" ><input type="text"><button>Target</button></th>
-                        <th dir="no" ><input type="text"><button>Duration</button></th>
-                        <th dir="no" ><input type="text"><button>Saving Throw</button></th>
-                        <th dir="no" ><input type="text"><button>Spell Resistance</button></th>
-                        <th dir="no"><input type="text"><button>PFS</button></th>
+                        <th class="th-cell" dir="asc"><input type="text"><button>Name</button></th>
+                        <th class="th-cell" dir="no" ><input type="text"><button>Description</button></th>
+                        <th class="th-cell" dir="no" ><input type="text"><button>School</button></th>
+                        <th class="th-cell" dir="no" ><input type="text"><button>Subschool</button></th>
+                        <th class="th-cell" dir="no" ><input type="text"><button>Descriptors</button></th>
+                        <th class="th-cell" dir="no" ><input type="text"><button>Access ways</button></th>
+                        <th class="th-cell" dir="no" ><input type="text"><button>Casting Time</button></th>
+                        <th class="th-cell" dir="no" ><input type="text"><button>Components</button></th>                      
+                        <th class="th-cell" dir="no" ><input type="text"><button>Range</button></th>
+                        <th class="th-cell" dir="no" ><input type="text"><button>Effect</button></th>
+                        <th class="th-cell" dir="no" ><input type="text"><button>Target</button></th>
+                        <th class="th-cell" dir="no" ><input type="text"><button>Duration</button></th>
+                        <th class="th-cell" dir="no" ><input type="text"><button>Saving Throw</button></th>
+                        <th class="th-cell" dir="no" ><input type="text"><button>Spell Resistance</button></th>
+                        <th class="th-cell" dir="no"><input type="text"><button>PFS</button></th>
                     </tr>
                 </thead>
                 <tbody id="data-output">
@@ -45,8 +45,14 @@
       
       
         <div id="sticky-bottom">
-            <button id="toggle-top-bar">show/hide top bar</button>
-            <a id="#donate" href="https://t.ly/9JqPR" target="_new">donate</a>
+            <div>
+                <button id="toggle-top-bar" class="bottom-button">show/hide top bar</button>
+                <button id="clear-inputs"   class="bottom-button">clear inputs</button>
+                <button id="unpin-all"      class="bottom-button">unpin all</button>
+                
+                <a class="bottom-link"   href="help.html" target="_child" style="margin-left: 20px;">help</a>
+                <a class="bottom-link"   href="https://t.ly/9JqPR" target="_new">donate</a>
+            </div>
             <div id="spellcount">3037 spells</div>
         </div>
         <script type="module" src="logipar.js" type="text/javascript"></script>
