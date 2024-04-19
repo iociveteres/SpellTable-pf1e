@@ -183,11 +183,15 @@ function debounce(func, delay=300) {
 function makeDescriptionRow(tr) {
     let innerDivs;
     let nextRow = tr.nextElementSibling;
-    if (!nextRow.classList.contains('show-row') && !nextRow.classList.contains('hidden-row')) {
+    if ((nextRow === null && !tr.classList.contains('show-row') && !tr.classList.contains('hidden-row')) || 
+        (!nextRow.classList.contains('show-row') && !nextRow.classList.contains('hidden-row'))) {
         let newRow = document.createElement('tr');
         let newCell = document.createElement('td');
         newCell.colSpan = "100";                            
         let fullDescription = tr.querySelector(`td:nth-child(${colIndex.get("Description")})`).getAttribute("title");
+        if (preFormattedDescription.includes(tr.querySelector(`td:nth-child(${colIndex.get("Name")})`).innerText))
+            fullDescription = "<pre>" + fullDescription + "</pre>"
+        
         let accessWays = tr.querySelector(`td:nth-child(${colIndex.get("Access ways")})`).textContent.replace("...", "");
         let parentDiv = document.createElement('div');
         parentDiv.classList.add("dropdown");
@@ -200,7 +204,7 @@ function makeDescriptionRow(tr) {
         let linkD20 = tr.querySelector(`td:nth-child(${colIndex.get("Name")})`).getAttribute("linkD20");
         if (linkD20 !== "None")
             aD20 = `<a href="${linkD20}" target="_new">d20pfsrd</a>`;
-        
+
         innerDivs = `
             <div class="dropdown-links">
                 ${aAon} \n
