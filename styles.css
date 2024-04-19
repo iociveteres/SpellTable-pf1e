@@ -229,3 +229,17 @@ a {
 .bottom-link, .bottom-link:visited {
 	color: rgb(50, 50, 50);
 }
+
+.help-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    margin: 0; 
+	font-size: 120%;
+	font-family: serif;
+  }
+
+.help-content {
+	text-align: start; 
+}
