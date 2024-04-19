@@ -160,6 +160,16 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
+let preFormattedDescription;
+fetch("preFormattedDescriptions.json")
+    .then(function (response) {
+        return response.json();
+    })
+    .then(function (data) {
+        preFormattedDescription = data;
+    })
+
+
 function debounce(func, delay=300) {
     let timeoutId;
     return function(...args) {
