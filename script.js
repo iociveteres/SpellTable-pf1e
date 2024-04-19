@@ -78,22 +78,23 @@ document.addEventListener("DOMContentLoaded", function () {
                 } catch (err) {
                     //console.error("Error: ", spell.Name)
                 }
-                let threeDotsDiv = "";
+          
+                let overflows = "";
                 if (countNewLines(access_ways) >= 3) {
-                    threeDotsDiv = `<div style="position:absolute; bottom:0px; right:2px; font-weight: bold;">...</div>`
+                    overflows = " overflows";
                 }
 
                 let range = parseRange(spell.Range);
 
                 out += `
                     <tr class="data-row">
-                        <td><input type="checkbox" /></td>
+                        <td><input type="checkbox" name="${spell.Name}"/></td>
                         <td linkAon="${linkAon}" linkD20="${linkD20}">${spell.Name}</td>
                         <td title="${FullDescription}">${ShortDescription}</td>  
                         <td>${spell.School}</td>
                         <td>${Subschool}</td>
                         <td>${Descriptors}</td>
-                        <td style="position:relative; white-space:pre; word-wrap:break-word; z-index:1"><div style="width:inherit; height:60px; line-height:20px; overflow:hidden; " title="${access_ways}">${threeDotsDiv}${access_ways}</div></td>
+                        <td class="access-td"><div class="access-div ${overflows}" title="${access_ways}">${access_ways}</div></td>
                         <td data-sort="${parseTime(spell["Casting time"])}">${spell["Casting time"]}</td>
                         <td>${spell.Components}</td>
                         <td data-sort-code="${range.code}" data-sort-dist="${range.distance}">${spell.Range}</td>
@@ -105,9 +106,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         <td>${PFSLegal}</td>                                    
                     </tr>
                 `;
-            }
+            }          
             placeholder.innerHTML = out;
-            document.getElementById("spellcount").innerText = String(countRows(table) + " spells")
             console.timeEnd('parse')
 
             // fix col width

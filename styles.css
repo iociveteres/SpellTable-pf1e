@@ -6,6 +6,7 @@ body{
 	margin: 0;
 	padding: 0;
 	overflow-y: scroll;
+	overflow-x: hidden;
 }
 
 #top-bar {
@@ -44,6 +45,7 @@ table th{
 	background-color: #f4f4f4;
 	border:  thin solid #d4d4d4;
 	height: 45px;
+	position: relative;
 }
 
 table th button {
@@ -59,6 +61,31 @@ table th button {
 table th input {
 	box-sizing: border-box;
 	width: 100%;
+}
+
+
+.th-cell[dir="asc"]::after {
+	content: "\25B2"; /* Upwards arrow */
+	position: absolute;
+	bottom: 0;
+	right: 2px;
+	font-size: 80%;
+}
+
+.th-cell[dir="desc"]::after {
+	content: "\25BC"; /* Downwards arrow */
+	position: absolute;
+	bottom: 0;
+	right: 2px;
+	font-size: 70%;
+}
+
+.th-cell[dir="no"]::after {
+	content: "="; 
+	position: absolute;
+	bottom: 0;
+	right: 2px;
+	font-size: 70%;
 }
 
 thead {
@@ -83,7 +110,29 @@ table a:active{
 table select:focus{
 	outline: none;
 }
-tw
+
+.access-td {
+	position:relative; 
+	white-space:pre; 
+	word-wrap:break-word; 
+	z-index:1;
+}
+
+.access-div {
+	width:inherit; 
+	height:60px; 
+	line-height:20px; 
+	overflow:hidden;
+}
+
+.overflows::after {
+	content: "...";
+	position: absolute; 
+	bottom: 0px; 
+	right: 2px; 
+	font-weight: bold;
+}
+
 .spelltable th:nth-child(3), .spelltable td:nth-child(3) {
     width: 15%;
 }
@@ -92,6 +141,9 @@ tw
     width: 170px;
 }
 
+.spelltable th:nth-child(15), .spelltable td:nth-child(15) {
+    width: 100px;
+}
 
 .hidden-row {
 	display: none;
