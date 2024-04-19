@@ -31,6 +31,16 @@ document.getElementById('toggle-top-bar').addEventListener("click", evt => {
     toggleTopFixedBar();
 })
 
+document.getElementById('clear-inputs').addEventListener("click", evt => {
+    clearInputFields();
+    let filterValues = filterInputs.map((filter) => filter.value);
+    filterTable(table, 0, filterValues)
+})
+
+document.getElementById('unpin-all').addEventListener("click", evt => {
+    unpinAll()
+})
+
 document.addEventListener("DOMContentLoaded", function () {
     fetch("spellList_v1.1.json")
         .then(function (response) {
@@ -116,20 +126,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 headers[i].style.width = max_widths[i] + "px";  
             }
 
-            // on click add row with description
+            // events for rows, checkbox save and onclick description
             let rows = Array.from(table.querySelectorAll(`tr`));;
             rows = rows.slice(1);
             rows.forEach((tr, position) => {
-                // let checkbox = tr.querySelector('td:first-child input[type="checkbox"]');
-                // checkbox.addEventListener('change', evt => {
-                //     if (evt.target.checked) {
-                        
-                //         console.log("check");
-                //     } else {
-                //         console.log("uncheck");
-                //     }
-                // });
-
+                let checkbox = tr.querySelector('td:first-child input[type="checkbox"]');
+                checkbox.addEventListener('change', evt => {
+                    var checkboxName = checkbox.getAttribute('name');
+                    localStorage.setItem(checkboxName, checkbox.checked);
+                });
 
                 let clickStartTime;
                 // not to trigger creating additional row on selecting text
@@ -146,6 +151,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     } 
                 });
             }); 
+
+            loadCheckboxStates()
+            let filterValues = filterInputs.map((filter) => filter.value);
+            filterTable(table, 0, filterValues)
+            document.getElementById("spellcount").innerText = String(countRows(table) + " spells")
         });
 });
 
@@ -252,6 +262,34 @@ function toggleTopFixedBar() {
 }
 
 
+function clearInputFields() {
+    var inputFields = document.querySelectorAll('.spelltable input[type="text"]');
+    inputFields.forEach(function(input) {
+        input.value = '';
+    });
+}
+
+
+function unpinAll() {
+    let checkboxes = document.querySelectorAll('td:first-child input[type="checkbox"]');
+    checkboxes.forEach(function(checkbox) {
+        checkbox.checked = false;
+    });
+}
+
+
+function loadCheckboxStates() {
+    let checkboxes = document.querySelectorAll('td:first-child input[type="checkbox"]');
+    checkboxes.forEach(function(checkbox) {
+      var checkboxName = checkbox.getAttribute('name');
+      var checkboxState = localStorage.getItem(checkboxName);
+      if (checkboxState === 'true') {
+        checkbox.checked = true;
+      } else {
+        checkbox.checked = false;
+      }
+    });
+  }
 
 const regexTime = /(\d+)\s*(round|minute|hour|day|week)/i;
 

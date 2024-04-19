@@ -161,12 +161,19 @@ a {
 	box-sizing: border-box;
 }
 
-#toggle-top-bar {
+.bottom-button {
     text-decoration: underline;
     cursor: pointer;
 	border: none;
+	margin-right: 20px;
+	padding: 0px;
 }
 
-#donate, :visited {
+.bottom-link {
+	margin-right: 20px;
+	padding: 0px;
+}
+
+.bottom-link, .bottom-link:visited {
 	color: rgb(50, 50, 50);
 }
