@@ -204,8 +204,8 @@ function debounce(func, delay=300) {
 function makeDescriptionRow(tr) {
     let innerDivs;
     let nextRow = tr.nextElementSibling;
-    if ((nextRow === null && !tr.classList.contains('show-row') && !tr.classList.contains('hidden-row')) || 
-        (!nextRow.classList.contains('show-row') && !nextRow.classList.contains('hidden-row'))) {
+    if ((nextRow === null && !tr.classList.contains('show-desc') && !tr.classList.contains('hidden-desc')) || 
+        (!nextRow.classList.contains('show-desc') && !nextRow.classList.contains('hidden-desc'))) {
         let newRow = document.createElement('tr');
         let newCell = document.createElement('td');
         newCell.colSpan = "100";                            
@@ -241,11 +241,11 @@ function makeDescriptionRow(tr) {
 
         newCell.appendChild(parentDiv);
         newRow.appendChild(newCell);
-        newRow.classList.add('show-row');
+        newRow.classList.add('show-desc');
         tr.parentNode.insertBefore(newRow, nextRow);
     } else {
-        nextRow.classList.toggle('hidden-row');
-        nextRow.classList.toggle('show-row');
+        nextRow.classList.toggle('hidden-desc');
+        nextRow.classList.toggle('show-desc');
     }  
 }
 
@@ -262,7 +262,7 @@ function clearTempRows(table) {
     let prevRowChecked;
     rows.forEach(row => {
         // Check if the row has the specified classes
-        if (!prevRowChecked && (row.classList.contains('hidden-row') || row.classList.contains('show-row'))) {
+        if (!prevRowChecked && (row.classList.contains('hidden-desc') || row.classList.contains('show-desc'))) {
             // If it does, remove the row
             row.remove();
         }

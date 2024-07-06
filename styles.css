@@ -145,11 +145,11 @@ table select:focus{
     width: 100px;
 }
 
-.hidden-row {
+.hidden-desc {
 	display: none;
 }
   
-.show-row {
+.show-desc {
 	display: table-row;
 }
 
