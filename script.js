@@ -1,6 +1,7 @@
 import { sortTable } from './sort.js'
 import { filterTable } from './filter.js';
-import { colIndex, timeUnits, rangeUnits, durationUnits } from './utils.js';
+import { colIndex, showRowsScrolling, rowsReveal, 
+         timeUnits, rangeUnits, durationUnits } from './utils.js';
 
 let table = document.getElementById('table-spells')
 let filterInputs = Array();
@@ -16,6 +17,7 @@ table.querySelectorAll("th").forEach((th, position) => {
             });
             th.setAttribute("dir", newDir);
             document.getElementById("spellcount").innerText = String(countRows(table) + " spells")
+            window.scrollTo(0, 0)
         })
 
         th.querySelector("input").addEventListener("input", debounce(evt => {
@@ -23,6 +25,7 @@ table.querySelectorAll("th").forEach((th, position) => {
             let filterValues = filterInputs.map((filter) => filter.value);
             filterTable(table, position, filterValues);  
             document.getElementById("spellcount").innerText = String(countRows(table) + " spells")
+            window.scrollTo(0, 0)
         }, 300));
     }
 });
@@ -104,6 +107,16 @@ document.addEventListener("DOMContentLoaded", function () {
                     } 
                 });
             }); 
+
+            window.addEventListener('scroll', function() {
+                if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - window.screen.width * 0.3) {
+                    let rows = document.querySelectorAll(".hidden-on-scroll");
+                    for (let i = 0; i < rowsReveal && i < rows.length; i++) {
+                        showRowsScrolling(rows[i]);
+                    }
+                    updateSpellCount()
+                }
+            });
 
             loadCheckboxStates()
             let filterValues = filterInputs.map((filter) => filter.value);

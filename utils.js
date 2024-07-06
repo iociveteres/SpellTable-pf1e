@@ -26,6 +26,45 @@ export function divideChecked(rows) {
     return {checkedRows: checkedRows, uncheckedRows: uncheckedRows};
 }
 
+export const rowsReveal = 100;
+
+export function hideRowsFiltering(row) {
+    row.classList.add('hidden-on-filter');
+    row.classList.remove('displayed')
+    row.classList.remove('hidden-on-scroll')
+}
+
+export function showRowsFiltering(row, position) {
+    row.classList.remove('hidden-on-filter');
+    if (position >= rowsReveal) {
+        row.classList.add('hidden-on-scroll')
+    } else {
+        row.classList.add('displayed')
+    }
+}
+
+export function showRowsScrolling(row) {
+    if (row.classList.contains('data-row')) {
+        row.classList.remove('hidden-on-scroll')
+        row.classList.add('displayed')
+    }
+}
+
+export function showRowsSorting(row) {
+    if (row.classList.contains('data-row') &&
+        !row.classList.contains('hidden-on-filter')) {
+        row.classList.remove('hidden-on-scroll')
+        row.classList.add('displayed')
+    }
+}
+
+export function hideRowsSorting(row, position) {
+    if (position >= rowsReveal) {
+        row.classList.remove('displayed')
+        row.classList.add('hidden-on-scroll')
+    }
+}
+
 export const timeUnits = new Map([
     ["free action", 1], 
     ["immediate action", 2], 

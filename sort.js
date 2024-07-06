@@ -1,4 +1,5 @@
-import { colIndex, divideChecked } from './utils.js';
+import { colIndex, divideChecked, 
+         showRowsSorting, hideRowsSorting } from './utils.js';
 
 function compareGeneric(a, b) {
     // return -1/0/1 based on what you "know" a and b
@@ -50,6 +51,7 @@ function sortTable(table, colnum, direction) {
 
     // only unchecked rows need sorting
     let {checkedRows, uncheckedRows} = divideChecked(rows);
+    uncheckedRows.forEach(row => showRowsSorting(row));
 
     // set up the queryselector for getting the indicated
     // column from a row, so we can compare using its value:
@@ -71,7 +73,12 @@ function sortTable(table, colnum, direction) {
     checkedRows.forEach(row => table.appendChild(row));
 
     // append sorted unchecked rows
-    uncheckedRows.forEach(row => table.appendChild(row));
+    // uncheckedRows.forEach(row => table.appendChild(row));
+    for (let i = 0; i < uncheckedRows.length; i++) {
+        let row = uncheckedRows[i];
+        hideRowsSorting(row, i);
+        table.appendChild(row);
+    }
     console.timeEnd('sort')
 
     return direction == "asc" ? "desc" : "asc";

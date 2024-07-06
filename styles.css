@@ -100,15 +100,21 @@ table td{
 	border:  thin solid #d4d4d4;
 	text-align: center;
 	background-color: #fff;
+.hidden-on-scroll {
+	display: none;
 }
 
 table a:active{
 	background-color: #ccf4d6;
 	color:  green;
+.hidden-on-filter {
+	display: none;
 }
 
 table select:focus{
 	outline: none;
+.displayed {
+	display: table-row;
 }
 
 .access-td {

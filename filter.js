@@ -1,5 +1,6 @@
 import './logipar.js';
-import { colIndex, divideChecked, timeUnits, rangeUnits, durationUnits} from './utils.js';
+import { colIndex, divideChecked, hideRowsFiltering, showRowsFiltering, 
+         timeUnits, rangeUnits, durationUnits} from './utils.js';
 
 const lp = new window.Logipar();
 lp.overwrite(Token.AND, '&');
@@ -24,7 +25,7 @@ function filterTable(table, colnum, filters) {
     let {checkedRows, uncheckedRows} = divideChecked(rows);
 
     // hide all rows
-    uncheckedRows.forEach(row => row.style.display = "none");
+    uncheckedRows.forEach(row => hideRowsFiltering(row));
     let result = uncheckedRows;
 
     // iteratively filter out rows 
@@ -88,10 +89,12 @@ function filterTable(table, colnum, filters) {
     // append checked rows first
     checkedRows.forEach(row => table.appendChild(row));
     // show again rows matching all filters
-    result.forEach(row => {
-        row.style.display = "table-row";
+    for (let i = 0; i < result.length; i++) {
+        let row = result[i];
+        //row.style.display = "table-row";
+        showRowsFiltering(row, i);
         table.appendChild(row);
-    });
+    }
     console.timeEnd('filter')
 }
 
