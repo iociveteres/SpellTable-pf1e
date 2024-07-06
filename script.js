@@ -54,59 +54,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // let uniqueNames = findUniqueValuesByKey(spells, "Casting time");
             // console.log([...uniqueNames]); 
+            for (let i = 0; i < spells.length; i++) {
+                let spellJSON = spells[i];
+                let spell = new Spell(spellJSON);
+                out += createTableRow(spell, i); 
+            }
 
-            for (let spell of spells) { 
-                let linkAon = spell["Url aon"];
-                let linkD20 = spell["Url d20"];
-                let PFSLegal = spell["PFS legal"] == true ? "✔" : " ";
-                let Subschool = spell.Subschool == "None" ? "" :spell.Subschool
-                let Descriptors = spell.Descriptors == "None" ? "" :spell.Descriptors
-                let Effect = spell.Effect == "None" ? "" : spell.Effect
-                let Target = spell.Target == "None" ? "": spell.Target
-                let SavingThrow = spell["Saving throw"] === undefined ? "" : spell["Saving throw"]
-                let SpellResistance = spell["Spell Resistance"] === undefined ? "" : spell["Spell Resistance"]
-                let ShortDescription = spell["Short description"] === undefined ? "" : spell["Short description"]
-                let FullDescription = spell["Description"] === undefined ? "" : spell["Description"]
-                let access_ways = "";
-                try {
-                let result = Object.entries(spell["access_ways"]).map(([key, value]) => {
-                    return value.map(item => {
-                            return item.join(' ');
-                        }).join('\n');
-                    }).join('\n');
-                    access_ways = result;
-                } catch (err) {
-                    //console.error("Error: ", spell.Name)
-                }
-          
-                let overflows = "";
-                if (countNewLines(access_ways) >= 3) {
-                    overflows = " overflows";
-                }
-
-                let range = parseRange(spell.Range);
-
-                out += `
-                    <tr class="data-row">
-                        <td><input type="checkbox" name="${spell.Name}"/></td>
-                        <td linkAon="${linkAon}" linkD20="${linkD20}">${spell.Name}</td>
-                        <td title="${FullDescription}">${ShortDescription}</td>  
-                        <td>${spell.School}</td>
-                        <td>${Subschool}</td>
-                        <td>${Descriptors}</td>
-                        <td class="access-td"><div class="access-div ${overflows}" title="${access_ways}">${access_ways}</div></td>
-                        <td data-sort="${parseTime(spell["Casting time"])}">${spell["Casting time"]}</td>
-                        <td>${spell.Components}</td>
-                        <td data-sort-code="${range.code}" data-sort-dist="${range.distance}">${spell.Range}</td>
-                        <td>${Effect}</td>
-                        <td>${Target}</td>
-                        <td data-sort="${parseDuration(spell.Duration)}">${spell.Duration}</td>
-                        <td>${SavingThrow}</td>
-                        <td>${SpellResistance}</td>
-                        <td>${PFSLegal}</td>                                    
-                    </tr>
-                `;
-            }          
             placeholder.innerHTML = out;
             console.timeEnd('parse')
 
@@ -159,6 +112,74 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 });
 
+class Spell {
+    constructor(spellData) {
+        this.name = spellData.Name;
+        this.linkAon = spellData["Url aon"];
+        this.linkD20 = spellData["Url d20"];
+        this.PFSLegal = spellData["PFS legal"] === true ? "✔" : " ";
+        this.school = spellData.School;
+        this.subschool = spellData.Subschool === "None" ? "" : spellData.Subschool;
+        this.descriptors = spellData.Descriptors === "None" ? "" : spellData.Descriptors;
+        this.effect = spellData.Effect === "None" ? "" : spellData.Effect;
+        this.target = spellData.Target === "None" ? "" : spellData.Target;
+        this.savingThrow = spellData["Saving throw"] === undefined ? "" : spellData["Saving throw"];
+        this.spellResistance = spellData["Spell Resistance"] === undefined ? "" : spellData["Spell Resistance"];
+        this.shortDescription = spellData["Short description"] === undefined ? "" : spellData["Short description"];
+        this.fullDescription = spellData["Description"] === undefined ? "" : spellData["Description"];
+        this.castingTime = spellData["Casting time"];
+        this.components = spellData.Components;
+        this.range = spellData.Range;
+        this.duration = spellData.Duration;
+        this.accessWays = "";
+        
+        this.overflows = "";
+        this.checked = false;
+
+        try {
+            let result = Object.entries(spellData["access_ways"]).map(([key, value]) => {
+                return value.map(item => {
+                    return item.join(' ');
+                }).join('\n');
+            }).join('\n');
+            this.accessWays = result;
+        } catch (err) {
+            // do nothing
+            console.log(this.name)
+        }
+        if (countNewLines(this.accessWays) >= 3) {
+            this.overflows = " overflows";
+        }
+
+        let parsedRange = parseRange(spellData.Range);
+        this.rangeCode = parsedRange.code;
+        this.rangeDistance = parsedRange.distance;
+        this.parsedDuration = parseDuration(spellData.Duration);
+    }
+}
+
+function createTableRow(spell, position) {
+    return `
+        <tr class="data-row displayed"">
+            <td><input type="checkbox" name="${spell.name}"/></td>
+            <td linkAon="${spell.linkAon}" linkD20="${spell.linkD20}">${spell.name}</td>
+            <td title="${spell.fullDescription}">${spell.shortDescription}</td>
+            <td>${spell.school}</td>
+            <td>${spell.subschool}</td>
+            <td>${spell.descriptors}</td>
+            <td class="access-td"><div class="access-div ${spell.overflows}" title="${spell.accessWays}">${spell.accessWays}</div></td>
+            <td data-sort="${spell.castingTime}">${spell.castingTime}</td>
+            <td>${spell.components}</td>
+            <td data-sort-code="${spell.rangeCode}" data-sort-dist="${spell.rangeDistance}">${spell.range}</td>
+            <td>${spell.effect}</td>
+            <td>${spell.target}</td>
+            <td data-sort="${spell.parsedDuration}">${spell.duration}</td>
+            <td>${spell.savingThrow}</td>
+            <td>${spell.spellResistance}</td>
+            <td>${spell.PFSLegal}</td>                                    
+        </tr>
+    `;
+}
 
 let preFormattedDescription;
 fetch("preFormattedDescriptions.json")
