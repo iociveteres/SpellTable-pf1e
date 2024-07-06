@@ -290,13 +290,28 @@ function clearTempRows(table) {
 }
 
 
-function countRows(table) {
+function countUnfilteredRows(table) {
+    let rows = table.querySelectorAll('tr');
+
+    let unfilteredRowCount = 0;
+    for (let i = 1; i < rows.length; i++) {
+        // if (rows[i].style.display !== 'none') {
+        if (!rows[i].classList.contains('hidden-on-filter') &&
+            rows[i].classList.contains('data-row')) {
+            unfilteredRowCount++;
+        }
+    }
+    return unfilteredRowCount;
+}
+
+function countShownRows(table) {
     let rows = table.querySelectorAll('tr');
 
     let visibleRowCount = 0;
     for (let i = 1; i < rows.length; i++) {
-        if (rows[i].style.display !== 'none') {
-
+        // if (rows[i].style.display !== 'none') {
+        if (rows[i].classList.contains('displayed') &&
+            rows[i].classList.contains('data-row')) {
             visibleRowCount++;
         }
     }
@@ -338,6 +353,10 @@ function loadCheckboxStates() {
       }
     });
   }
+
+function updateSpellCount() {
+    document.getElementById("spellcount").innerText = `${countUnfilteredRows(table)} spells (${countShownRows(table)} shown)`
+}
 
 const regexTime = /(\d+)\s*(round|minute|hour|day|week)/i;
 
