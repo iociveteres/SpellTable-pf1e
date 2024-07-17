@@ -89,6 +89,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 let checkbox = tr.querySelector('td:first-child input[type="checkbox"]');
                 checkbox.addEventListener('change', evt => {
                     var checkboxName = checkbox.getAttribute('name');
+                    if (checkbox.checked) {
+                        tr.classList.add('checked')
+                    } else {
+                        tr.classList.remove('checked')
+                    }
                     localStorage.setItem(checkboxName, checkbox.checked);
                 });
 
@@ -346,10 +351,13 @@ function loadCheckboxStates() {
     checkboxes.forEach(function(checkbox) {
       var checkboxName = checkbox.getAttribute('name');
       var checkboxState = localStorage.getItem(checkboxName);
+      var row = checkbox.closest('tr');
       if (checkboxState === 'true') {
         checkbox.checked = true;
+        row.classList.add('checked');
       } else {
         checkbox.checked = false;
+        row.classList.remove('checked');
       }
     });
   }

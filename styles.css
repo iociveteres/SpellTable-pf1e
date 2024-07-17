@@ -132,6 +132,10 @@ table tbody tr:last-of-type {
 	display: table-row;
 }
 
+.checked {
+	display: table-row !important;
+}
+
 .access-td {
 	position:relative; 
 	white-space:pre; 
