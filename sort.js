@@ -1,5 +1,6 @@
 import { colIndex, divideChecked, 
-         showRowsSorting, hideRowsSorting } from './utils.js';
+         showRowsSorting, hideRowsSorting, 
+         divideFilteredOut, rowsReveal} from './utils.js';
 
 function compareGeneric(a, b) {
     // return -1/0/1 based on what you "know" a and b
@@ -49,8 +50,12 @@ function sortTable(table, colnum, direction) {
     // but ignore the heading row:
     rows = rows.slice(1);
 
+    // it would be better to divide checked and unchecked rows first
+    // but it works this way and is easier, because checked rows are visible
+    let {visibleRows, filteredOutRows} = divideFilteredOut(table);
+    let sortableRows = Array.from(visibleRows).slice(1);
     // only unchecked rows need sorting
-    let {checkedRows, uncheckedRows} = divideChecked(rows);
+    let {checkedRows, uncheckedRows} = divideChecked(sortableRows);
     uncheckedRows.forEach(row => showRowsSorting(row));
 
     // set up the queryselector for getting the indicated
@@ -73,10 +78,14 @@ function sortTable(table, colnum, direction) {
     checkedRows.forEach(row => table.appendChild(row));
 
     // append sorted unchecked rows
-    // uncheckedRows.forEach(row => table.appendChild(row));
+    let visibleCount = 0;
     for (let i = 0; i < uncheckedRows.length; i++) {
-        let row = uncheckedRows[i];
-        hideRowsSorting(row, i);
+        let row = uncheckedRows[i];    
+        // I tried to avoid 
+        if (visibleCount < rowsReveal && !row.classList.contains('hidden-on-filter')) 
+            visibleCount++;
+        else
+            hideRowsSorting(row);
         table.appendChild(row);
     }
     console.timeEnd('sort')

@@ -26,7 +26,14 @@ export function divideChecked(rows) {
     return {checkedRows: checkedRows, uncheckedRows: uncheckedRows};
 }
 
-export const rowsReveal = 100;
+export function divideFilteredOut(table) {
+    let filteredOutRows = table.querySelectorAll(".hidden-on-filter");
+    let visibleRows = table.querySelectorAll("tr:not(.hidden-on-filter)");
+
+    return {visibleRows: visibleRows, filteredOutRows: filteredOutRows};
+}
+
+export const rowsReveal = 50;
 
 export function hideRowsFiltering(row) {
     row.classList.add('hidden-on-filter');
@@ -58,8 +65,8 @@ export function showRowsSorting(row) {
     }
 }
 
-export function hideRowsSorting(row, position) {
-    if (position >= rowsReveal) {
+export function hideRowsSorting(row) {
+    if (!row.classList.contains('hidden-on-filter')) {
         row.classList.remove('displayed')
         row.classList.add('hidden-on-scroll')
     }
