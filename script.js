@@ -16,19 +16,31 @@ table.querySelectorAll("th").forEach((th, position) => {
                 th.setAttribute("dir", "no")
             });
             th.setAttribute("dir", newDir);
-            document.getElementById("spellcount").innerText = String(countRows(table) + " spells")
             window.scrollTo(0, 0)
+            updateSpellCount();
         })
 
         th.querySelector("input").addEventListener("input", debounce(evt => {
             clearTempRows(table);
             let filterValues = filterInputs.map((filter) => filter.value);
-            filterTable(table, position, filterValues);  
-            document.getElementById("spellcount").innerText = String(countRows(table) + " spells")
+            filterTable(table, position, filterValues);
             window.scrollTo(0, 0)
+            updateSpellCount();
         }, 300));
     }
 });
+
+{
+    let topFixedBar = document.getElementById("top-bar");
+    topFixedBar.classList.toggle('hidden');
+    let topFixedBarVisibility = localStorage.getItem('topFixedBarVisibility');
+    console.log(topFixedBarVisibility);
+    if (topFixedBarVisibility === 'true') {
+        topFixedBar.classList.add('hidden')
+    } else {
+        topFixedBar.classList.remove('hidden')
+    }
+}
 
 document.getElementById('toggle-top-bar').addEventListener("click", evt => {
     toggleTopFixedBar();
@@ -52,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(function (spells) {
             console.log(spells.length);
             console.time('parse')
-            let placeholder = document.querySelector("#data-output");
+            let placeholder = document.getElementById("data-output");
             let out = "";
 
             // let uniqueNames = findUniqueValuesByKey(spells, "Casting time");
@@ -126,7 +138,7 @@ document.addEventListener("DOMContentLoaded", function () {
             loadCheckboxStates()
             let filterValues = filterInputs.map((filter) => filter.value);
             filterTable(table, 0, filterValues)
-            document.getElementById("spellcount").innerText = String(countRows(table) + " spells")
+            updateSpellCount()
         });
 });
 
@@ -178,7 +190,7 @@ class Spell {
 
 function createTableRow(spell, position) {
     return `
-        <tr class="data-row displayed"">
+        <tr class="data-row displayed">
             <td><input type="checkbox" name="${spell.name}"/></td>
             <td linkAon="${spell.linkAon}" linkD20="${spell.linkD20}">${spell.name}</td>
             <td title="${spell.fullDescription}">${spell.shortDescription}</td>
