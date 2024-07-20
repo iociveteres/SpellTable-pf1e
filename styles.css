@@ -2,7 +2,6 @@ body{
 	font-size: 100%;
 	font-family: serif;
 	min-height: 100vh;
-	color: #555;
 	margin: 0;
 	padding: 0;
 	overflow-y: scroll;
@@ -12,7 +11,6 @@ body{
 #top-bar {
 	height: 100px;
     width: 100%;
-    background: #fff;
 	display: flex;
     justify-content: center;
     align-items: center;
@@ -40,8 +38,6 @@ table{
 	min-width: 800px;
     z-index: 0;
     border-spacing: 0;
-	/* border-collapse: collapse; */
-	/* box-shadow: 0 0 20px rgba(0, 0, 0, 0.15); */
 }
 
 thead {
@@ -51,21 +47,18 @@ thead {
 }
 
 table td, th{
-	border:  thin solid #d4d4d4;
 	text-align: center;
 	box-sizing: border-box;
 }
 
 table th{
 	padding: 0;
-	background-color: #f4f4f4;
 	height: 45px;
 	position: relative;
 }
 
 table th button {
 	border: none;
-	background:inherit;
 	width: 100%;
 	height: 100%;
 	cursor: pointer;
@@ -80,20 +73,7 @@ table th input {
 
 table td{
 	padding: 3px;
-	background-color: #fff;
 	height: 80px;
-}
-
-table tbody tr {
-    border-bottom: 1px solid #000;
-}
-
-table tbody tr:nth-of-type(even) {
-    background-color: #f3f3f3;
-}
-
-table tbody tr:last-of-type {
-    border-bottom: 2px solid #000;
 }
 
 .th-cell[dir="asc"]::after {
@@ -181,7 +161,6 @@ table tbody tr:last-of-type {
 .dropdown {
 	display: flex;
 	align-items: center;
-	background-color: #F0F0F08F;
 }
 
 .dropdown-links {
@@ -206,10 +185,6 @@ table tbody tr:last-of-type {
 	text-align: center;
 }
 
-.vertical {
-	border-left: 2px solid black;
-}
-
 .description {
 	height:70px; 
     overflow: hidden;
@@ -228,8 +203,6 @@ a {
 	height: 20px;
     width: 100%;
 	z-index: 90;
-    background-color: #f0f0f0; 
-    border-top: 1px solid #ccc;
 	display: flex;
     justify-content: space-between;
     align-items: center;
@@ -251,10 +224,6 @@ a {
 	padding: 0px;
 }
 
-.bottom-link, .bottom-link:visited {
-	color: rgb(50, 50, 50);
-}
-
 .help-body {
     display: flex;
     justify-content: center;
@@ -267,4 +236,214 @@ a {
 
 .help-content {
 	text-align: start; 
+}
+
+body {
+	--time: 1s;
+	--func: ease-out;
+}
+
+body{
+	transition: color  var(--time), background var(--time);
+	transition-timing-function: var(--func);
+}
+
+#top-bar {
+	transition: background var(--time);
+	transition-timing-function: var(--func);
+}
+
+table td, th{
+	transition: border var(--time);
+	transition-timing-function: var(--func);
+}
+
+table th{
+	transition: background-color var(--time);
+	transition-timing-function: var(--func);
+}
+
+table th button {
+	transition: color  var(--time), background var(--time);
+	transition-timing-function: var(--func);
+}
+
+table td{
+	transition: background-color var(--time);
+	transition-timing-function: var(--func);
+}
+
+.dropdown {
+	transition: background-color var(--time);
+	transition-timing-function: var(--func);
+}
+
+.vertical {
+	transition: border-left var(--time);
+	transition-timing-function: var(--func);
+}
+
+#sticky-bottom {
+	transition: background var(--time), border-top var(--time);
+	transition-timing-function: var(--func);
+}
+
+.bottom-button {
+	transition: color  var(--time), background-color var(--time);
+	transition-timing-function: var(--func);
+}
+
+.bottom-link, .bottom-link:visited {
+	transition: color var(--time);
+	transition-timing-function: var(--func);
+}
+
+input[type="text"] {
+	transition: color  var(--time), background-color var(--time), border-color var(--time);
+	transition-timing-function: var(--func);
+}
+
+input[type="checkbox"] {
+	transition: accent-color var(--time);
+	transition-timing-function: var(--func);
+}
+
+a:link {
+	transition: color var(--time);
+	transition-timing-function: var(--func);
+}
+
+a:visited {
+	transition: color var(--time);
+	transition-timing-function: var(--func);
+}
+
+.notransition, .notransition * { 
+	transition: none !important; 
+  } 
+
+  body {
+	--text-color: #444444;
+	--bg-color: #ffffff;
+	--border-color: #d4d4d4;
+	--bg-th-color: #ffffff;
+	--bg-dropdrown-color: #f0f0f08f;
+	--bg-bottom-color: #f0f0f0;
+	--border-bottom-color: #cccccc;
+	--link-bottom-color: #505050;
+	--bg-input-color: #ffffff;
+	--border-input-color: #e3e3e3;
+	--chekmark-input-color: #0060df;
+	--a-color: #0066cc;
+	--a-visited-color: #551a8b;
+}
+body.dark-mode {
+	--text-color: #bbbbbb;
+	--bg-color: #020202;
+	--border-color: #a2a2a2;
+	--bg-th-color: #101010;
+	--bg-dropdrown-color: #0f0f0f8f;
+	--bg-bottom-color: #0f0f0f;
+	--border-bottom-color: #333333;
+	--link-bottom-color: #afafaf;
+	--bg-input-color: #282828;
+	--border-input-color: #b2b2b2;
+	--chekmark-input-color: #1d60d4;
+	--a-color: #0674e9;
+	--a-visited-color: #8f2bd1;
+}
+
+@media (prefers-color-scheme: dark) {
+	body {
+		--text-color: #bbbbbb;
+		--bg-color: #020202;
+		--border-color: #a2a2a2;
+		--bg-th-color: #101010;
+		--bg-dropdrown-color: #0f0f0f8f;
+		--bg-bottom-color: #0f0f0f;
+		--border-bottom-color: #333333;
+		--link-bottom-color: #afafaf;
+		--bg-input-color: #282828;
+		--border-input-color: #b2b2b2;
+		--chekmark-input-color: #1d60d4;
+		--a-color: #0674e9;
+		--a-visited-color: #8f2bd1;
+	}
+	body.light-mode {
+		--text-color: #444444;
+		--bg-color: #ffffff;
+		--border-color: #d4d4d4;
+		--bg-th-color: #ffffff;
+		--bg-dropdrown-color: #f0f0f08f;
+		--bg-bottom-color: #f0f0f0;
+		--border-bottom-color: #cccccc;
+		--link-bottom-color: #505050;
+		--bg-input-color: #ffffff;
+		--border-input-color: #e3e3e3;
+		--chekmark-input-color: #0060df;
+		--a-color: #0066cc;
+		--a-visited-color: #551a8b;
+	}
+  }
+
+body{
+	color: var(--text-color);
+	background: var(--bg-color);
+}
+
+#top-bar {
+    background: var(--bg-color);
+}
+
+table td, th{
+	border:  thin solid var(--border-color);
+}
+
+table th{
+	background-color: var(--bg-color);
+}
+
+table th button {
+	color: var(--text-color);
+	background: var(--bg-th-color);
+}
+
+table td{
+	background-color: var(--bg-color);
+}
+
+.dropdown {
+	background-color: var(--bg-dropdrown-color);
+}
+
+#sticky-bottom {
+    background-color: var(--bg-bottom-color); 
+    border-top: 1px solid var(--border-bottom-color);
+}
+
+.bottom-button {
+	color: var(--text-color);
+    background-color: var(--bg-bottom-color);
+}
+
+.bottom-link, .bottom-link:visited {
+	color: var(--link-bottom-color);
+}
+
+input[type="text"] {
+	color: var(--text-color);
+	background-color: var(--bg-input-color); 
+	border-color: var(--border-input-color);
+}
+
+input[type="checkbox"] {
+	accent-color: var(--chekmark-input-color);
+}
+
+a:link {
+	color: var(--a-color);
+}
+
+a:visited {
+	color: var(--a-visited-color);
 }
