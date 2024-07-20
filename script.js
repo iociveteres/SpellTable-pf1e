@@ -337,8 +337,10 @@ function countShownRows(table) {
 
 
 function toggleTopFixedBar() {
-    var topFixedBar = document.getElementById("top-bar");
+    let topFixedBar = document.getElementById("top-bar");
     topFixedBar.classList.toggle('hidden');
+    localStorage.setItem('topFixedBarVisibility', 
+        topFixedBar.classList.contains('hidden'));
 }
 
 
