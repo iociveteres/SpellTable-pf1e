@@ -121,6 +121,7 @@ document.addEventListener("DOMContentLoaded", function () {
             for (var i = 0; i < headers.length; i++) {
                 headers[i].style.width = max_widths[i] + "px";  
             }
+            table.style.tableLayout = "fixed";
 
             // events for rows, checkbox save and onclick description
             let rows = Array.from(table.querySelectorAll(`tr`));;
