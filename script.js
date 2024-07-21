@@ -84,6 +84,10 @@ document.getElementById('unpin-all').addEventListener("click", evt => {
     unpinAll()
 })
 
+window.onbeforeunload = function () {
+    window.scrollTo(0, 0);
+  }
+
 document.addEventListener("DOMContentLoaded", function () {
     fetch("spellList_v1.1.json")
         .then(function (response) {
