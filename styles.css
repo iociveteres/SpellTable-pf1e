@@ -400,7 +400,7 @@ table td, th{
 }
 
 table th{
-	background-color: var(--bg-color);
+	background-color: var(--bg-th-color);
 }
 
 table th button {
