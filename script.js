@@ -212,6 +212,7 @@ class Spell {
             this.overflows = " overflows";
         }
 
+        this.parsedCastTime = parseTime(spellData["Casting time"])
         let parsedRange = parseRange(spellData.Range);
         this.rangeCode = parsedRange.code;
         this.rangeDistance = parsedRange.distance;
@@ -229,7 +230,7 @@ function createTableRow(spell, position) {
             <td>${spell.subschool}</td>
             <td>${spell.descriptors}</td>
             <td class="access-td"><div class="access-div ${spell.overflows}" title="${spell.accessWays}">${spell.accessWays}</div></td>
-            <td data-sort="${spell.castingTime}">${spell.castingTime}</td>
+            <td data-sort="${spell.parsedCastTime}">${spell.castingTime}</td>
             <td>${spell.components}</td>
             <td data-sort-code="${spell.rangeCode}" data-sort-dist="${spell.rangeDistance}">${spell.range}</td>
             <td>${spell.effect}</td>
