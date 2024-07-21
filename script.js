@@ -141,15 +141,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 // not to trigger creating additional row on selecting text
                 tr.addEventListener('mousedown', evt => {
                     // if (evt.target !== tr.firstElementChild)
-                    if (!evt.target.closest('td:first-child'))
-                        clickStartTime = new Date().getTime(); 
+                    if (evt.button === 0)
+                        if (!evt.target.closest('td:first-child'))
+                            clickStartTime = new Date().getTime(); 
                 });
 
                 tr.addEventListener('mouseup', evt => {
                     const clickDuration = new Date().getTime() - clickStartTime;
-                    if (clickDuration < 300) { 
-                        makeDescriptionRow(tr)
-                    } 
+                    if (evt.button === 0)
+                        if (clickDuration < 300) { 
+                                makeDescriptionRow(tr)
+                            } 
                 });
             }); 
 
