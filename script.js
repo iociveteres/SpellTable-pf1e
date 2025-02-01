@@ -106,9 +106,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 let spell = new Spell(spellJSON);
                 out += createTableRow(spell, i); 
             }
-
-            placeholder.innerHTML = out;
-            console.timeEnd('parse')
+            const placeholderElement = document.getElementById('placeholder');
+            if (placeholderElement) {
+                placeholderElement.remove(); 
+            }
+            const tbody = table.querySelector('tbody');
+            tbody.innerHTML = out;
+            console.timeEnd('parse')           
 
             // fix col width
             var cells = table.getElementsByTagName("td");
