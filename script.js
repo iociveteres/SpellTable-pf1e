@@ -165,7 +165,8 @@ document.addEventListener("DOMContentLoaded", function () {
             }); 
 
             window.addEventListener('scroll', function() {
-                if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - window.screen.width * 0.3) {
+                if ((window.innerHeight * window.devicePixelRatio + window.scrollY) >= 
+                    document.body.offsetHeight - window.screen.height * 0.3 * window.devicePixelRatio) {
                     let rows = document.querySelectorAll(".hidden-on-scroll");
                     for (let i = 0; i < rowsReveal && i < rows.length; i++) {
                         showRowsScrolling(rows[i]);
