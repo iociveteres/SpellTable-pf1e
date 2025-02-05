@@ -96,7 +96,6 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(function (spells) {
             console.log(spells.length);
             console.time('parse')
-            let placeholder = document.getElementById("data-output");
             let out = "";
 
             // let uniqueNames = findUniqueValuesByKey(spells, "Casting time");
