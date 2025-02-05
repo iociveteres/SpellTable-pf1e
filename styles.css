@@ -158,6 +158,10 @@ table td{
 	display: table-row;
 }
 
+.show-desc td {
+	padding: 0;
+}
+
 .dropdown {
 	display: flex;
 	align-items: center;
@@ -322,12 +326,12 @@ a:visited {
 	transition: none !important; 
   } 
 
-  body {
+body {
 	--text-color: #444444;
 	--bg-color: #ffffff;
-	--border-color: #d4d4d4;
-	--bg-th-color: #ffffff;
-	--bg-dropdrown-color: #f0f0f08f;
+	--border-color: #949494;
+	--bg-th-color: #cfcfcf;
+	--bg-dropdrown-color: #e6e6e68f;
 	--bg-bottom-color: #f0f0f0;
 	--border-bottom-color: #cccccc;
 	--link-bottom-color: #505050;
@@ -335,46 +339,46 @@ a:visited {
 	--border-input-color: #e3e3e3;
 	--chekmark-input-color: #0060df;
 	--a-color: #0066cc;
-	--a-visited-color: #551a8b;
+	--a-visited-color: #5c1c97;
 }
 body.dark-mode {
 	--text-color: #bbbbbb;
-	--bg-color: #020202;
+	--bg-color: #1f1f1f;
 	--border-color: #a2a2a2;
-	--bg-th-color: #101010;
-	--bg-dropdrown-color: #0f0f0f8f;
-	--bg-bottom-color: #0f0f0f;
+	--bg-th-color: #181818;
+	--bg-dropdrown-color: #3838388f;
+	--bg-bottom-color: #1f1f1f;
 	--border-bottom-color: #333333;
 	--link-bottom-color: #afafaf;
 	--bg-input-color: #282828;
 	--border-input-color: #b2b2b2;
 	--chekmark-input-color: #1d60d4;
-	--a-color: #0674e9;
-	--a-visited-color: #8f2bd1;
+	--a-color: #0778f0;
+	--a-visited-color: #962edb;
 }
 
 @media (prefers-color-scheme: dark) {
 	body {
 		--text-color: #bbbbbb;
-		--bg-color: #020202;
+		--bg-color: #1f1f1f;
 		--border-color: #a2a2a2;
-		--bg-th-color: #101010;
-		--bg-dropdrown-color: #0f0f0f8f;
-		--bg-bottom-color: #0f0f0f;
+		--bg-th-color: #181818;
+		--bg-dropdrown-color: #3838388f;
+		--bg-bottom-color: #1f1f1f;
 		--border-bottom-color: #333333;
 		--link-bottom-color: #afafaf;
 		--bg-input-color: #282828;
 		--border-input-color: #b2b2b2;
 		--chekmark-input-color: #1d60d4;
-		--a-color: #0674e9;
-		--a-visited-color: #8f2bd1;
+		--a-color: #0778f0;
+		--a-visited-color: #962edb;
 	}
 	body.light-mode {
 		--text-color: #444444;
 		--bg-color: #ffffff;
-		--border-color: #d4d4d4;
-		--bg-th-color: #ffffff;
-		--bg-dropdrown-color: #f0f0f08f;
+		--border-color: #949494;
+		--bg-th-color: #cfcfcf;
+		--bg-dropdrown-color: #e6e6e68f;
 		--bg-bottom-color: #f0f0f0;
 		--border-bottom-color: #cccccc;
 		--link-bottom-color: #505050;
@@ -382,7 +386,7 @@ body.dark-mode {
 		--border-input-color: #e3e3e3;
 		--chekmark-input-color: #0060df;
 		--a-color: #0066cc;
-		--a-visited-color: #551a8b;
+		--a-visited-color: #5c1c97;
 	}
   }
 
