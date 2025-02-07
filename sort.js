@@ -45,15 +45,13 @@ function sortTable(table, colnum, direction) {
             compareFunc = compareGeneric
     }
     // get all the rows in this table:
-    let rows = Array.from(table.querySelectorAll(`tr`));
-  
-    // but ignore the heading row:
-    rows = rows.slice(1);
+    let tbody = table.querySelector("tbody");
+    let rows = Array.from(tbody.querySelectorAll(`tr`));
 
     // it would be better to divide checked and unchecked rows first
     // but it works this way and is easier, because checked rows are visible
-    let {visibleRows, filteredOutRows} = divideFilteredOut(table);
-    let sortableRows = Array.from(visibleRows).slice(1);
+    let {visibleRows, filteredOutRows} = divideFilteredOut(tbody);
+    let sortableRows = Array.from(visibleRows);
     // only unchecked rows need sorting
     let {checkedRows, uncheckedRows} = divideChecked(sortableRows);
     uncheckedRows.forEach(row => showRowsSorting(row));
@@ -75,7 +73,7 @@ function sortTable(table, colnum, direction) {
 
     // and then the magic part that makes the sorting appear on-page:
     // append checked rows first
-    checkedRows.forEach(row => table.appendChild(row));
+    checkedRows.forEach(row => tbody.appendChild(row));
 
     // append sorted unchecked rows
     let visibleCount = 0;
@@ -86,7 +84,7 @@ function sortTable(table, colnum, direction) {
             visibleCount++;
         else
             hideRowsSorting(row);
-        table.appendChild(row);
+        tbody.appendChild(row);
     }
     console.timeEnd('sort')
 

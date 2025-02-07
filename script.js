@@ -100,7 +100,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // let uniqueNames = findUniqueValuesByKey(spells, "Casting time");
             // console.log([...uniqueNames]); 
-            for (let i = 0; i < spells.length; i++) {
                 let spellJSON = spells[i];
                 let spell = new Spell(spellJSON);
                 out += createTableRow(spell, i); 
@@ -283,7 +282,7 @@ function makeDescriptionRow(tr) {
         if (preFormattedDescription.includes(tr.querySelector(`td:nth-child(${colIndex.get("Name")})`).innerText))
             fullDescription = "<pre>" + fullDescription + "</pre>"
         
-        let accessWays = tr.querySelector(`td:nth-child(${colIndex.get("Access ways")})`).textContent.replace("...", "");
+        let accessWays = tr.querySelector(`.access-div`).getAttribute('title').replace("...", "");
         let parentDiv = document.createElement('div');
         parentDiv.classList.add("dropdown");
 

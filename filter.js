@@ -16,10 +16,8 @@ function filterTable(table, colnum, filters) {
     console.debug('filter: ' + (filters))
     console.time('filter')
     // get all the rows in this table:
-    let rows = Array.from(table.querySelectorAll(`tr`));
-  
-    // but ignore the heading row:
-    rows = rows.slice(1);
+    let tbody = table.getElementsByTagName(`tbody`)[0]
+    let rows = Array.from(tbody.querySelectorAll(`tr`));
     
     // only unchecked rows need filtering
     let {checkedRows, uncheckedRows} = divideChecked(rows);
@@ -87,13 +85,13 @@ function filterTable(table, colnum, filters) {
         }
     });
     // append checked rows first
-    checkedRows.forEach(row => table.appendChild(row));
+    checkedRows.forEach(row => tbody.appendChild(row));
     // show again rows matching all filters
     for (let i = 0; i < result.length; i++) {
         let row = result[i];
         //row.style.display = "table-row";
         showRowsFiltering(row, i);
-        table.appendChild(row);
+        tbody.appendChild(row);
     }
     console.timeEnd('filter')
 }
