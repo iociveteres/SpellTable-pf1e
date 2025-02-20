@@ -15,28 +15,6 @@
         </div>
 
     
-        <div class="table-div">
-            <table id="table-spells">
-                <thead>
-                    <tr>
-                        <th dir="no" >Pin</th>
-                        <th class="th-cell" dir="asc"><input type="text"><button>Name</button></th>
-                        <th class="th-cell" dir="no" ><input type="text"><button>Description</button></th>
-                        <th class="th-cell" dir="no" ><input type="text"><button>School</button></th>
-                        <th class="th-cell" dir="no" ><input type="text"><button>Subschool</button></th>
-                        <th class="th-cell" dir="no" ><input type="text"><button>Descriptors</button></th>
-                        <th class="th-cell" dir="no" ><input type="text"><button>Access ways</button></th>
-                        <th class="th-cell" dir="no" ><input type="text"><button>Casting Time</button></th>
-                        <th class="th-cell" dir="no" ><input type="text"><button>Components</button></th>                      
-                        <th class="th-cell" dir="no" ><input type="text"><button>Range</button></th>
-                        <th class="th-cell" dir="no" ><input type="text"><button>Effect</button></th>
-                        <th class="th-cell" dir="no" ><input type="text"><button>Target</button></th>
-                        <th class="th-cell" dir="no" ><input type="text"><button>Duration</button></th>
-                        <th class="th-cell" dir="no" ><input type="text"><button>Saving Throw</button></th>
-                        <th class="th-cell" dir="no" ><input type="text"><button>Spell Resistance</button></th>
-                        <th class="th-cell" dir="no" ><input type="text"><button>PFS</button></th>
-                    </tr>
-                </thead>
                 <tbody id="data-output">
                     <tr id="placeholder">
                         <td colspan="16">Loading...</td>
@@ -44,6 +22,164 @@
                 </tbody>
             </table>
         </div>
+<div class="table-div">
+        <table id="table-spells" style="table-layout: auto;">
+            <thead>
+                <tr>
+                    <th dir="no" >Pin</th>
+                    <th class="th-cell" dir="asc"><input type="text"><button>Name</button></th>
+                    <th class="th-cell" dir="no" ><input type="text"><button>Description</button></th>
+                    <th class="th-cell" dir="no" ><input type="text" list="School">
+                        <datalist id="School">
+                            <option value="abjuration">
+                            <option value="conjuration">
+                            <option value="divination">
+                            <option value="enchantment">
+                            <option value="evocation">
+                            <option value="illusion">
+                            <option value="multiple">
+                            <option value="necromancy">
+                            <option value="transmutation">
+                            <option value="universal">
+                        </datalist><button>School</button></th>
+                    <th class="th-cell" dir="no" ><input type="text" list="Subschool">
+                        <datalist id="Subschool">
+                            <option value="calling">
+                            <option value="charm">
+                            <option value="compulsion">
+                            <option value="creation">
+                            <option value="curse">
+                            <option value="figment">
+                            <option value="glamer">
+                            <option value="harmless">
+                            <option value="haunted">
+                            <option value="healing">
+                            <option value="pattern">
+                            <option value="phantasm">
+                            <option value="polymorph">
+                            <option value="scrying">
+                            <option value="shadow">
+                            <option value="summoning">
+                            <option value="teleportation">
+                            <option value="see text">
+                        </datalist><button>Subschool</button></th>
+                    <th class="th-cell" dir="no" ><input type="text" list="Descriptors"><button>Descriptors</button>
+                        <datalist id="Descriptors">
+                            <option value="acid">
+                            <option value="air">
+                            <option value="chaotic">
+                            <option value="cold">
+                            <option value="curse">
+                            <option value="darkness">
+                            <option value="death">
+                            <option value="disease">
+                            <option value="draconic">
+                            <option value="earth">
+                            <option value="electricity">
+                            <option value="emotion">
+                            <option value="evil">
+                            <option value="fear">
+                            <option value="fire">
+                            <option value="force">
+                            <option value="good">
+                            <option value="language-dependent">
+                            <option value="lawful">
+                            <option value="light">
+                            <option value="meditative">
+                            <option value="mind-affecting">
+                            <option value="pain">
+                            <option value="phantasm">
+                            <option value="poison">
+                            <option value="polymorph">
+                            <option value="shadow">
+                            <option value="sonic">
+                            <option value="variable">
+                            <option value="water">
+                            <option value="see text">
+                        </datalist></th>
+                    <th class="th-cell" dir="no" ><input type="text"><button>Access ways</button></th>
+                    <th class="th-cell" dir="no" ><input type="text" list="Casting_Time">
+                        <datalist id="Casting_Time">
+                            <option value="immediate action">
+                            <option value="swift action">
+                            <option value="standard action">
+                            <option value="full-round action">
+                            <option value="full round">
+                            <option value="round">
+                            <option value="minute">
+                            <option value="hour">
+                            <option value="day">
+                            <option value="week">
+                            <option value="see below">
+                            <option value="see text">
+                        </datalist><button>Casting Time</button></th>
+                    <th class="th-cell" dir="no" ><input type="text" list="Components">
+                        <datalist id="Components">
+                            <option value="V">
+                            <option value="S">
+                            <option value="M">
+                            <option value="F">
+                            <option value="DF">
+                        </datalist><button>Components</button></th>                      
+                    <th class="th-cell" dir="no" ><input type="text" list="Range">
+                        <datalist id="Range">
+                            <option value="personal">
+                            <option value="touch">
+                            <option value="close">
+                            <option value="medium">
+                            <option value="long">
+                            <option value="ft.">
+                            <option value="mile">
+                            <option value="hex">
+                            <option value="unlimited">
+                            <option value="see text">
+                        </datalist><button>Range</button></th>
+                    <th class="th-cell" dir="no" ><input type="text"><button>Effect</button></th>
+                    <th class="th-cell" dir="no" ><input type="text"><button>Target</button></th>
+                    <th class="th-cell" dir="no" ><input type="text" list="Duration">
+                        <datalist id="Duration">
+                            <option value="instantaneous">
+                            <option value="concentration">
+                            <option value="round">
+                            <option value="minute">
+                            <option value="hour">
+                            <option value="day">
+                            <option value="week">
+                            <option value="month">
+                            <option value="battle">
+                            <option value="until triggered">
+                            <option value="permanent">
+                            <option value="see">
+                            <option value="special">               
+                        </datalist><button>Duration</button></th>
+                    <th class="th-cell" dir="no" ><input type="text" list="Saving_Throw">
+                        <datalist id="Saving_Throw">
+                            <option value="Fortitude">
+                            <option value="Reflex">
+                            <option value="Will">
+                            <option value="negates">
+                            <option value="partial">
+                            <option value="half">
+                            <option value="harmless">
+                            <option value="object">
+                            <option value="none">
+                            <option value="see text">    
+                        </datalist><button>Saving Throw</button></th>
+                    <th class="th-cell" dir="no" ><input type="text" list="Spell_Resistance">
+                        <datalist id="Spell_Resistance">
+                            <option value="no">
+                            <option value="yes">
+                            <option value="harmless">
+                            <option value="object">
+                            <option value="see text">
+                        </datalist><button>Spell Resistance</button></th>
+                    <th class="th-cell" dir="no" ><input type="text" list="PFS">
+                        <datalist id="PFS">
+                            <option value="no">
+                            <option value="yes">
+                        </datalist><button>PFS</button></th>
+                </tr>
+            </thead>
       
       
         <div id="sticky-bottom">
