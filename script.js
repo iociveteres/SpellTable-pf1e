@@ -100,34 +100,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // let uniqueNames = findUniqueValuesByKey(spells, "Casting time");
             // console.log([...uniqueNames]); 
+            for (let i = 51; i < spells.length; i++) {
                 let spellJSON = spells[i];
                 let spell = new Spell(spellJSON);
-                out += createTableRow(spell, i); 
+                out += createTableRow(spell, i);
             }
             const placeholderElement = document.getElementById('placeholder');
             if (placeholderElement) {
                 placeholderElement.remove(); 
             }
             const tbody = table.querySelector('tbody');
-            tbody.innerHTML = out;
+            tbody.innerHTML += out;
             console.timeEnd('parse')           
 
             // fix col width
-            var cells = table.getElementsByTagName("td");
-            var max_widths = [];
-            for (var i = 0; i < cells.length; i++) {
-                var cell_width = cells[i].offsetWidth;
-                var col_index = cells[i].cellIndex;
-                if (!max_widths[col_index] || cell_width > max_widths[col_index]) {
-                    max_widths[col_index] = cell_width;
-                }
-            }
-            // apply the maximum width found for each column
-            var headers = table.getElementsByTagName("th");
-            for (var i = 0; i < headers.length; i++) {
-                headers[i].style.width = max_widths[i] + "px";  
-            }
-            table.style.tableLayout = "fixed";
+            let thElements = table.querySelectorAll('th');
+            thElements.forEach((header, index) => {
+                let tdWidth = thElements[index].offsetWidth;
+                header.style.width = tdWidth + 'px';
+            });
+            table.style.tableLayout = 'fixed';
 
             // events for rows, checkbox save and onclick description
             let rows = Array.from(table.querySelectorAll(`tr`));;
@@ -228,26 +220,24 @@ class Spell {
 }
 
 function createTableRow(spell, position) {
-    return `
-        <tr class="data-row displayed">
-            <td><input type="checkbox" name="${spell.name}"/></td>
-            <td linkAon="${spell.linkAon}" linkD20="${spell.linkD20}">${spell.name}</td>
-            <td title="${spell.fullDescription}">${spell.shortDescription}</td>
-            <td>${spell.school}</td>
-            <td>${spell.subschool}</td>
-            <td>${spell.descriptors}</td>
-            <td class="access-td"><div class="access-div ${spell.overflows}" title="${spell.accessWays}">${spell.accessWays}</div></td>
-            <td data-sort="${spell.parsedCastTime}">${spell.castingTime}</td>
-            <td>${spell.components}</td>
-            <td data-sort-code="${spell.rangeCode}" data-sort-dist="${spell.rangeDistance}">${spell.range}</td>
-            <td>${spell.effect}</td>
-            <td>${spell.target}</td>
-            <td data-sort="${spell.parsedDuration}">${spell.duration}</td>
-            <td>${spell.savingThrow}</td>
-            <td>${spell.spellResistance}</td>
-            <td>${spell.PFSLegal}</td>                                    
-        </tr>
-    `;
+    return `<tr class="data-row hidden-on-scroll">
+                <td><input type="checkbox" name="${spell.name}"/></td>
+                <td linkAon="${spell.linkAon}" linkD20="${spell.linkD20}">${spell.name}</td>
+                <td title="${spell.fullDescription}">${spell.shortDescription}</td>
+                <td>${spell.school}</td>
+                <td>${spell.subschool}</td>
+                <td>${spell.descriptors}</td>
+                <td class="access-td"><div class="access-div ${spell.overflows}" title="${spell.accessWays}">${spell.accessWays}</div></td>
+                <td data-sort="${spell.parsedCastTime}">${spell.castingTime}</td>
+                <td>${spell.components}</td>
+                <td data-sort-code="${spell.rangeCode}" data-sort-dist="${spell.rangeDistance}">${spell.range}</td>
+                <td>${spell.effect}</td>
+                <td>${spell.target}</td>
+                <td data-sort="${spell.parsedDuration}">${spell.duration}</td>
+                <td>${spell.savingThrow}</td>
+                <td>${spell.spellResistance}</td>
+                <td>${spell.PFSLegal}</td>                                    
+            </tr>`;
 }
 
 let preFormattedDescription;
