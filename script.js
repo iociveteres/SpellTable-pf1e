@@ -122,18 +122,13 @@ document.addEventListener("DOMContentLoaded", function () {
             table.style.tableLayout = 'fixed';
 
             // events for rows, checkbox save and onclick description
-            let rows = Array.from(table.querySelectorAll(`tr`));;
+            let rows = Array.from(table.querySelectorAll(`tr`));
             rows = rows.slice(1);
             rows.forEach((tr, position) => {
                 let checkbox = tr.querySelector('td:first-child input[type="checkbox"]');
                 checkbox.addEventListener('change', evt => {
                     var checkboxName = checkbox.getAttribute('name');
-                    if (checkbox.checked) {
-                        tr.classList.add('checked')
-                    } else {
-                        tr.classList.remove('checked')
-                    }
-                    localStorage.setItem(checkboxName, checkbox.checked);
+                    localStorage.setItem(checkboxName, checkbox.checked)
                 });
 
                 let clickStartTime;
@@ -382,9 +377,14 @@ function clearInputFields() {
 
 
 function unpinAll() {
-    let checkboxes = document.querySelectorAll('td:first-child input[type="checkbox"]');
+    let checkboxes = document.querySelectorAll('td:first-child input[type="checkbox"]:checked');
+    if (checkboxes == null) {
+        return
+    }
+    let event = new Event("change")
     checkboxes.forEach(function(checkbox) {
         checkbox.checked = false;
+        checkbox.dispatchEvent(event)
     });
 }
 
@@ -397,10 +397,8 @@ function loadCheckboxStates() {
       var row = checkbox.closest('tr');
       if (checkboxState === 'true') {
         checkbox.checked = true;
-        row.classList.add('checked');
       } else {
         checkbox.checked = false;
-        row.classList.remove('checked');
       }
     });
   }
