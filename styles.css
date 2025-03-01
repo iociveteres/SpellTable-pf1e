@@ -46,15 +46,18 @@ thead {
     top: 0px;
 }
 
-table td, th{
+
+th{
 	text-align: center;
 	box-sizing: border-box;
-}
-
-table th{
 	padding: 0;
 	height: 45px;
 	position: relative;
+}
+
+td {
+	text-align: center;
+	box-sizing: border-box;
 }
 
 table th button {
@@ -69,11 +72,6 @@ table th button {
 table th input {
 	box-sizing: border-box;
 	width: 100%;
-}
-
-table td{
-	padding: 3px;
-	height: 80px;
 }
 
 .th-cell[dir="asc"]::after {
@@ -118,12 +116,13 @@ table td{
 
 .access-td {
 	position:relative; 
-	white-space:pre; 
+	white-space:collapse; 
 	word-wrap:break-word; 
 	z-index:1;
 }
 
 .access-div {
+	white-space:pre; 
 	width:inherit; 
 	height:60px; 
 	line-height:20px; 
