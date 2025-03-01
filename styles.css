@@ -58,6 +58,7 @@ th{
 td {
 	text-align: center;
 	box-sizing: border-box;
+	padding: 8px 0px 8px 0px;
 }
 
 table th button {
@@ -164,6 +165,7 @@ table th input {
 .dropdown {
 	display: flex;
 	align-items: center;
+	padding: 5px 0 5px 0;
 }
 
 .dropdown-links {
