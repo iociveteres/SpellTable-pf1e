@@ -58,6 +58,12 @@ th{
 td {
 	text-align: center;
 	box-sizing: border-box;
+	padding: 8px 3px 8px 3px;
+}
+
+td:first-child {
+	text-align: center;
+	box-sizing: border-box;
 	padding: 8px 0px 8px 0px;
 }
 
@@ -139,15 +145,15 @@ table th input {
 }
 
 .spelltable th:nth-child(3), .spelltable td:nth-child(3) {
-    width: 15%;
+    min-width: 15%;
 }
 
 .spelltable th:nth-child(7), .spelltable td:nth-child(7) {
-    width: 170px;
+    min-width: 170px;
 }
 
 .spelltable th:nth-child(15), .spelltable td:nth-child(15) {
-    width: 100px;
+    min-width: 100px;
 }
 
 .hidden-desc {

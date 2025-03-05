@@ -264,8 +264,8 @@ function makeDescriptionRow(tr) {
         let newCell = document.createElement('td');
         newCell.colSpan = "100";                            
         let fullDescription = tr.querySelector(`td:nth-child(${colIndex.get("Description")})`).getAttribute("title");
-        if (preFormattedDescription.includes(tr.querySelector(`td:nth-child(${colIndex.get("Name")})`).innerText))
-            fullDescription = "<pre>" + fullDescription + "</pre>"
+        // if (preFormattedDescription.includes(tr.querySelector(`td:nth-child(${colIndex.get("Name")})`).innerText))
+            // fullDescription = "<pre>" + fullDescription + "</pre>"
         
         let accessWays = tr.querySelector(`.access-div`).getAttribute('title').replace("...", "");
         let parentDiv = document.createElement('div');
