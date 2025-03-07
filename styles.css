@@ -185,7 +185,10 @@ table th input {
 	width: 40%;
 	margin-left: 5%;
 	padding: 5px;
+	font-family: monospace;
 	text-align: start;
+	white-space: pre-wrap;
+	text-indent: 0;
 }
 
 .dropdown-access-ways {
