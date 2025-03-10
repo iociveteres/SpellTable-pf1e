@@ -356,7 +356,7 @@ function toggleTopFixedBar() {
 
 
 function clearInputFields() {
-    var inputFields = document.querySelectorAll('.spelltable input[type="text"]');
+    var inputFields = document.querySelectorAll('table input[type="text"]');
     inputFields.forEach(function(input) {
         input.value = '';
     });
