@@ -120,39 +120,42 @@ document.addEventListener("DOMContentLoaded", function () {
             tbody.innerHTML += out;
             console.timeEnd('parse')           
 
-            // events for rows, checkbox save and onclick description
-            let rows = Array.from(table.querySelectorAll(`tr`));
-            rows = rows.slice(1);
-            rows.forEach((tr, position) => {
-                let checkbox = tr.querySelector('td:first-child input[type="checkbox"]');
-                checkbox.addEventListener('change', evt => {
-                    var checkboxName = checkbox.getAttribute('name');
-                    localStorage.setItem(checkboxName, checkbox.checked)
-                });
+            table.addEventListener("change", (evt) => {
+                if (evt.target.matches('td:first-child input[type="checkbox"]')) {
+                    const checkbox = evt.target;
+                    const checkboxName = checkbox.getAttribute("name");
+                    localStorage.setItem(checkboxName, checkbox.checked);
+                }
+            });
+            
+            let clickStartTime = null;
+            
+            table.addEventListener("mousedown", (evt) => {
+                const tr = evt.target.closest("tr");
+                if (!tr || evt.button !== 0 || evt.target.closest("td:first-child")) return;
+            
+                clickStartTime = Date.now();
+            });
+            
+            table.addEventListener("mouseup", (evt) => {
+                const tr = evt.target.closest("tr");
+                if (!tr || evt.button !== 0 || clickStartTime === null) return;
+            
+                const clickDuration = Date.now() - clickStartTime;
+                if (clickDuration < 300) {
+                    makeDescriptionRow(tr);
+                }
+                clickStartTime = null;
+            });
 
-                let clickStartTime;
-                // not to trigger creating additional row on selecting text
-                tr.addEventListener('mousedown', evt => {
-                    // if (evt.target !== tr.firstElementChild)
-                    if (evt.button === 0)
-                        if (!evt.target.closest('td:first-child'))
-                            clickStartTime = new Date().getTime(); 
-                });
-
-                tr.addEventListener('mouseup', evt => {
-                    const clickDuration = new Date().getTime() - clickStartTime;
-                    if (evt.button === 0)
-                        if (clickDuration < 300) { 
-                                makeDescriptionRow(tr)
-                            } 
-                });
-
-                tr.addEventListener("keydown", (evt) => {
-                    if (evt.key === "Enter") {
+            table.addEventListener("keydown", (evt) => {
+                if (evt.key === "Enter") {
+                    const tr = evt.target.closest("tr");
+                    if (tr) {
                         makeDescriptionRow(tr);
                     }
-                });
-            }); 
+                }
+            });
 
             window.addEventListener('scroll', function() {
                 if ((window.innerHeight * window.devicePixelRatio + window.scrollY) >= 
