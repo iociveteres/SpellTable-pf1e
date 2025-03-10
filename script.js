@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // let uniqueNames = findUniqueValuesByKey(spells, "Casting time");
             // console.log([...uniqueNames]); 
-            for (let i = 51; i < spells.length; i++) {
+            for (let i = 50; i < spells.length; i++) {
                 let spellJSON = spells[i];
                 let spell = new Spell(spellJSON);
                 out += createTableRow(spell, i);
