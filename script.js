@@ -88,6 +88,14 @@ window.onbeforeunload = function () {
     window.scrollTo(0, 0);
   }
 
+// fix col width
+let thElements = table.querySelectorAll('th');
+thElements.forEach((header, index) => {
+    let tdWidth = thElements[index].offsetWidth;
+    header.style.width = tdWidth + 'px';
+});
+table.style.tableLayout = 'fixed';
+
 document.addEventListener("DOMContentLoaded", function () {
     fetch("spellList.json")
         .then(function (response) {
