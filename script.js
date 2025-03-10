@@ -89,7 +89,7 @@ window.onbeforeunload = function () {
   }
 
 document.addEventListener("DOMContentLoaded", function () {
-    fetch("spellList_v1.1.json")
+    fetch("spellList.json")
         .then(function (response) {
             return response.json();
         })
@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // let uniqueNames = findUniqueValuesByKey(spells, "Casting time");
             // console.log([...uniqueNames]); 
-            for (let i = 51; i < spells.length; i++) {
+            for (let i = 50; i < spells.length; i++) {
                 let spellJSON = spells[i];
                 let spell = new Spell(spellJSON);
                 out += createTableRow(spell, i);
@@ -112,14 +112,6 @@ document.addEventListener("DOMContentLoaded", function () {
             const tbody = table.querySelector('tbody');
             tbody.innerHTML += out;
             console.timeEnd('parse')           
-
-            // fix col width
-            let thElements = table.querySelectorAll('th');
-            thElements.forEach((header, index) => {
-                let tdWidth = thElements[index].offsetWidth;
-                header.style.width = tdWidth + 'px';
-            });
-            table.style.tableLayout = 'fixed';
 
             // events for rows, checkbox save and onclick description
             let rows = Array.from(table.querySelectorAll(`tr`));
@@ -234,15 +226,6 @@ function createTableRow(spell, position) {
                 <td>${spell.PFSLegal}</td>                                    
             </tr>`;
 }
-
-let preFormattedDescription;
-fetch("preFormattedDescriptions.json")
-    .then(function (response) {
-        return response.json();
-    })
-    .then(function (data) {
-        preFormattedDescription = data;
-    })
 
 
 function debounce(func, delay=300) {
