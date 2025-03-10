@@ -146,6 +146,12 @@ document.addEventListener("DOMContentLoaded", function () {
                                 makeDescriptionRow(tr)
                             } 
                 });
+
+                tr.addEventListener("keydown", (evt) => {
+                    if (evt.key === "Enter") {
+                        makeDescriptionRow(tr);
+                    }
+                });
             }); 
 
             window.addEventListener('scroll', function() {
@@ -214,7 +220,7 @@ class Spell {
 }
 
 function createTableRow(spell, position) {
-    return `<tr class="data-row hidden-on-scroll">
+    return `<tr class="data-row hidden-on-scroll" tabindex="0">
                 <td><input type="checkbox" name="${spell.name}"/></td>
                 <td linkAon="${spell.linkAon}" linkD20="${spell.linkD20}">${spell.name}</td>
                 <td title="${spell.fullDescription}">${spell.shortDescription}</td>
