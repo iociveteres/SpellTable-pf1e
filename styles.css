@@ -8,8 +8,8 @@ body{
 	overflow-x: hidden;
 }
 
-#top-bar {
-	height: 100px;
+.top-bar {
+	max-height: 100px;
     width: 100%;
 	display: flex;
     justify-content: center;
@@ -17,12 +17,14 @@ body{
 }
 
 .hidden {
-    visibility: hidden;
-    position: absolute;
+    max-height: 0;
 }
 
 #heading { 
+	height: 100px;
 	font-size: 150%;
+	vertical-align: middle;
+	line-height: 100px;
 }
 
 .table-div {
@@ -263,7 +265,7 @@ body{
 }
 
 #top-bar {
-	transition: background var(--time);
+	transition: background var(--time), max-height 0.2s;
 	transition-timing-function: var(--func);
 }
 

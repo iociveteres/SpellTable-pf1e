@@ -60,7 +60,6 @@ table.querySelectorAll("th").forEach((th, position) => {
 
 {
     let topFixedBar = document.getElementById("top-bar");
-    topFixedBar.classList.toggle('hidden');
     let topFixedBarVisibility = localStorage.getItem('topFixedBarVisibility');
     console.log(topFixedBarVisibility);
     if (topFixedBarVisibility === 'true') {
