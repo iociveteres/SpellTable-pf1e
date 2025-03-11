@@ -129,15 +129,14 @@ document.addEventListener("DOMContentLoaded", function () {
             });
             
             let clickStartTime = null;
-            
-            table.addEventListener("mousedown", (evt) => {
+            tbody.addEventListener("mousedown", (evt) => {
                 const tr = evt.target.closest("tr");
                 if (!tr || evt.button !== 0 || evt.target.closest("td:first-child")) return;
             
                 clickStartTime = Date.now();
             });
             
-            table.addEventListener("mouseup", (evt) => {
+            tbody.addEventListener("mouseup", (evt) => {
                 const tr = evt.target.closest("tr");
                 if (!tr || evt.button !== 0 || clickStartTime === null) return;
             
@@ -148,7 +147,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 clickStartTime = null;
             });
 
-            table.addEventListener("keydown", (evt) => {
+            tbody.addEventListener("keydown", (evt) => {
                 if (evt.key === "Enter") {
                     const tr = evt.target.closest("tr");
                     if (tr) {
@@ -261,7 +260,7 @@ function makeDescriptionRow(tr) {
         (!nextRow.classList.contains('show-desc') && !nextRow.classList.contains('hidden-desc'))) {
         let newRow = document.createElement('tr');
         let newCell = document.createElement('td');
-        newCell.colSpan = "100";                            
+        newCell.colSpan = "100";
         let fullDescription = tr.querySelector(`td:nth-child(${colIndex.get("Description")})`).getAttribute("title");
         
         let accessWays = tr.querySelector(`.access-div`).getAttribute('title').replace("...", "");
