@@ -69,16 +69,23 @@ td:first-child {
 	padding: 8px 0px 8px 0px;
 }
 
-table th button {
+th div {
+	height: 75px;
+	display: flex;
+	flex-direction: column;
+  }
+
+th div button {
+	flex: 1;
 	border: none;
 	width: 100%;
-	height: 100%;
 	cursor: pointer;
 	font-size: 110%;
 	font-family: serif;
 }
 
-table th input {
+th div input {
+	flex: 0;
 	box-sizing: border-box;
 	width: 100%;
 }
