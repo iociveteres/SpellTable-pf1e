@@ -3,7 +3,6 @@ import { filterTable } from './filter.js';
 import { colIndex, showRowsScrolling, rowsReveal, 
          timeUnits, rangeUnits, durationUnits } from './utils.js';
 
-let themeToggleBtn = document.querySelector("#toggle-darkmode");
 const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
 const currentTheme = localStorage.getItem("theme");
 if (currentTheme == "dark") {
@@ -19,6 +18,7 @@ if (currentTheme == "dark") {
     document.querySelector("body").classList.remove("notransition");
 }
 
+let themeToggleBtn = document.querySelector("#toggle-darkmode");
 themeToggleBtn.addEventListener("click", function() {    
     if (prefersDarkScheme.matches) {
         document.body.classList.toggle("light-mode");
@@ -89,11 +89,15 @@ window.onbeforeunload = function () {
 
 // fix col width
 let thElements = table.querySelectorAll('th');
+let widthMap = [];
+thElements.forEach(header => {
+    widthMap.push(header.offsetWidth + 'px');
+});
 thElements.forEach((header, index) => {
-    let tdWidth = thElements[index].offsetWidth;
-    header.style.width = tdWidth + 'px';
+    header.style.width = widthMap[index];
 });
 table.style.tableLayout = 'fixed';
+
 
 document.addEventListener("DOMContentLoaded", function () {
     fetch("spellList.json")
@@ -262,7 +266,7 @@ function makeDescriptionRow(tr) {
         let newCell = document.createElement('td');
         newCell.colSpan = "100";
         let fullDescription = tr.querySelector(`td:nth-child(${colIndex.get("Description")})`).getAttribute("title");
-        
+
         let accessWays = tr.querySelector(`.access-div`).getAttribute('title').replace("...", "");
         let parentDiv = document.createElement('div');
         parentDiv.classList.add("dropdown");
