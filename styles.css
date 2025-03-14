@@ -15,6 +15,24 @@ body{
     justify-content: center;
     align-items: center;
 }
+	
+.skip-link {
+    position: absolute;
+	top: 5px;
+    left: 10px;
+    background: var(--bg-bottom-color);
+    padding: 10px 20px;
+    border: 2px solid black;
+    text-decoration: none;
+    font-size: 1rem;
+    z-index: 1000;
+    clip: rect(1px, 1px, 1px, 1px); 
+    white-space: nowrap;
+}
+
+.skip-link:focus {
+    clip: auto;
+}
 
 .hidden {
     max-height: 0;
