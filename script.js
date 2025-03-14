@@ -4,28 +4,18 @@ import { colIndex, showRowsScrolling, rowsReveal,
          timeUnits, rangeUnits, durationUnits } from './utils.js';
 
 const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
-const currentTheme = localStorage.getItem("theme");
-if (currentTheme == "dark") {
-    document.body.classList.toggle("dark-mode");
-} else if (currentTheme == "light") {
-    document.body.classList.toggle("light-mode");
-}
 {
-    let allElements = document.querySelectorAll('*');
-    allElements.forEach(function(el) {
-        el.offsetHeight; // Trigger reflow
-    });
     document.querySelector("body").classList.remove("notransition");
 }
 
 let themeToggleBtn = document.querySelector("#toggle-darkmode");
 themeToggleBtn.addEventListener("click", function() {    
     if (prefersDarkScheme.matches) {
-        document.body.classList.toggle("light-mode");
-        var theme = document.body.classList.contains("light-mode") ? "light" : "dark";
+        document.documentElement.classList.toggle("light-mode");
+        var theme = document.documentElement.classList.contains("light-mode") ? "light" : "dark";
     } else {
-        document.body.classList.toggle("dark-mode");
-        var theme = document.body.classList.contains("dark-mode") ? "dark" : "light";
+        document.documentElement.classList.toggle("dark-mode");
+        var theme = document.documentElement.classList.contains("dark-mode") ? "dark" : "light";
     }
     localStorage.setItem("theme", theme);
     console.log("switched to " + theme)
