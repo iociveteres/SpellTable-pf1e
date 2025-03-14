@@ -85,7 +85,10 @@ function filterTable(table, colnum, filters) {
         }
     });
     // append checked rows first
-    checkedRows.forEach(row => tbody.appendChild(row));
+    checkedRows.forEach((row, i) => {
+        row.classList.remove('hidden-on-scroll');
+        tbody.appendChild(row)
+    });
     // show again rows matching all filters
     for (let i = 0; i < result.length; i++) {
         let row = result[i];

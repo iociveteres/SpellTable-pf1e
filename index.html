@@ -1,21 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <script defer>
+            (function() {
+                const theme = localStorage.getItem("theme") || 
+                              (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+                document.documentElement.classList.add(theme + "-mode");
+            })();
+        </script>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="styles.css">
-        <title>Spell Table</title>
+        <title>Pathfinder Spell Table</title>
+        <meta name="keywords" content="Pathfinder, Spell, Table, Pathfinder Spell, Spellbook, Spell List, Pathfinder 1E, Magic, Wizard, Sorcerer, Druid, Cleric">
+        <meta name="description" content="A comprehensive list of Pathfinder spells, sortable and filterable, all on one screen.">
+        <meta name="robots" content="index, follow">
     </head>
     
     <body class="notransition">
         <div id="top-bar" class="top-bar hidden">
             <div id="heading">
-                Iociveteres's Spell Table 
+                Iociveteres's Pathfinder Spell Table 
             </div>
         </div>
 
-    
-<div class="table-div">
+    <a href="#clear-inputs" class="skip-link" data-x="-1" data-y="0">Skip to Footer</a>   
+    <div class="table-div">
         <table id="table-spells" style="table-layout: auto;">
             <thead>
                 <tr>
