@@ -369,7 +369,7 @@ function unpinAll() {
     if (checkboxes == null) {
         return
     }
-    let event = new Event("change")
+    let event = new Event("change", {bubbles: true});
     checkboxes.forEach(function(checkbox) {
         checkbox.checked = false;
         checkbox.dispatchEvent(event)
