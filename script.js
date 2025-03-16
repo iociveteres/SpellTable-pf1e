@@ -18,7 +18,7 @@ themeToggleBtn.addEventListener("click", function() {
         var theme = document.documentElement.classList.contains("dark-mode") ? "dark" : "light";
     }
     localStorage.setItem("theme", theme);
-    console.log("switched to " + theme)
+    // console.log("switched to " + theme)
 });
 
 let table = document.getElementById('table-spells')
@@ -51,7 +51,6 @@ table.querySelectorAll("th").forEach((th, position) => {
 {
     let topFixedBar = document.getElementById("top-bar");
     let topFixedBarVisibility = localStorage.getItem('topFixedBarVisibility');
-    console.log(topFixedBarVisibility);
     if (topFixedBarVisibility === 'true') {
         topFixedBar.classList.add('hidden')
     } else {
@@ -67,6 +66,7 @@ document.getElementById('clear-inputs').addEventListener("click", evt => {
     clearInputFields();
     let filterValues = filterInputs.map((filter) => filter.value);
     filterTable(table, 0, filterValues)
+    updateSpellCount()
 })
 
 document.getElementById('unpin-all').addEventListener("click", evt => {
@@ -95,8 +95,8 @@ document.addEventListener("DOMContentLoaded", function () {
             return response.json();
         })
         .then(function (spells) {
-            console.log(spells.length);
-            console.time('parse')
+            // console.log(spells.length);
+            // console.time('parse')
             let out = "";
 
             // let uniqueNames = findUniqueValuesByKey(spells, "Casting time");
@@ -112,7 +112,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             const tbody = table.querySelector('tbody');
             tbody.innerHTML += out;
-            console.timeEnd('parse')           
+            // console.timeEnd('parse')           
 
             table.addEventListener("change", (evt) => {
                 if (evt.target.matches('td:first-child input[type="checkbox"]')) {
@@ -192,17 +192,13 @@ class Spell {
         this.overflows = "";
         this.checked = false;
 
-        try {
-            let result = Object.entries(spellData["access_ways"]).map(([key, value]) => {
-                return value.map(item => {
-                    return item.join(' ');
-                }).join('\n');
+        let result = Object.entries(spellData["access_ways"]).map(([key, value]) => {
+            return value.map(item => {
+                return item.join(' ');
             }).join('\n');
-            this.accessWays = result;
-        } catch (err) {
-            // do nothing
-            console.log(this.name)
-        }
+        }).join('\n');
+        this.accessWays = result;
+       
         if (countNewLines(this.accessWays) >= 3) {
             this.overflows = " overflows";
         }
@@ -369,7 +365,7 @@ function unpinAll() {
     if (checkboxes == null) {
         return
     }
-    let event = new Event("change")
+    let event = new Event("change", {bubbles: true});
     checkboxes.forEach(function(checkbox) {
         checkbox.checked = false;
         checkbox.dispatchEvent(event)
