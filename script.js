@@ -67,6 +67,7 @@ document.getElementById('clear-inputs').addEventListener("click", evt => {
     clearInputFields();
     let filterValues = filterInputs.map((filter) => filter.value);
     filterTable(table, 0, filterValues)
+    updateSpellCount()
 })
 
 document.getElementById('unpin-all').addEventListener("click", evt => {
