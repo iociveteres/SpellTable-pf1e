@@ -192,17 +192,13 @@ class Spell {
         this.overflows = "";
         this.checked = false;
 
-        try {
-            let result = Object.entries(spellData["access_ways"]).map(([key, value]) => {
-                return value.map(item => {
-                    return item.join(' ');
-                }).join('\n');
+        let result = Object.entries(spellData["access_ways"]).map(([key, value]) => {
+            return value.map(item => {
+                return item.join(' ');
             }).join('\n');
-            this.accessWays = result;
-        } catch (err) {
-            // do nothing
-            console.log(this.name)
-        }
+        }).join('\n');
+        this.accessWays = result;
+       
         if (countNewLines(this.accessWays) >= 3) {
             this.overflows = " overflows";
         }
