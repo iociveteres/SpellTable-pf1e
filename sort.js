@@ -52,7 +52,7 @@ function sortTable(table, colnum, direction) {
     // but it works this way and is easier, because checked rows are visible
     let {visibleRows, filteredOutRows} = divideFilteredOut(tbody);
     let sortableRows = Array.from(visibleRows);
-    // only unchecked rows need sorting
+    
     let {checkedRows, uncheckedRows} = divideChecked(sortableRows);
     uncheckedRows.forEach(row => showRowsSorting(row));
 
@@ -70,6 +70,13 @@ function sortTable(table, colnum, direction) {
         // and then effect sorting by comparing their content:
         return d * compareFunc(t1, t2); 
       });
+
+    checkedRows.sort( (r1,r2) => {
+        let t1 = r1.querySelector(qs);
+        let t2 = r2.querySelector(qs);
+    
+        return d * compareFunc(t1, t2); 
+    });
 
     // and then the magic part that makes the sorting appear on-page:
     // append checked rows first
