@@ -37,6 +37,9 @@ function filterTable(table, colnum, filters) {
                 case colIndex.get("Access ways"):
                     improvedFilter = replacePartialWays(filter);
                     break
+                case colIndex.get("PFS"):
+                    improvedFilter = replaceYesNo(filter);
+                    break
                 default:
                     improvedFilter = filter;
             }              
@@ -126,6 +129,14 @@ function replacePartialWays(string) {
     let result = string.replace(/wizard|sorcerer/g, "sorcerer/wizard");
     result = result.replace(/cleric|oracle/g, "cleric/oracle");
     return result;
+}
+
+
+function replaceYesNo(string) {
+    let result = string.replace(/yes/g, "✔")
+    result = result.replace(/no/g, "!✔")
+    
+    return result; 
 }
 
 
