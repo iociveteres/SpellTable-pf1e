@@ -58,22 +58,26 @@ function filterTable(table, colnum, filters) {
                     let t = row.querySelector(qs);
                     switch (position + 2) {
                         case colIndex.get("Access ways"): {
-                            if (filterAccessWays(t, filter))
+                            f = new FilterAccessWays(filter)
+                            if (f.filter(t)) 
                                 return true;
                             break;
                         }
                         case colIndex.get("Casting Time"): {
-                            if (filterCastingTime(t, filter))
+                            f = new FilterCastingTime(filter)
+                            if (f.filter(t)) 
                                 return true;
                             break;
                         }
                         case colIndex.get("Range"): {
-                            if (filterRange(t, filter))
+                            f = new FilterRange(filter)
+                            if (f.filter(t)) 
                                 return true;
                             break;
                         }
                         case colIndex.get("Duration"): {
-                            if (filterDuration(t, filter))
+                            f = new FilterDuration(filter)
+                            if (f.filter(t)) 
                                 return true;
                             break;
                         }
@@ -119,241 +123,213 @@ function replaceYesNo(string) {
 }
 
 
-// logic for filtering different columns needs to be a bit different 
-// because of how different values are structured
-// I haven't come up with a good abstraction and went with the most 
-// straightforward approach to write a function for each
-function filterAccessWays(td, filter) {
-    let innerText = td.innerText;
-    // split access ways and search every part for starting with logic tree node
-    // needed because antipaladin has paladin as a substring
-    let lookforText = (item, index) => {
-        if (item.startsWith(filter)) {
-            return true;
-        }
-    };
+class FilterBase {
+    constructor(filterValue) {
+        this.filterValue = filterValue;
+    }
 
-    let lookforNumbers = (item, index) => {
-        if (item.includes(filter)) {
-            return true;
-        }
+    lookforText(item) {
+        return item.innerText.toLowerCase().includes(this.filterValue);
     };
+}
 
-    let lookforNumbersWithComparison = (item, index) => {
+// // logic for filtering different columns needs to be a bit different 
+// // because of how different values are structured
+// // I haven't come up with a good abstraction and went with the most 
+// // straightforward approach to write a class for each
+class FilterAccessWays extends FilterBase {
+    constructor(filter) {
+        super(filter);
+    }
+
+    // item 
+    lookforText(item) {
+        return item.startsWith(this.filterValue);
+    }
+
+    lookforNumbers(item) {
+        return item.includes(this.filterValue);
+    }
+
+    lookforNumbersWithComparison(item) {
         let operators = ['=', '<', '>'];
-            let operator = null
-            for(let i=0; i < operators.length; i++)
-                if (filter.indexOf(operators[i]) !== -1) {
-                    operator = operators[i]
-                    break
-                }
-            let val = parseInt(filter.slice(1));
+        let operator = operators.find(op => this.filterValue.includes(op));
 
-            let [className, level] = item.split(' ');
-            level = parseInt(level, 10);
-        
-            switch(operator) {
-                case '=':            
-                    return level == val
-                case '>':                    
-                    return level > val
-                case '<':
-                    return level < val
-            }
-           
-            return false
-    }
+        let val = parseInt(this.filterValue.slice(1));
+        let [className, level] = item.split(' ');
+        level = parseInt(level, 10);
 
-    let lookforTextWithComparison = (item, index) => {
-        if (item.startsWith(filter.slice(0, -2))) {
-            let operators = ['=', '<', '>'];
-            let operator = null
-            for(let i=0; i < operators.length; i++)
-                if (filter.indexOf(operators[i]) !== -1) {
-                    operator = operators[i]
-                    break
-                }
-            let chunks = filter.split(operator)
-            // The field is before the first operator
-            let field = chunks.shift().trim()
-            // Any subsequent operators should be part of the value we look for
-            let val = chunks.join(operator).trim()
-
-            let [className, level] = item.split(' ');
-            level = parseInt(level, 10);
-            let parsedItem = { [className]: level };
-        
-            if (parsedItem.hasOwnProperty(field)) {
-                switch(operator) {
-                    case '=':            
-                        return parsedItem[field] == val
-                    case '>':                    
-                        return parsedItem[field] > val
-                    case '<':
-                        return parsedItem[field] < val
-                }
-            }
-            return false
+        switch (operator) {
+            case '=': return level == val;
+            case '>': return level > val;
+            case '<': return level < val;
         }
-    };
-
-    let lookforFunc;
-    if (digitRegex.test(filter)) {
-        if (compRegex.test(filter)) 
-            lookforFunc = lookforNumbersWithComparison;
-        else
-            lookforFunc = lookforNumbers;
-    } else {
-        if (compRegex.test(filter))
-            lookforFunc = lookforTextWithComparison;
-        else
-            lookforFunc = lookforText;
+        return false;
     }
-    let arr = innerText.toLowerCase().split("\n");
-    let foundSomething = arr.some(lookforFunc);
 
-    return foundSomething; 
+    lookforTextWithComparison(item) {
+        if (!item.startsWith(this.filterValue.slice(0, -2))) return false;
+
+        let operators = ['=', '<', '>'];
+        let operator = operators.find(op => this.filterValue.includes(op));
+        // if (!operator) return false;
+
+        let chunks = this.filterValue.split(operator);
+        // The field is before the first operator
+        let field = chunks.shift().trim();
+        // Any subsequent operators should be part of the value we look for
+        let val = chunks.join(operator).trim();
+
+        let [className, level] = item.split(' ');
+        level = parseInt(level, 10);
+        let parsedItem = { [className]: level };
+
+        if (parsedItem.hasOwnProperty(field)) {
+            switch (operator) {
+                case '=': return parsedItem[field] == val;
+                case '>': return parsedItem[field] > val;
+                case '<': return parsedItem[field] < val;
+            }
+        }
+        return false;
+    }
+
+    filter(td) {
+        let arr = td.innerText.toLowerCase().split("\n");
+
+        let lookforFunc;
+        if (digitRegex.test(this.filterValue)) {
+            lookforFunc = compRegex.test(this.filterValue)
+                ? this.lookforNumbersWithComparison.bind(this)
+                : this.lookforNumbers.bind(this);
+        } else {
+            lookforFunc = compRegex.test(this.filterValue)
+                ? this.lookforTextWithComparison.bind(this)
+                : this.lookforText.bind(this);
+        }
+
+        return arr.some(lookforFunc);
+    }
 }
 
 
-function parseTimeInput(input) {
-    let result = { code: null, length: null };
-    
-    const digitMatch = input.match(/^\d+/);
-    let digits = 1;
-    let unit;
-    if (digitMatch) {
-        digits = parseInt(digitMatch[0]);
-        unit = input.substring(digitMatch[0].length).trim();
-    } else {
-        unit = input;
-    }
-    for (let [key, value] of timeUnits) {
-        if (unit !== "" && key.startsWith(unit)) {
-            result.code = value;
-            result.length = digits;
-            return result.code * 100 + result.length;
-        }
+class FilterCastingTime extends FilterBase {
+    constructor(filterValue) {
+        super(filterValue);
     }
 
-    return null
-}
-
-
-function filterCastingTime(td, filter) {
-    let lookforText = (item, index) => {
-        if (item.innerText.toLowerCase().includes(filter)) {
-            return true;
+    parseTimeInput(input) {
+        let result = { code: null, length: null };
+        
+        const digitMatch = input.match(/^\d+/);
+        let digits = 1;
+        let unit;
+        if (digitMatch) {
+            digits = parseInt(digitMatch[0]);
+            unit = input.substring(digitMatch[0].length).trim();
+        } else {
+            unit = input;
         }
-    };
-
-    let lookforTextWithComparison = (item, index) => {
-        let operators = ['=', '<', '>'];
-        let operator = null
-        for(let i=0; i < operators.length; i++)
-            if (filter.indexOf(operators[i]) !== -1) {
-                operator = operators[i]
-                break
+        
+        for (let [key, value] of timeUnits) {
+            if (unit !== "" && key.startsWith(unit)) {
+                result.code = value;
+                result.length = digits;
+                return result.code * 100 + result.length;
             }
-        let parsedFilter = parseTimeInput(filter.slice(1));
-        // console.debug(filter.slice(1) + ":" + parsedFilter);
+        }
+
+        return null;
+    }
+
+    lookforTextWithComparison(td) {
+        let operators = ['=', '<', '>'];
+        let operator = operators.find(op => this.filterValue.includes(op));
+
+        let parsedFilter = this.parseTimeInput(this.filterValue.slice(1));
         let rowDataValue = parseInt(td.getAttribute("data-sort"));
-    
-        switch(operator) {
-            case '=':            
-                return rowDataValue == parsedFilter
-            case '>':                    
-                return rowDataValue > parsedFilter
-            case '<':
-                return rowDataValue < parsedFilter
+
+        switch (operator) {
+            case '=': return rowDataValue == parsedFilter;
+            case '>': return rowDataValue > parsedFilter;
+            case '<': return rowDataValue < parsedFilter;
         }
+
+        return false;
+    };
+
+    filter(td) {     
+        let lookforFunc = compRegex.test(this.filterValue)
+                ? this.lookforTextWithComparison.bind(this)
+                : this.lookforText.bind(this);
+
+        return lookforFunc(td);
+    }
+}
+
+class FilterRange extends FilterBase {
+    constructor(filterValue) {
+        super(filterValue)
+    }
+
+    regexFt = /(\d+)\s*(ft\.|feet|hex)/i;
+    regexMiles = /(\d+)\s*(mile)/i;
+
+    parseRangeInput(input) {
+        let result = { code: null, length: null };
         
-        return false
-    };
-
-    let lookforFunc;
-    if (compRegex.test(filter))
-        lookforFunc = lookforTextWithComparison;
-    else
-        lookforFunc = lookforText;
-    let foundSomething = lookforFunc(td);
-
-    return foundSomething; 
-}
-
-
-const regexFt = /(\d+)\s*(ft\.|feet|hex)/i;
-const regexMiles = /(\d+)\s*(mile)/i;
-
-
-function parseRangeInput(input) {
-    let result = { code: null, length: null };
-    
-    const digitMatch = input.match(/^\d+/);
-    let digits = 1;
-    let unit;
-    if (digitMatch) {
-        digits = parseInt(digitMatch[0]);
-        unit = input.substring(digitMatch[0].length).trim();
-    } else {
-        unit = input;
-    }
-    for (let [key, value] of rangeUnits) {
-        if (key.startsWith(input)) {
-            result.code = value;
-            switch (result.code) {
-                case 2:
-                    result.distance = 25;
-                    break;
-                case 3:
-                    result.distance = 100;
-                    break;
-                case 4:
-                    result.distance = 400;
-                    break;
-                case 5:
-                case 7: {
-                    let match = input.match(regexFt);
-                    if (match && match[1]) {
-                        result.distance = parseInt(match[1]);
+        const digitMatch = input.match(/^\d+/);
+        let digits = 1;
+        let unit;
+        if (digitMatch) {
+            digits = parseInt(digitMatch[0]);
+            unit = input.substring(digitMatch[0].length).trim();
+        } else {
+            unit = input;
+        }
+        for (let [key, value] of rangeUnits) {
+            if (key.startsWith(input)) {
+                result.code = value;
+                switch (result.code) {
+                    case 2:
+                        result.distance = 25;
                         break;
-                    }
-                }
-                case 6: {
-                    let match = input.match(regexMiles);
-                    if (match && match[1]) {
-                        result.distance = parseInt(match[1]) * 1000;
+                    case 3:
+                        result.distance = 100;
                         break;
+                    case 4:
+                        result.distance = 400;
+                        break;
+                    case 5:
+                    case 7: {
+                        let match = input.match(regexFt);
+                        if (match && match[1]) {
+                            result.distance = parseInt(match[1]);
+                            break;
+                        }
                     }
+                    case 6: {
+                        let match = input.match(regexMiles);
+                        if (match && match[1]) {
+                            result.distance = parseInt(match[1]) * 1000;
+                            break;
+                        }
+                    }
+                    default:
+                        break;
                 }
-                default:
-                    break;
+                break;
             }
-            break;
         }
+
+        return result
     }
 
-    return result
-}
-
-
-function filterRange(td, filter) {
-    let lookforText = (item, index) => {
-        if (item.innerText.toLowerCase().includes(filter)) {
-            return true;
-        }
-    };
-
-    let lookforTextWithComparison = (item, index) => {
+    lookforTextWithComparison(td) {
         let operators = ['=', '<', '>'];
-        let operator = null
-        for(let i=0; i < operators.length; i++)
-            if (filter.indexOf(operators[i]) !== -1) {
-                operator = operators[i]
-                break
-            }
+        let operator = operators.find(op => this.filterValue.includes(op));
+
         let parsedFilter = parseRangeInput(filter.slice(1));
-        // console.debug(filter.slice(1) + ":" + parsedFilter);
         let rowCode = parseInt(td.getAttribute("data-sort-code"));
         let rowDist = parseInt(td.getAttribute("data-sort-dist"));
     
@@ -379,92 +355,78 @@ function filterRange(td, filter) {
         return false
     };
 
-    let lookforFunc;
-    if (compRegex.test(filter))
-        lookforFunc = lookforTextWithComparison;
-    else
-        lookforFunc = lookforText;
-    let foundSomething = lookforFunc(td);
+    filter(td) {    
+        let lookforFunc = compRegex.test(this.filterValue)
+            ? this.lookforTextWithComparison.bind(this)
+            : this.lookforText.bind(this);
 
-    return foundSomething; 
+        return lookforFunc(td);
+    }
 }
 
 
-function parseDurationInput(input) {
-    let result = { code: 100, length: null };
+class FilterDuration extends FilterBase {
+    constructor(filterValue) {
+        super(filterValue)
+    }
+
+    parseDurationInput(input) {
+        let result = { code: 100, length: null };
+        
+        const digitMatch = input.match(/^\d+/);
+        let digits = 1;
+        let unit;
+        if (digitMatch) {
+            digits = parseInt(digitMatch[0]);
+            unit = input.substring(digitMatch[0].length).trim();
+        } else {
+            unit = input;
+        }
     
-    const digitMatch = input.match(/^\d+/);
-    let digits = 1;
-    let unit;
-    if (digitMatch) {
-        digits = parseInt(digitMatch[0]);
-        unit = input.substring(digitMatch[0].length).trim();
-    } else {
-        unit = input;
-    }
-
-    for (let [key, value] of durationUnits) {
-        if (key.trim().startsWith(unit.trim())) {
-            if ("minutes".startsWith(unit.trim()) && !unit.trim().includes("/"))
-                result.code = 7;
-            else if (unit.trim().includes("/"))
-                result.code = 6;
-            if ("hour".startsWith(unit.trim()) && !unit.trim().includes("/"))
-                result.code = 9;
-            else if (unit.trim().includes("/"))
-                result.code = 8;
-            else
-                result.code = value;
-            break;
-        }
-    }
-    result.length = digits;
-
-    return result.code * 100 + result.length;
-}
-
-
-function filterDuration(td, filter) {
-    let lookforText = (item, index) => {
-        if (item.innerText.toLowerCase().includes(filter)) {
-            return true;
-        }
-    };
-
-    let lookforTextWithComparison = (item, index) => {
-        let operators = ['=', '<', '>'];
-        let operator = null
-        for(let i=0; i < operators.length; i++)
-            if (filter.indexOf(operators[i]) !== -1) {
-                operator = operators[i]
-                break
+        for (let [key, value] of durationUnits) {
+            if (key.trim().startsWith(unit.trim())) {
+                if ("minutes".startsWith(unit.trim()) && !unit.trim().includes("/"))
+                    result.code = 7;
+                else if (unit.trim().includes("/"))
+                    result.code = 6;
+                if ("hour".startsWith(unit.trim()) && !unit.trim().includes("/"))
+                    result.code = 9;
+                else if (unit.trim().includes("/"))
+                    result.code = 8;
+                else
+                    result.code = value;
+                break;
             }
+        }
+        result.length = digits;
+    
+        return result.code * 100 + result.length;
+    }
+    
+    lookforTextWithComparison (td) {
+        let operators = ['=', '<', '>'];
+        let operator = operators.find(op => this.filterValue.includes(op));
+       
         let parsedFilter = parseDurationInput(filter.slice(1));
-        // console.debug(filter.slice(1) + ":" + parsedFilter)
         let rowDataValue = parseInt(td.getAttribute("data-sort"));
     
         switch(operator) {
-            case '=':            
-                return rowDataValue == parsedFilter
-            case '>':                    
-                return rowDataValue > parsedFilter
-            case '<':
-                return rowDataValue < parsedFilter
+            case '=': return rowDataValue == parsedFilter
+            case '>': return rowDataValue > parsedFilter
+            case '<': return rowDataValue < parsedFilter
         }
         
         return false
     };
 
-    let lookforFunc;
-    if (compRegex.test(filter))
-        lookforFunc = lookforTextWithComparison;
-    else
-        lookforFunc = lookforText;
-    let foundSomething = lookforFunc(td);
+    filter(td) {    
+        let lookforFunc = compRegex.test(this.filterValue)
+            ? this.lookforTextWithComparison.bind(this)
+            : this.lookforText.bind(this);
 
-    return foundSomething; 
+        return lookforFunc(td);
+    }
 }
-
 
 
 export {
