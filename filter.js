@@ -104,27 +104,6 @@ function filterTable(table, colnum, filters) {
 }
 
 
-function parseFilterRaw(input) {
-    let result = [];
-    let currentSubstring = '';
-    for (let i = 0; i < input.length; i++) {
-        if (input[i] === '|') {
-            if (currentSubstring !== '') {
-                result.push(currentSubstring.trim());
-                currentSubstring = '';
-            }
-        } else {
-            currentSubstring += input[i];
-        }
-    }
-    if (currentSubstring !== '') {
-        result.push(currentSubstring.trim());
-    }
-
-    return result;
-}
-
-
 function replacePartialWays(string) {
     let result = string.replace(/wizard|sorcerer/g, "sorcerer/wizard");
     result = result.replace(/cleric|oracle/g, "cleric/oracle");
@@ -139,19 +118,6 @@ function replaceYesNo(string) {
     return result; 
 }
 
-
-function constructOrFilterRegex(strings) {
-    let regexString = `\\b(?:`;
-    strings.forEach((str, idx, array) => {
-        regexString += str + "\\w*";
-        if (idx !== array.length - 1) {
-            regexString += "|";
-        }
-    });
-    regexString += `)\\b`;
-    regexString = replacePartialWays(regexString);
-    return regexString;
-}
 
 // logic for filtering different columns needs to be a bit different 
 // because of how different values are structured
