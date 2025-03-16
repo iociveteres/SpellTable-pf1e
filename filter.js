@@ -30,6 +30,7 @@ function filterTable(table, colnum, filters) {
     filters.forEach((filter, position) => {
         // filter if string is not empty
         if (filter) {
+            filter = filter.toLowerCase();
             // for convinience replace "wizard" with "sorcere/wizard", etc
             let improvedFilter;
             switch (position + 2) { // +1 is from Pin without input, +1 because array index starts from 0, really dislike it
@@ -74,7 +75,7 @@ function filterTable(table, colnum, filters) {
                             break;
                         }
                         default:
-                            if (t.innerText.toLowerCase().includes(filter.toLowerCase()))
+                            if (t.innerText.toLowerCase().includes(filter))
                                 return true;
                     }
                     return false;
@@ -150,13 +151,13 @@ function filterAccessWays(td, filter) {
     // split access ways and search every part for starting with logic tree node
     // needed because antipaladin has paladin as a substring
     let lookforText = (item, index) => {
-        if (item.startsWith(filter.toLowerCase())) {
+        if (item.startsWith(filter)) {
             return true;
         }
     };
 
     let lookforNumbers = (item, index) => {
-        if (item.includes(filter.toLowerCase())) {
+        if (item.includes(filter)) {
             return true;
         }
     };
@@ -187,7 +188,7 @@ function filterAccessWays(td, filter) {
     }
 
     let lookforTextWithComparison = (item, index) => {
-        if (item.startsWith(filter.slice(0, -2).toLowerCase())) {
+        if (item.startsWith(filter.slice(0, -2))) {
             let operators = ['=', '<', '>'];
             let operator = null
             for(let i=0; i < operators.length; i++)
@@ -264,7 +265,7 @@ function parseTimeInput(input) {
 
 function filterCastingTime(td, filter) {
     let lookforText = (item, index) => {
-        if (item.innerText.toLowerCase().includes(filter.toLowerCase())) {
+        if (item.innerText.toLowerCase().includes(filter)) {
             return true;
         }
     };
@@ -361,7 +362,7 @@ function parseRangeInput(input) {
 
 function filterRange(td, filter) {
     let lookforText = (item, index) => {
-        if (item.innerText.toLowerCase().includes(filter.toLowerCase())) {
+        if (item.innerText.toLowerCase().includes(filter)) {
             return true;
         }
     };
@@ -448,7 +449,7 @@ function parseDurationInput(input) {
 
 function filterDuration(td, filter) {
     let lookforText = (item, index) => {
-        if (item.innerText.toLowerCase().includes(filter.toLowerCase())) {
+        if (item.innerText.toLowerCase().includes(filter)) {
             return true;
         }
     };
@@ -486,6 +487,7 @@ function filterDuration(td, filter) {
 
     return foundSomething; 
 }
+
 
 
 export {
