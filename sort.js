@@ -29,7 +29,7 @@ function compareDuration(dur1, dur2) {
 
   
 function sortTable(table, colnum, direction) {
-    console.time('sort')
+    // console.time('sort')
     let compareFunc;
     switch (colnum + 1) {
         case colIndex.get("Casting Time"):
@@ -93,7 +93,7 @@ function sortTable(table, colnum, direction) {
             hideRowsSorting(row);
         tbody.appendChild(row);
     }
-    console.timeEnd('sort')
+    // console.timeEnd('sort')
 
     return direction == "asc" ? "desc" : "asc";
 }

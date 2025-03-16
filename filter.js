@@ -13,8 +13,8 @@ const compRegex = new RegExp(/[=<>]/);
 const digitRegex = new RegExp(/^[<>=]?\d+$/);
 
 function filterTable(table, colnum, filters) {
-    console.debug('filter: ' + (filters))
-    console.time('filter')
+    // console.debug('filter: ' + (filters))
+    // console.time('filter')
     // get all the rows in this table:
     let tbody = table.getElementsByTagName(`tbody`)[0]
     let rows = Array.from(tbody.querySelectorAll(`tr`));
@@ -89,7 +89,7 @@ function filterTable(table, colnum, filters) {
             });
             
             result = result.filter(f); 
-            console.debug(lp.stringify());
+            // console.debug(lp.stringify());
         }
     });
     // append checked rows first
@@ -104,7 +104,7 @@ function filterTable(table, colnum, filters) {
         showRowsFiltering(row, i);
         tbody.appendChild(row);
     }
-    console.timeEnd('filter')
+    // console.timeEnd('filter')
 }
 
 

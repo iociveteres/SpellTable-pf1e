@@ -18,7 +18,7 @@ themeToggleBtn.addEventListener("click", function() {
         var theme = document.documentElement.classList.contains("dark-mode") ? "dark" : "light";
     }
     localStorage.setItem("theme", theme);
-    console.log("switched to " + theme)
+    // console.log("switched to " + theme)
 });
 
 let table = document.getElementById('table-spells')
@@ -51,7 +51,6 @@ table.querySelectorAll("th").forEach((th, position) => {
 {
     let topFixedBar = document.getElementById("top-bar");
     let topFixedBarVisibility = localStorage.getItem('topFixedBarVisibility');
-    console.log(topFixedBarVisibility);
     if (topFixedBarVisibility === 'true') {
         topFixedBar.classList.add('hidden')
     } else {
@@ -96,8 +95,8 @@ document.addEventListener("DOMContentLoaded", function () {
             return response.json();
         })
         .then(function (spells) {
-            console.log(spells.length);
-            console.time('parse')
+            // console.log(spells.length);
+            // console.time('parse')
             let out = "";
 
             // let uniqueNames = findUniqueValuesByKey(spells, "Casting time");
@@ -113,7 +112,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             const tbody = table.querySelector('tbody');
             tbody.innerHTML += out;
-            console.timeEnd('parse')           
+            // console.timeEnd('parse')           
 
             table.addEventListener("change", (evt) => {
                 if (evt.target.matches('td:first-child input[type="checkbox"]')) {
