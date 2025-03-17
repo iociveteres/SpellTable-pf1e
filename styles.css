@@ -209,7 +209,7 @@ th div input {
 }
 
 .dropdown-description {
-	width: 40%;
+	width: 42%;
 	margin-left: 5%;
 	padding: 5px;
 	font-family: monospace;
@@ -218,10 +218,38 @@ th div input {
 	text-indent: 0;
 }
 
+@media (max-width: 1459px) {
+	.dropdown-links {
+		width: 7%;
+		margin-left: 3%;
+		padding: 5px;
+	}
+    .dropdown-description {
+        width: 60%;
+        margin-left: 3%;
+        padding: 5px;
+    }
+}
+
+@media (min-width: 1460px) and (max-width: 1729px) {
+    .dropdown-description {
+        width: 50%;
+        margin-left: 3%;
+        padding: 5px;
+    }
+}
+
+@media (min-width: 1730px) {
+    .dropdown-description {
+        width: 40%;
+        margin-left: 5%;
+        padding: 5px;
+    }
+}
+
 .dropdown-access-ways {
 	font-family: serif;
-	width: 25%;
-	margin-left: 0.5%;
+	margin-left: 5%;
 	padding: 5px;
 	text-align: center;
 }
