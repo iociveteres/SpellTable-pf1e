@@ -174,6 +174,7 @@ class Spell {
         this.linkAon = spellData["Url aon"];
         this.linkD20 = spellData["Url d20"];
         this.PFSLegal = spellData["PFS legal"] === true ? "✔" : " ";
+        this.source = spellData.Source ===  "None" ? "" : spellData.Source;
         this.school = spellData.School;
         this.subschool = spellData.Subschool === "None" ? "" : spellData.Subschool;
         this.descriptors = spellData.Descriptors === "None" ? "" : spellData.Descriptors;
@@ -215,7 +216,7 @@ function createTableRow(spell, position) {
     return `<tr class="data-row hidden-on-scroll" tabindex="0">
                 <td><input type="checkbox" name="${spell.name}"/></td>
                 <td linkAon="${spell.linkAon}" linkD20="${spell.linkD20}">${spell.name}</td>
-                <td title="${spell.fullDescription}">${spell.shortDescription}</td>
+                <td title="${spell.fullDescription}" source="${spell.source}">${spell.shortDescription}</td>
                 <td>${spell.school}</td>
                 <td>${spell.subschool}</td>
                 <td>${spell.descriptors}</td>
@@ -252,6 +253,9 @@ function makeDescriptionRow(tr) {
         let newCell = document.createElement('td');
         newCell.colSpan = "100";
         let fullDescription = tr.querySelector(`td:nth-child(${colIndex.get("Description")})`).getAttribute("title");
+        if (!fullDescription.endsWith("\n")) 
+            fullDescription += '\n'
+        fullDescription += '\n' + tr.querySelector(`td:nth-child(${colIndex.get("Description")})`).getAttribute("source");
 
         let accessWays = tr.querySelector(`.access-div`).getAttribute('title').replace("...", "");
         let parentDiv = document.createElement('div');

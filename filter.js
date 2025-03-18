@@ -57,6 +57,12 @@ function filterTable(table, colnum, filters) {
             let f = lp.filterFunction((row, filter) => {
                     let t = row.querySelector(qs);
                     switch (position + 2) {
+                        case colIndex.get("Description"): {
+                            f = new FilterDescription(filter)
+                            if (f.filter(t))
+                                return true
+                            break;
+                        }
                         case colIndex.get("Access ways"): {
                             f = new FilterAccessWays(filter)
                             if (f.filter(t)) 
@@ -423,6 +429,35 @@ class FilterDuration extends FilterBase {
         let lookforFunc = compRegex.test(this.filterValue)
             ? this.lookforTextWithComparison.bind(this)
             : this.lookforText.bind(this);
+
+        return lookforFunc(td);
+    }
+}
+
+class FilterDescription extends FilterBase {
+    constructor(filterValue) {
+        super(filterValue)
+    }
+    
+    lookforFullDesc (td) {
+        return td.getAttribute("title").toLowerCase().includes(this.filterValue.replace(/full:\s*/, ""));
+    };
+
+    lookforSource (td) {
+        let source = td.getAttribute("source").toLowerCase()
+        let isTrue = td.getAttribute("source").toLowerCase().includes(this.filterValue.replace(/source:\s*/, ""))
+        return td.getAttribute("source").toLowerCase().includes(this.filterValue.replace(/source:\s*/, ""));
+    };
+
+
+    filter(td) {
+        let lookforFunc;
+        if (this.filterValue.startsWith("full:"))
+            lookforFunc = this.lookforFullDesc.bind(this)
+        else if (this.filterValue.startsWith("source:"))
+            lookforFunc = this.lookforSource.bind(this)  
+        else 
+            lookforFunc = this.lookforText.bind(this);
 
         return lookforFunc(td);
     }
