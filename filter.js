@@ -440,11 +440,33 @@ class FilterDescription extends FilterBase {
     }
     
     lookforFullDesc (td) {
-        return td.getAttribute("title").toLowerCase().includes(this.filterValue.replace(/full:\s*/, ""));
+        return td.getAttribute("title").toLowerCase().includes(this.filterValue.replace(/full desc:\s*/, ""));
     };
 
     lookforSource (td) {
         return td.getAttribute("source").toLowerCase().includes(this.filterValue.replace(/source:\s*/, ""));
+    };
+
+    lookforMythicDescription (td) {
+        if (!td.hasAttribute("mythic-description")) {
+            return false
+        }
+        let f = this.filterValue.replace(/mythic desc:\s*/, "")
+        if (f == "") {
+            return true
+        }
+        return td.getAttribute("mythic-description").toLowerCase().includes(f);
+    };
+
+    lookforMythicSource (td) {
+        if (!td.hasAttribute("mythic-source")) {
+            return false
+        }
+        let f = this.filterValue.replace(/mythic source:\s*/, "")
+        if (f == "") {
+            return true
+        }
+        return td.getAttribute("mythic-source").toLowerCase().includes(f);
     };
 
 
@@ -454,6 +476,10 @@ class FilterDescription extends FilterBase {
             return this.lookforFullDesc.bind(this)(td)
         if (this.filterValue.startsWith("source:"))
             return this.lookforSource.bind(this)(td)
+        if (this.filterValue.startsWith("mythic desc:"))
+            return this.lookforMythicDescription.bind(this)(td) 
+        if (this.filterValue.startsWith("mythic source:"))
+            return this.lookforMythicSource.bind(this)(td)  
  
         return this.lookforText.bind(this)(td);
     }

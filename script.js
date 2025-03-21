@@ -174,7 +174,6 @@ class Spell {
         this.linkAon = spellData["Url aon"];
         this.linkD20 = spellData["Url d20"];
         this.PFSLegal = spellData["PFS legal"] === true ? "✔" : " ";
-        this.source = spellData.Source ===  "None" ? "" : spellData.Source;
         this.school = spellData.School;
         this.subschool = spellData.Subschool === "None" ? "" : spellData.Subschool;
         this.descriptors = spellData.Descriptors === "None" ? "" : spellData.Descriptors;
@@ -184,6 +183,9 @@ class Spell {
         this.spellResistance = spellData["Spell Resistance"] === undefined ? "" : spellData["Spell Resistance"];
         this.shortDescription = spellData["Short description"] === undefined ? "" : spellData["Short description"];
         this.fullDescription = spellData["Description"] === undefined ? "" : spellData["Description"];
+        this.source = spellData.Source ===  "None" ? "" : spellData.Source;
+        this.mythicSource = spellData["Mythic Source"] === undefined ? "" : spellData["Mythic Source"]
+        this.mythicDescription = spellData["Mythic"] === undefined ? "" : spellData["Mythic"]
         this.castingTime = spellData["Casting time"];
         this.components = spellData.Components;
         this.range = spellData.Range;
@@ -213,10 +215,14 @@ class Spell {
 }
 
 function createTableRow(spell, position) {
+    let mythic = "";
+    if (spell.mythicDescription != "") {
+        mythic = ` mythic-description = "${spell.mythicDescription}" mythic-source = "${spell.mythicSource}"`
+    }
     return `<tr class="data-row hidden-on-scroll" tabindex="0">
                 <td><input type="checkbox" name="${spell.name}"/></td>
                 <td linkAon="${spell.linkAon}" linkD20="${spell.linkD20}">${spell.name}</td>
-                <td title="${spell.fullDescription}" source="${spell.source}">${spell.shortDescription}</td>
+                <td title="${spell.fullDescription}" source="${spell.source}"${mythic}>${spell.shortDescription}</td>
                 <td>${spell.school}</td>
                 <td>${spell.subschool}</td>
                 <td>${spell.descriptors}</td>
@@ -252,10 +258,19 @@ function makeDescriptionRow(tr) {
         let newRow = document.createElement('tr');
         let newCell = document.createElement('td');
         newCell.colSpan = "100";
-        let fullDescription = tr.querySelector(`td:nth-child(${colIndex.get("Description")})`).getAttribute("title");
+        let td = tr.querySelector(`td:nth-child(${colIndex.get("Description")})`);
+        let fullDescription = td.getAttribute("title");
         if (!fullDescription.endsWith("\n")) 
             fullDescription += '\n'
-        fullDescription += '\n' + tr.querySelector(`td:nth-child(${colIndex.get("Description")})`).getAttribute("source");
+        fullDescription += '\n' + td.getAttribute("source");
+        if (td && td.hasAttribute("mythic-description")) {
+            if (!fullDescription.endsWith("\n")) 
+            fullDescription += '\n'
+            fullDescription += '\n<b>Mythic:</b>\n' + td.getAttribute("mythic-description");
+            if (!fullDescription.endsWith("\n")) 
+                fullDescription += '\n'
+            fullDescription += '\n' + td.getAttribute("mythic-source");       
+        }
 
         let accessWays = tr.querySelector(`.access-div`).getAttribute('title').replace("...", "");
         let parentDiv = document.createElement('div');
