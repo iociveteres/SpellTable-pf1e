@@ -265,11 +265,11 @@ class FilterCastingTime extends FilterBase {
     };
 
     filter(td) {     
-        let lookforFunc = compRegex.test(this.filterValue)
-                ? this.lookforTextWithComparison.bind(this)
-                : this.lookforText.bind(this);
+        if (compRegex.test(this.filterValue)) {
+            return this.lookforTextWithComparison.bind(this)(td)
+        }
 
-        return lookforFunc(td);
+        return this.lookforText.bind(this)(td);
     }
 }
 
@@ -362,11 +362,11 @@ class FilterRange extends FilterBase {
     };
 
     filter(td) {    
-        let lookforFunc = compRegex.test(this.filterValue)
-            ? this.lookforTextWithComparison.bind(this)
-            : this.lookforText.bind(this);
+        if (compRegex.test(this.filterValue)) {
+            return this.lookforTextWithComparison.bind(this)(td);
+        }
 
-        return lookforFunc(td);
+        return this.lookforText.bind(this)(td);
     }
 }
 
@@ -426,11 +426,11 @@ class FilterDuration extends FilterBase {
     };
 
     filter(td) {    
-        let lookforFunc = compRegex.test(this.filterValue)
-            ? this.lookforTextWithComparison.bind(this)
-            : this.lookforText.bind(this);
+        if (compRegex.test(this.filterValue)) {
+            return this.lookforTextWithComparison.bind(this)(td)
+        }
 
-        return lookforFunc(td);
+        return this.lookforText.bind(this)(td);
     }
 }
 
@@ -444,22 +444,18 @@ class FilterDescription extends FilterBase {
     };
 
     lookforSource (td) {
-        let source = td.getAttribute("source").toLowerCase()
-        let isTrue = td.getAttribute("source").toLowerCase().includes(this.filterValue.replace(/source:\s*/, ""))
         return td.getAttribute("source").toLowerCase().includes(this.filterValue.replace(/source:\s*/, ""));
     };
 
 
     filter(td) {
         let lookforFunc;
-        if (this.filterValue.startsWith("full:"))
-            lookforFunc = this.lookforFullDesc.bind(this)
-        else if (this.filterValue.startsWith("source:"))
-            lookforFunc = this.lookforSource.bind(this)  
-        else 
-            lookforFunc = this.lookforText.bind(this);
-
-        return lookforFunc(td);
+        if (this.filterValue.startsWith("full desc:"))
+            return this.lookforFullDesc.bind(this)(td)
+        if (this.filterValue.startsWith("source:"))
+            return this.lookforSource.bind(this)(td)
+ 
+        return this.lookforText.bind(this)(td);
     }
 }
 
