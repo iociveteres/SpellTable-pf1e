@@ -335,7 +335,7 @@ class FilterRange extends FilterBase {
         let operators = ['=', '<', '>'];
         let operator = operators.find(op => this.filterValue.includes(op));
 
-        let parsedFilter = parseRangeInput(filter.slice(1));
+        let parsedFilter = this.parseRangeInput(this.filterValue.slice(1));
         let rowCode = parseInt(td.getAttribute("data-sort-code"));
         let rowDist = parseInt(td.getAttribute("data-sort-dist"));
     
@@ -413,7 +413,7 @@ class FilterDuration extends FilterBase {
         let operators = ['=', '<', '>'];
         let operator = operators.find(op => this.filterValue.includes(op));
        
-        let parsedFilter = parseDurationInput(filter.slice(1));
+        let parsedFilter = this.parseDurationInput(this.filterValue.slice(1));
         let rowDataValue = parseInt(td.getAttribute("data-sort"));
     
         switch(operator) {
