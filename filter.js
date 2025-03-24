@@ -200,7 +200,31 @@ class FilterAccessWays extends FilterBase {
         return false;
     }
 
+    lookforClassesWithComparison(td) {
+        let operator = findOperator(this.filterValue)
+        let parts = this.filterValue.split(operator).map(part => part.trim());
+
+        let arr = td.innerText.toLowerCase().split("\n");
+        let before = arr.find(item => item.includes(parts[0]));
+        let after = arr.find(item => item.includes(parts[1]));
+
+        if (!(before && after))
+            return false
+
+        let [className, level] = before.split(' ');
+        let parsedBefore = parseInt(level, 10);
+
+        [className, level] = after.split(' ');
+        let parsedAfter = parseInt(level, 10);
+
+        return useOperator(operator, parsedBefore, parsedAfter)
+    }
+
     filter(td) {
+        if (compClassesRegex.test(this.filterValue)) {
+            return this.lookforClassesWithComparison(td)
+        }
+
         let arr = td.innerText.toLowerCase().split("\n");
 
         let lookforFunc;
