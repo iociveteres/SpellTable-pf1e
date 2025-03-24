@@ -124,6 +124,7 @@
                         </datalist><button>Casting Time</button></div></th>
                     <th class="th-cell" dir="no" ><div><input type="text" list="Components">
                         <datalist id="Components">
+                            <option value="Price: "></option>
                             <option value="V">
                             <option value="S">
                             <option value="M">
@@ -203,7 +204,7 @@ paladin 1">cleric/oracle 1
 inquisitor 1
 paladin 1</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S, DF</td>
+                    <td price="0">V, S, DF</td>
                     <td data-sort-code="1" data-sort-dist="null">touch</td>
                     <td></td>
                     <td>creature touched</td>
@@ -225,7 +226,7 @@ paladin 2">cleric/oracle 2
 inquisitor 2
 paladin 2</div></td>
                     <td data-sort="901">1 minute</td>
-                    <td>V, S, M (a flask of holy water worth 25 gp), DF</td>
+                    <td price="25">V, S, M (a flask of holy water worth 25 gp), DF</td>
                     <td data-sort-code="1" data-sort-dist="null">touch</td>
                     <td></td>
                     <td>creature touched</td>
@@ -252,7 +253,7 @@ occultist 1
 psychic 1
 sorcerer/wizard 1</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S, M (a rabbit's foot)</td>
+                    <td price="0">V, S, M (a rabbit's foot)</td>
                     <td data-sort-code="0" data-sort-dist="null">personal</td>
                     <td></td>
                     <td>you</td>
@@ -283,7 +284,7 @@ sorcerer/wizard 3
 summoner 2
 unchained summoner 3</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S, M (a piece of metal cut from a shield)</td>
+                    <td price="0">V, S, M (a piece of metal cut from a shield)</td>
                     <td data-sort-code="1" data-sort-dist="null">touch</td>
                     <td></td>
                     <td>creature touched</td>
@@ -302,7 +303,7 @@ The sphere is 1 inch thick per caster level, has hardness 5, and 3 hit points pe
                     <td></td>
                     <td class="access-td"><div class="access-div " title="sorcerer/wizard 3">sorcerer/wizard 3</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S, M (a crystalline sphere worth 10 gp)</td>
+                    <td price="10">V, S, M (a crystalline sphere worth 10 gp)</td>
                     <td data-sort-code="0" data-sort-dist="null">personal</td>
                     <td></td>
                     <td>you</td>
@@ -329,7 +330,7 @@ red mantiss assasin 2
 sorcerer/wizard 2
 witch 2</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S, M/DF (piece of seaweed)</td>
+                    <td price="0">V, S, M/DF (piece of seaweed)</td>
                     <td data-sort-code="1" data-sort-dist="null">touch</td>
                     <td></td>
                     <td>living creatures touched</td>
@@ -350,7 +351,7 @@ If using the honor subsystem (Pathfinder RPG Ultimate Campaign 160), casting abs
 paladin 4">cleric/oracle 4
 paladin 4</div></td>
                     <td data-sort="801">1 round</td>
-                    <td>V, S, M (a vial of holy water), DF</td>
+                    <td price="0">V, S, M (a vial of holy water), DF</td>
                     <td data-sort-code="1" data-sort-dist="null">touch</td>
                     <td></td>
                     <td>living creature touched</td>
@@ -377,7 +378,7 @@ magus 4
 occultist 4
 sorcerer/wizard 4</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S, M (a white silk glove worth 25 gp)</td>
+                    <td price="25">V, S, M (a white silk glove worth 25 gp)</td>
                     <td data-sort-code="1" data-sort-dist="null">touch</td>
                     <td></td>
                     <td>one spell effect</td>
@@ -402,7 +403,7 @@ magus 6
 occultist 6
 sorcerer/wizard 6</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S, M (a white silk glove worth 25 gp)</td>
+                    <td price="25">V, S, M (a white silk glove worth 25 gp)</td>
                     <td data-sort-code="1" data-sort-dist="null">touch</td>
                     <td></td>
                     <td>one spell effect</td>
@@ -421,7 +422,7 @@ sorcerer/wizard 6</div></td>
 sorcerer/wizard 9">cleric/oracle 9
 sorcerer/wizard 9</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S, M (a white silk glove worth 25 gp)</td>
+                    <td price="25">V, S, M (a white silk glove worth 25 gp)</td>
                     <td data-sort-code="1" data-sort-dist="null">touch</td>
                     <td></td>
                     <td>one spell effect</td>
@@ -450,7 +451,7 @@ psychic 5
 sorcerer/wizard 5
 witch 4</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S, M (a thorn from a poisonous plant)</td>
+                    <td price="0">V, S, M (a thorn from a poisonous plant)</td>
                     <td data-sort-code="0" data-sort-dist="null">personal</td>
                     <td></td>
                     <td>you</td>
@@ -474,7 +475,7 @@ sorcerer/wizard 4
 summoner 4
 unchained summoner 4</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S, F (a jagged scrap of metal)</td>
+                    <td price="0">V, S, F (a jagged scrap of metal)</td>
                     <td data-sort-code="3" data-sort-dist="100">medium (100 ft. + 10 ft./level)</td>
                     <td></td>
                     <td></td>
@@ -504,7 +505,7 @@ red mantiss assasin 4
 sahirafiyun 4
 sorcerer/wizard 4</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S</td>
+                    <td price="0">V, S</td>
                     <td data-sort-code="2" data-sort-dist="25">close (25 ft. + 5 ft./2 levels)</td>
                     <td></td>
                     <td>one cloud-like effect, up to one 10-ft. cube/level</td>
@@ -522,7 +523,7 @@ An absorbed object melds with your hand and cannot be targeted, but the objectâ€
                     <td></td>
                     <td class="access-td"><div class="access-div " title="alchemist 3">alchemist 3</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>S</td>
+                    <td price="0">S</td>
                     <td data-sort-code="1" data-sort-dist="null">touch</td>
                     <td></td>
                     <td>object touched</td>
@@ -547,7 +548,7 @@ druid 1
 hunter 1
 witch 1</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V</td>
+                    <td price="0">V</td>
                     <td data-sort-code="1" data-sort-dist="null">touch</td>
                     <td></td>
                     <td>a handful of berries, grains, nuts, or rice</td>
@@ -574,7 +575,7 @@ mesmerist 2
 psychic 2
 spiritualist 2</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S</td>
+                    <td price="0">V, S</td>
                     <td data-sort-code="3" data-sort-dist="100">medium (100 ft. + 10 ft./level)</td>
                     <td></td>
                     <td>up to one creature/level, no two of which can be more than 30 ft. apart</td>
@@ -601,7 +602,7 @@ psychic 1
 ranger 1
 sorcerer/wizard 1</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S, M/DF (a single piece of ammunition)</td>
+                    <td price="0">V, S, M/DF (a single piece of ammunition)</td>
                     <td data-sort-code="10" data-sort-dist="null"></td>
                     <td></td>
                     <td>one container touched</td>
@@ -626,7 +627,7 @@ red mantiss assasin 4
 sorcerer/wizard 4
 witch 4</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S</td>
+                    <td price="0">V, S</td>
                     <td data-sort-code="2" data-sort-dist="25">close (25 ft. + 5 ft./2 levels)</td>
                     <td></td>
                     <td>one vermin or vermin swarm</td>
@@ -653,7 +654,7 @@ hunter 3
 paladin 3
 witch 3</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S, M/DF (dove's heart)</td>
+                    <td price="0">V, S, M/DF (dove's heart)</td>
                     <td data-sort-code="1" data-sort-dist="null">touch</td>
                     <td></td>
                     <td>creature touched</td>
@@ -682,7 +683,7 @@ red mantiss assasin 2
 sorcerer/wizard 2
 water 2</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S, M (a thorn)</td>
+                    <td price="0">V, S, M (a thorn)</td>
                     <td data-sort-code="1" data-sort-dist="null">touch</td>
                     <td></td>
                     <td>creature touched</td>
@@ -703,7 +704,7 @@ witch 3">antipaladin 3
 sorcerer/wizard 3
 witch 3</div></td>
                     <td data-sort="801">1 round</td>
-                    <td>V, S</td>
+                    <td price="0">V, S</td>
                     <td data-sort-code="2" data-sort-dist="25">close (25 ft. + 5 ft./2 levels)</td>
                     <td></td>
                     <td>one creature</td>
@@ -726,7 +727,7 @@ magus 2
 sorcerer/wizard 2
 earth 2</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S, M (rhubarb leaf and an adder's stomach), F (a dart)</td>
+                    <td price="0">V, S, M (rhubarb leaf and an adder's stomach), F (a dart)</td>
                     <td data-sort-code="4" data-sort-dist="400">long (400 ft. + 40 ft./level)</td>
                     <td>one arrow of acid</td>
                     <td></td>
@@ -749,7 +750,7 @@ sorcerer/wizard 6
 unchained summoner 6
 earth 6</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S, M (powdered peas and an animal hoof)</td>
+                    <td price="0">V, S, M (powdered peas and an animal hoof)</td>
                     <td data-sort-code="3" data-sort-dist="100">medium (100 ft. + 10 ft./level)</td>
                     <td>fog spreads in 20-ft. radius, 20 ft. high</td>
                     <td></td>
@@ -770,7 +771,7 @@ ranger 1">druid 1
 hunter 1
 ranger 1</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S, DF</td>
+                    <td price="0">V, S, DF</td>
                     <td data-sort-code="2" data-sort-dist="25">close (25 ft. + 5 ft./2 levels)</td>
                     <td></td>
                     <td>your animal companion</td>
@@ -793,7 +794,7 @@ summoner 4
 unchained summoner 4
 earth 4</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S, M (drop of acid), F (Fine shovel worth 10 gp)</td>
+                    <td price="10">V, S, M (drop of acid), F (Fine shovel worth 10 gp)</td>
                     <td data-sort-code="3" data-sort-dist="100">medium (100 ft. + 10 ft./level)</td>
                     <td>10-ft.-by-10-ft. hole, 10 ft. deep/2 levels</td>
                     <td></td>
@@ -820,7 +821,7 @@ summoner 0
 unchained summoner 0
 earth 0</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S</td>
+                    <td price="0">V, S</td>
                     <td data-sort-code="2" data-sort-dist="25">close (25 ft. + 5 ft./2 levels)</td>
                     <td>one missile of acid</td>
                     <td></td>
@@ -849,7 +850,7 @@ psychic 2
 ranger 2
 skald 2</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S, M (a glass lens)</td>
+                    <td price="0">V, S, M (a glass lens)</td>
                     <td data-sort-code="1" data-sort-dist="null">touch</td>
                     <td></td>
                     <td>creature touched</td>
@@ -868,7 +869,7 @@ skald 2</div></td>
 sorcerer/wizard 5">magus 5
 sorcerer/wizard 5</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S, M (a vial of acid worth 10 gp)</td>
+                    <td price="10">V, S, M (a vial of acid worth 10 gp)</td>
                     <td data-sort-code="5" data-sort-dist="60">60 ft.</td>
                     <td>60-ft. line</td>
                     <td></td>
@@ -895,7 +896,7 @@ red mantiss assasin 2
 sorcerer/wizard 2
 witch 2</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S</td>
+                    <td price="0">V, S</td>
                     <td data-sort-code="0" data-sort-dist="null">personal</td>
                     <td></td>
                     <td>you</td>
@@ -918,7 +919,7 @@ psychic 1
 sorcerer/wizard 1
 witch 1</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S</td>
+                    <td price="0">V, S</td>
                     <td data-sort-code="5" data-sort-dist="15">15 ft.</td>
                     <td></td>
                     <td>one creature</td>
@@ -955,7 +956,7 @@ red mantiss assasin 3
 sorcerer/wizard 3
 witch 3</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S</td>
+                    <td price="0">V, S</td>
                     <td data-sort-code="0" data-sort-dist="null">personal</td>
                     <td></td>
                     <td>you</td>
@@ -992,7 +993,7 @@ summoner 4
 unchained summoner 4
 witch 4</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S, M (a small piece of doppelganger flesh)</td>
+                    <td price="0">V, S, M (a small piece of doppelganger flesh)</td>
                     <td data-sort-code="0" data-sort-dist="null">personal</td>
                     <td></td>
                     <td>you</td>
@@ -1011,7 +1012,7 @@ witch 4</div></td>
 sorcerer/wizard 2">cleric/oracle 2
 sorcerer/wizard 2</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S</td>
+                    <td price="0">V, S</td>
                     <td data-sort-code="2" data-sort-dist="25">close (25 ft. + 5 ft./2 levels)</td>
                     <td>one or more rays</td>
                     <td></td>
@@ -1036,7 +1037,7 @@ psychic 2
 sorcerer/wizard 2
 witch 2</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S</td>
+                    <td price="0">V, S</td>
                     <td data-sort-code="2" data-sort-dist="25">close (25 ft. + 5 ft./2 levels)</td>
                     <td></td>
                     <td>one creature</td>
@@ -1053,7 +1054,7 @@ witch 2</div></td>
                     <td></td>
                     <td class="access-td"><div class="access-div " title="sorcerer/wizard 3">sorcerer/wizard 3</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S</td>
+                    <td price="0">V, S</td>
                     <td data-sort-code="1" data-sort-dist="null">touch</td>
                     <td></td>
                     <td>creature touched</td>
@@ -1074,7 +1075,7 @@ hunter 1">cleric/oracle 1
 druid 1
 hunter 1</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S</td>
+                    <td price="0">V, S</td>
                     <td data-sort-code="1" data-sort-dist="null">touch</td>
                     <td></td>
                     <td>living creature touched</td>
@@ -1099,7 +1100,7 @@ inquisitor 4
 ranger 3
 shaman 4</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S</td>
+                    <td price="0">V, S</td>
                     <td data-sort-code="3" data-sort-dist="100">medium (100 ft. + 10 ft./level)</td>
                     <td></td>
                     <td></td>
@@ -1124,7 +1125,7 @@ hunter 3
 sorcerer/wizard 4
 witch 3</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S</td>
+                    <td price="0">V, S</td>
                     <td data-sort-code="2" data-sort-dist="25">close (25 ft. + 5 ft./2 levels)</td>
                     <td></td>
                     <td>one creature</td>
@@ -1155,7 +1156,7 @@ red mantiss assasin 4
 sorcerer/wizard 4
 witch 4</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S</td>
+                    <td price="0">V, S</td>
                     <td data-sort-code="0" data-sort-dist="null">personal</td>
                     <td></td>
                     <td>you</td>
@@ -1181,7 +1182,7 @@ magus 2
 sorcerer/wizard 2
 witch 2</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S, M/DF (a piece of a tree struck by lightning)</td>
+                    <td price="0">V, S, M/DF (a piece of a tree struck by lightning)</td>
                     <td data-sort-code="3" data-sort-dist="100">medium (100 ft. + 10 ft./level)</td>
                     <td>5-ft.-diameter sphere</td>
                     <td></td>
@@ -1212,7 +1213,7 @@ red mantiss assasin 4
 sorcerer/wizard 4
 witch 4</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S</td>
+                    <td price="0">V, S</td>
                     <td data-sort-code="0" data-sort-dist="null">personal</td>
                     <td></td>
                     <td>you</td>
@@ -1241,7 +1242,7 @@ summoner 3
 unchained summoner 4
 kyton (evil, law) 3</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S</td>
+                    <td price="0">V, S</td>
                     <td data-sort-code="2" data-sort-dist="25">close (25 ft. + 5 ft./2 levels)</td>
                     <td></td>
                     <td>one conjured outsider or elemental (see text)</td>
@@ -1270,7 +1271,7 @@ sorcerer/wizard 7
 witch 7
 imperious 7</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S</td>
+                    <td price="0">V, S</td>
                     <td data-sort-code="0" data-sort-dist="null">personal</td>
                     <td></td>
                     <td>you</td>
@@ -1297,7 +1298,7 @@ mesmerist 3
 psychic 3
 witch 3</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S</td>
+                    <td price="0">V, S</td>
                     <td data-sort-code="2" data-sort-dist="25">close (25 ft. + 5 ft./2 levels)</td>
                     <td></td>
                     <td>one living creature</td>
@@ -1322,7 +1323,7 @@ magus 4
 sorcerer/wizard 4
 witch 4</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S, M/DF (a piece of a tree struck by lightning)</td>
+                    <td price="0">V, S, M/DF (a piece of a tree struck by lightning)</td>
                     <td data-sort-code="3" data-sort-dist="100">medium (100 ft. + 10 ft./level)</td>
                     <td>5-ft.-diameter sphere</td>
                     <td></td>
@@ -1359,7 +1360,7 @@ sorcerer/wizard 3
 summoner 3
 unchained summoner 3</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S, M/DF (flower or piece of grass)</td>
+                    <td price="0">V, S, M/DF (flower or piece of grass)</td>
                     <td data-sort-code="1" data-sort-dist="null">touch</td>
                     <td></td>
                     <td>living aquatic creatures touched</td>
@@ -1392,7 +1393,7 @@ spiritualist 2
 luck 2
 tactics 2</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S, DF</td>
+                    <td price="0">V, S, DF</td>
                     <td data-sort-code="1" data-sort-dist="null">touch</td>
                     <td></td>
                     <td>living creature touched</td>
@@ -1421,7 +1422,7 @@ shaman 4
 sorcerer/wizard 3
 witch 3</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S</td>
+                    <td price="0">V, S</td>
                     <td data-sort-code="2" data-sort-dist="25">close (25 ft. + 5 ft./2 levels)</td>
                     <td></td>
                     <td>one creature or object up to Large size</td>
@@ -1451,7 +1452,7 @@ ranger 1
 sorcerer/wizard 1
 witch 1</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>S, M/DF (a small bladder filled with air)</td>
+                    <td price="0">S, M/DF (a small bladder filled with air)</td>
                     <td data-sort-code="1" data-sort-dist="null">touch</td>
                     <td></td>
                     <td>one creature or one object no larger than a Large two-handed weapon</td>
@@ -1470,7 +1471,7 @@ witch 1</div></td>
 skald 3">bard 3
 skald 3</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td>V, S</td>
+                    <td price="0">V, S</td>
                     <td data-sort-code="0" data-sort-dist="null">personal</td>
                     <td></td>
                     <td>you</td>
@@ -1478,11 +1479,10 @@ skald 3</div></td>
                     <td></td>
                     <td></td>
                     <td>âœ”</td>                                    
-                </tr>    
+                </tr>
             </tbody>
         </table>
     </div>
-      
       
         <div id="sticky-bottom">
             <div>

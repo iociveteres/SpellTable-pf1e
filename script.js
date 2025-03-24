@@ -188,6 +188,7 @@ class Spell {
         this.mythicDescription = spellData["Mythic"] === undefined ? "" : spellData["Mythic"]
         this.castingTime = spellData["Casting time"];
         this.components = spellData.Components;
+        this.price = spellData.Price === undefined ? "" : spellData.Price
         this.range = spellData.Range;
         this.duration = spellData.Duration;
         this.accessWays = "";
@@ -228,7 +229,7 @@ function createTableRow(spell, position) {
                 <td>${spell.descriptors}</td>
                 <td class="access-td"><div class="access-div ${spell.overflows}" title="${spell.accessWays}">${spell.accessWays}</div></td>
                 <td data-sort="${spell.parsedCastTime}">${spell.castingTime}</td>
-                <td>${spell.components}</td>
+                <td price="${spell.price}">${spell.components}</td>
                 <td data-sort-code="${spell.rangeCode}" data-sort-dist="${spell.rangeDistance}">${spell.range}</td>
                 <td>${spell.effect}</td>
                 <td>${spell.target}</td>

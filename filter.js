@@ -90,6 +90,12 @@ function filterTable(table, colnum, filters) {
                             return true;
                         break;
                     }
+                    case colIndex.get("Components"): {
+                        f = new FilterComponents(filter)
+                        if (f.filter(t))
+                            return true;
+                        break;
+                    }
                     default:
                         if (t.innerText.toLowerCase().includes(filter))
                             return true;
@@ -520,6 +526,39 @@ class FilterDescription extends FilterBase {
     }
 }
 
+
+class FilterComponents extends FilterBase {
+    constructor(filterValue) {
+        super(filterValue)
+    }
+
+    lookforPrice(td) {
+        let price = this.filterValue.replace(/price:\s*/, "")
+        if (compRegex.test(price)) {
+            return this.lookforTextWithComparison.bind(this)(td, price)
+        }
+
+        this.filterValue = "Price: =" + price
+        price = "=" + price
+        return this.lookforTextWithComparison.bind(this)(td, price)
+    };
+
+    lookforTextWithComparison(td, price) {
+        let operator = findOperator(this.filterValue)
+
+        let parsedFilter = parseInt(price.slice(operator.length));
+        let rowDataValue = parseInt(td.getAttribute("price"));
+
+        return useOperator(operator, rowDataValue, parsedFilter)
+    };
+
+    filter(td) {
+        if (this.filterValue.startsWith("price:"))
+            return this.lookforPrice.bind(this)(td)
+
+        return this.lookforText.bind(this)(td);
+    }
+}
 
 export {
     filterTable
