@@ -12,7 +12,8 @@ lp.overwrite(Token.NOT, '!');
 
 const lastGoodFilters = new Map();
 const compRegex = new RegExp(/[=<>]/);
-const digitRegex = new RegExp(/^[<>=]?\d+$/);
+const digitRegex = new RegExp(/^(?:<=|>=|[<>=])?\d+$/);
+const compClassesRegex = new RegExp(/([a-zA-Z]+)\s*(?:<=|>=|[<>=])\s*([a-zA-Z]+)/);
 
 function filterTable(table, colnum, filters) {
     // console.debug('filter: ' + (filters))
@@ -131,6 +132,29 @@ function replaceYesNo(string) {
 }
 
 
+function findOperator(string) {
+    let operatorsExtended = ['<=', '>='];
+    let operator;
+    operator = operatorsExtended.find(op => string.includes(op));
+    if (!(operator === undefined))
+        return operator
+
+    let operators = ['=', '<', '>'];
+    operator = operators.find(op => string.includes(op));
+    return operator
+}
+
+function useOperator(operator, op1, op2) {
+    switch (operator) {
+        case '=': return op1 == op2;
+        case '>': return op1 > op2;
+        case '<': return op1 < op2;
+        case '<=': return op1 <= op2;
+        case '>=': return op1 >= op2;
+    }
+    return false
+}
+
 class FilterBase {
     constructor(filterValue) {
         this.filterValue = filterValue;
@@ -160,26 +184,19 @@ class FilterAccessWays extends FilterBase {
     }
 
     lookforNumbersWithComparison(item) {
-        let operators = ['=', '<', '>'];
-        let operator = operators.find(op => this.filterValue.includes(op));
+        let operator = findOperator(this.filterValue)
 
-        let val = parseInt(this.filterValue.slice(1));
+        let val = parseInt(this.filterValue.slice(operator.length));
         let [className, level] = item.split(' ');
         level = parseInt(level, 10);
 
-        switch (operator) {
-            case '=': return level == val;
-            case '>': return level > val;
-            case '<': return level < val;
-        }
-        return false;
+        return useOperator(operator, level, val)
     }
 
     lookforTextWithComparison(item) {
         if (!item.startsWith(this.filterValue.slice(0, -2))) return false;
 
-        let operators = ['=', '<', '>'];
-        let operator = operators.find(op => this.filterValue.includes(op));
+        let operator = findOperator(this.filterValue)
         // if (!operator) return false;
 
         let chunks = this.filterValue.split(operator);
@@ -193,11 +210,7 @@ class FilterAccessWays extends FilterBase {
         let parsedItem = { [className]: level };
 
         if (parsedItem.hasOwnProperty(field)) {
-            switch (operator) {
-                case '=': return parsedItem[field] == val;
-                case '>': return parsedItem[field] > val;
-                case '<': return parsedItem[field] < val;
-            }
+            return useOperator(operator, parsedItem[field], val)
         }
         return false;
     }
@@ -275,19 +288,12 @@ class FilterCastingTime extends FilterBase {
     }
 
     lookforTextWithComparison(td) {
-        let operators = ['=', '<', '>'];
-        let operator = operators.find(op => this.filterValue.includes(op));
+        let operator = findOperator(this.filterValue)
 
-        let parsedFilter = this.parseTimeInput(this.filterValue.slice(1));
+        let parsedFilter = this.parseTimeInput(this.filterValue.slice(operator.length));
         let rowDataValue = parseInt(td.getAttribute("data-sort"));
 
-        switch (operator) {
-            case '=': return rowDataValue == parsedFilter;
-            case '>': return rowDataValue > parsedFilter;
-            case '<': return rowDataValue < parsedFilter;
-        }
-
-        return false;
+        return useOperator(operator, rowDataValue, parsedFilter)
     };
 
     filter(td) {
@@ -358,10 +364,9 @@ class FilterRange extends FilterBase {
     }
 
     lookforTextWithComparison(td) {
-        let operators = ['=', '<', '>'];
-        let operator = operators.find(op => this.filterValue.includes(op));
+        let operator = findOperator(this.filterValue)
 
-        let parsedFilter = this.parseRangeInput(this.filterValue.slice(1));
+        let parsedFilter = this.parseRangeInput(this.filterValue.slice(operator.length));
         let rowCode = parseInt(td.getAttribute("data-sort-code"));
         let rowDist = parseInt(td.getAttribute("data-sort-dist"));
 
@@ -381,6 +386,18 @@ class FilterRange extends FilterBase {
                     return true
                 else if (rowCode == parsedFilter.code)
                     return rowDist < parsedFilter.length
+                break
+            case '>=':
+                if (rowCode >= parsedFilter.code)
+                    return true
+                else if (rowCode == parsedFilter.code)
+                    return rowDist >= parsedFilter.length
+                break
+            case '<=':
+                if (rowCode <= parsedFilter.code)
+                    return true
+                else if (rowCode == parsedFilter.code)
+                    return rowDist <= parsedFilter.length
                 break
         }
 
@@ -434,21 +451,14 @@ class FilterDuration extends FilterBase {
 
         return result.code * 100 + result.length;
     }
-    
-    lookforTextWithComparison (td) {
-        let operators = ['=', '<', '>'];
-        let operator = operators.find(op => this.filterValue.includes(op));
-       
-        let parsedFilter = this.parseDurationInput(this.filterValue.slice(1));
+
+    lookforTextWithComparison(td) {
+        let operator = findOperator(this.filterValue)
+
+        let parsedFilter = this.parseDurationInput(this.filterValue.slice(operator.length));
         let rowDataValue = parseInt(td.getAttribute("data-sort"));
-    
-        switch(operator) {
-            case '=': return rowDataValue == parsedFilter
-            case '>': return rowDataValue > parsedFilter
-            case '<': return rowDataValue < parsedFilter
-        }
-        
-        return false
+
+        return useOperator(operator, rowDataValue, parsedFilter)
     };
 
     filter(td) {
@@ -497,7 +507,6 @@ class FilterDescription extends FilterBase {
 
 
     filter(td) {
-        let lookforFunc;
         if (this.filterValue.startsWith("full desc:"))
             return this.lookforFullDesc.bind(this)(td)
         if (this.filterValue.startsWith("source:"))
