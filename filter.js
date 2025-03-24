@@ -1,6 +1,8 @@
 import './logipar.js';
-import { colIndex, divideChecked, hideRowsFiltering, showRowsFiltering, 
-         timeUnits, rangeUnits, durationUnits} from './utils.js';
+import {
+    colIndex, divideChecked, hideRowsFiltering, showRowsFiltering,
+    timeUnits, rangeUnits, durationUnits
+} from './utils.js';
 
 const lp = new window.Logipar();
 lp.overwrite(Token.AND, '&');
@@ -18,9 +20,9 @@ function filterTable(table, colnum, filters) {
     // get all the rows in this table:
     let tbody = table.getElementsByTagName(`tbody`)[0]
     let rows = Array.from(tbody.querySelectorAll(`tr`));
-    
+
     // only unchecked rows need filtering
-    let {checkedRows, uncheckedRows} = divideChecked(rows);
+    let { checkedRows, uncheckedRows } = divideChecked(rows);
 
     // hide all rows
     uncheckedRows.forEach(row => hideRowsFiltering(row));
@@ -42,12 +44,12 @@ function filterTable(table, colnum, filters) {
                     break
                 default:
                     improvedFilter = filter;
-            }              
+            }
 
             // if expression throws exception when parsed use last saved for this col
             try {
                 lp.parse(improvedFilter);
-                lastGoodFilters.set(position, improvedFilter)               
+                lastGoodFilters.set(position, improvedFilter)
             } catch (error) {
                 lp.parse(lastGoodFilters.get(position));
             }
@@ -55,46 +57,46 @@ function filterTable(table, colnum, filters) {
             // use created filter to filter respective column
             let qs = `td:nth-child(${position + 2})`;
             let f = lp.filterFunction((row, filter) => {
-                    let t = row.querySelector(qs);
-                    switch (position + 2) {
-                        case colIndex.get("Description"): {
-                            f = new FilterDescription(filter)
-                            if (f.filter(t))
-                                return true
-                            break;
-                        }
-                        case colIndex.get("Access ways"): {
-                            f = new FilterAccessWays(filter)
-                            if (f.filter(t)) 
-                                return true;
-                            break;
-                        }
-                        case colIndex.get("Casting Time"): {
-                            f = new FilterCastingTime(filter)
-                            if (f.filter(t)) 
-                                return true;
-                            break;
-                        }
-                        case colIndex.get("Range"): {
-                            f = new FilterRange(filter)
-                            if (f.filter(t)) 
-                                return true;
-                            break;
-                        }
-                        case colIndex.get("Duration"): {
-                            f = new FilterDuration(filter)
-                            if (f.filter(t)) 
-                                return true;
-                            break;
-                        }
-                        default:
-                            if (t.innerText.toLowerCase().includes(filter))
-                                return true;
+                let t = row.querySelector(qs);
+                switch (position + 2) {
+                    case colIndex.get("Description"): {
+                        f = new FilterDescription(filter)
+                        if (f.filter(t))
+                            return true
+                        break;
                     }
-                    return false;
+                    case colIndex.get("Access ways"): {
+                        f = new FilterAccessWays(filter)
+                        if (f.filter(t))
+                            return true;
+                        break;
+                    }
+                    case colIndex.get("Casting Time"): {
+                        f = new FilterCastingTime(filter)
+                        if (f.filter(t))
+                            return true;
+                        break;
+                    }
+                    case colIndex.get("Range"): {
+                        f = new FilterRange(filter)
+                        if (f.filter(t))
+                            return true;
+                        break;
+                    }
+                    case colIndex.get("Duration"): {
+                        f = new FilterDuration(filter)
+                        if (f.filter(t))
+                            return true;
+                        break;
+                    }
+                    default:
+                        if (t.innerText.toLowerCase().includes(filter))
+                            return true;
+                }
+                return false;
             });
-            
-            result = result.filter(f); 
+
+            result = result.filter(f);
             // console.debug(lp.stringify());
         }
     });
@@ -124,8 +126,8 @@ function replacePartialWays(string) {
 function replaceYesNo(string) {
     let result = string.replace(/yes/g, "✔")
     result = result.replace(/no/g, "!✔")
-    
-    return result; 
+
+    return result;
 }
 
 
@@ -250,7 +252,7 @@ class FilterCastingTime extends FilterBase {
 
     parseTimeInput(input) {
         let result = { code: null, length: null };
-        
+
         const digitMatch = input.match(/^\d+/);
         let digits = 1;
         let unit;
@@ -260,7 +262,7 @@ class FilterCastingTime extends FilterBase {
         } else {
             unit = input;
         }
-        
+
         for (let [key, value] of timeUnits) {
             if (unit !== "" && key.startsWith(unit)) {
                 result.code = value;
@@ -288,7 +290,7 @@ class FilterCastingTime extends FilterBase {
         return false;
     };
 
-    filter(td) {     
+    filter(td) {
         if (compRegex.test(this.filterValue)) {
             return this.lookforTextWithComparison.bind(this)(td)
         }
@@ -307,7 +309,7 @@ class FilterRange extends FilterBase {
 
     parseRangeInput(input) {
         let result = { code: null, length: null };
-        
+
         const digitMatch = input.match(/^\d+/);
         let digits = 1;
         let unit;
@@ -362,10 +364,10 @@ class FilterRange extends FilterBase {
         let parsedFilter = this.parseRangeInput(this.filterValue.slice(1));
         let rowCode = parseInt(td.getAttribute("data-sort-code"));
         let rowDist = parseInt(td.getAttribute("data-sort-dist"));
-    
-        switch(operator) {
+
+        switch (operator) {
             case '=':
-                if (rowCode == parsedFilter.code)            
+                if (rowCode == parsedFilter.code)
                     return true
                 break
             case '>':
@@ -381,11 +383,11 @@ class FilterRange extends FilterBase {
                     return rowDist < parsedFilter.length
                 break
         }
-        
+
         return false
     };
 
-    filter(td) {    
+    filter(td) {
         if (compRegex.test(this.filterValue)) {
             return this.lookforTextWithComparison.bind(this)(td);
         }
@@ -402,7 +404,7 @@ class FilterDuration extends FilterBase {
 
     parseDurationInput(input) {
         let result = { code: 100, length: null };
-        
+
         const digitMatch = input.match(/^\d+/);
         let digits = 1;
         let unit;
@@ -412,7 +414,7 @@ class FilterDuration extends FilterBase {
         } else {
             unit = input;
         }
-    
+
         for (let [key, value] of durationUnits) {
             if (key.trim().startsWith(unit.trim())) {
                 if ("minutes".startsWith(unit.trim()) && !unit.trim().includes("/"))
@@ -429,7 +431,7 @@ class FilterDuration extends FilterBase {
             }
         }
         result.length = digits;
-    
+
         return result.code * 100 + result.length;
     }
     
@@ -449,7 +451,7 @@ class FilterDuration extends FilterBase {
         return false
     };
 
-    filter(td) {    
+    filter(td) {
         if (compRegex.test(this.filterValue)) {
             return this.lookforTextWithComparison.bind(this)(td)
         }
@@ -462,16 +464,16 @@ class FilterDescription extends FilterBase {
     constructor(filterValue) {
         super(filterValue)
     }
-    
-    lookforFullDesc (td) {
+
+    lookforFullDesc(td) {
         return td.getAttribute("title").toLowerCase().includes(this.filterValue.replace(/full desc:\s*/, ""));
     };
 
-    lookforSource (td) {
+    lookforSource(td) {
         return td.getAttribute("source").toLowerCase().includes(this.filterValue.replace(/source:\s*/, ""));
     };
 
-    lookforMythicDescription (td) {
+    lookforMythicDescription(td) {
         if (!td.hasAttribute("mythic-description")) {
             return false
         }
@@ -482,7 +484,7 @@ class FilterDescription extends FilterBase {
         return td.getAttribute("mythic-description").toLowerCase().includes(f);
     };
 
-    lookforMythicSource (td) {
+    lookforMythicSource(td) {
         if (!td.hasAttribute("mythic-source")) {
             return false
         }
@@ -501,10 +503,10 @@ class FilterDescription extends FilterBase {
         if (this.filterValue.startsWith("source:"))
             return this.lookforSource.bind(this)(td)
         if (this.filterValue.startsWith("mythic desc:"))
-            return this.lookforMythicDescription.bind(this)(td) 
+            return this.lookforMythicDescription.bind(this)(td)
         if (this.filterValue.startsWith("mythic source:"))
-            return this.lookforMythicSource.bind(this)(td)  
- 
+            return this.lookforMythicSource.bind(this)(td)
+
         return this.lookforText.bind(this)(td);
     }
 }
