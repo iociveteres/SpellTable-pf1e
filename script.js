@@ -197,11 +197,14 @@ class Spell {
         this.checked = false;
 
         let result = Object.entries(spellData["access_ways"]).map(([key, value]) => {
-            return value.map(item => {
-                return item.join(' ');
-            }).join('\n');
+            return value.map(item => item.join(' ')).join('\n');
         }).join('\n');
         this.accessWays = result;
+        let resultWithSources = Object.entries(spellData["access_ways"]).map(([key, value]) => {
+            let items = value.map(item => item.join(' ')).join('\n');
+            return `${key}:\n${items}`;
+          }).join('\n\n');
+        this.accessWaysWithSources = resultWithSources
        
         if (countNewLines(this.accessWays) >= 3) {
             this.overflows = " overflows";
@@ -227,7 +230,7 @@ function createTableRow(spell, position) {
                 <td>${spell.school}</td>
                 <td>${spell.subschool}</td>
                 <td>${spell.descriptors}</td>
-                <td class="access-td"><div class="access-div ${spell.overflows}" title="${spell.accessWays}">${spell.accessWays}</div></td>
+                <td class="access-td"><div class="access-div ${spell.overflows}" title="${spell.accessWaysWithSources}">${spell.accessWays}</div></td>
                 <td data-sort="${spell.parsedCastTime}">${spell.castingTime}</td>
                 <td price="${spell.price}">${spell.components}</td>
                 <td data-sort-code="${spell.rangeCode}" data-sort-dist="${spell.rangeDistance}">${spell.range}</td>
