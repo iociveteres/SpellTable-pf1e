@@ -170,17 +170,26 @@ th div input {
 	right: 2px; 
 	font-weight: bold;
 }
-
-.spelltable th:nth-child(3), .spelltable td:nth-child(3) {
-    min-width: 15%;
+/* 
+tr th:nth-child(3), tr td:nth-child(3) {
+    min-width: 10%;
 }
 
-.spelltable th:nth-child(7), .spelltable td:nth-child(7) {
+.table-spells thead tr th:nth-child(7), .table-spells tbody tr td:nth-child(7) {
     min-width: 170px;
 }
 
-.spelltable th:nth-child(15), .spelltable td:nth-child(15) {
+.table-spells thead tr th:nth-child(11), .table-spells tbody tr td:nth-child(11) {
+    min-width: 200px;
+}
+
+.stable-spells thead tr th:nth-child(15), .table-spells tbody tr td:nth-child(15) {
     min-width: 100px;
+} 
+*/
+
+ th:nth-child(11), td:nth-child(11) {
+    min-width: 5em;
 }
 
 .hidden-desc {
@@ -259,7 +268,7 @@ th div input {
     overflow: hidden;
 }
 
-a {
+tr div a {
 	display: inline-block;
 	padding: 10px 20px;
 	text-decoration: underline;

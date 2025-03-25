@@ -111,7 +111,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 placeholderElement.remove(); 
             }
             const tbody = table.querySelector('tbody');
-            tbody.innerHTML += out;
+            tbody.insertAdjacentHTML("beforeend", out);
             // console.timeEnd('parse')           
 
             table.addEventListener("change", (evt) => {
