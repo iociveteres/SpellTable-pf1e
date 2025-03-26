@@ -303,7 +303,9 @@ tr div a {
 }
 
 .help-body {
+	margin-top: 100px;
     display: flex;
+	flex-direction: column;
     justify-content: center;
     align-items: center;
     height: auto;
@@ -314,6 +316,11 @@ tr div a {
 
 .help-content {
 	text-align: start; 
+	line-height: 125%;
+}
+
+.help-content ul {
+	margin: 5px;
 }
 
 body {
