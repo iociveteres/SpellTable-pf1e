@@ -22,31 +22,6 @@ themeToggleBtn.addEventListener("click", function() {
 });
 
 let table = document.getElementById('table-spells')
-let filterInputs = Array();
-table.querySelectorAll("th").forEach((th, position) => {
-    if (position!= 0) {
-        filterInputs.push(th.querySelector("input"));
-        
-        th.querySelector("button").addEventListener("click", evt => {
-            clearTempRows(table);
-            let newDir = sortTable(table, position, th.getAttribute("dir"));  
-            table.querySelectorAll("th").forEach((th) => {
-                th.setAttribute("dir", "no")
-            });
-            th.setAttribute("dir", newDir);
-            window.scrollTo(0, 0)
-            updateSpellCount();
-        })
-
-        th.querySelector("input").addEventListener("input", debounce(evt => {
-            clearTempRows(table);
-            let filterValues = filterInputs.map((filter) => filter.value);
-            filterTable(table, position, filterValues);
-            window.scrollTo(0, 0)
-            updateSpellCount();
-        }, 300));
-    }
-});
 
 {
     let topFixedBar = document.getElementById("top-bar");
@@ -112,7 +87,33 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             const tbody = table.querySelector('tbody');
             tbody.insertAdjacentHTML("beforeend", out);
-            // console.timeEnd('parse')           
+            // console.timeEnd('parse')
+            
+            let filterInputs = Array();
+            table.querySelectorAll("th").forEach((th, position) => {
+                if (position!= 0) {
+                    filterInputs.push(th.querySelector("input"));
+                    
+                    th.querySelector("button").addEventListener("click", evt => {
+                        clearTempRows(table);
+                        let newDir = sortTable(table, position, th.getAttribute("dir"));  
+                        table.querySelectorAll("th").forEach((th) => {
+                            th.setAttribute("dir", "no")
+                        });
+                        th.setAttribute("dir", newDir);
+                        window.scrollTo(0, 0)
+                        updateSpellCount();
+                    })
+
+                    th.querySelector("input").addEventListener("input", debounce(evt => {
+                        clearTempRows(table);
+                        let filterValues = filterInputs.map((filter) => filter.value);
+                        filterTable(table, position, filterValues);
+                        window.scrollTo(0, 0)
+                        updateSpellCount();
+                    }, 300));
+                }
+            });
 
             table.addEventListener("change", (evt) => {
                 if (evt.target.matches('td:first-child input[type="checkbox"]')) {
