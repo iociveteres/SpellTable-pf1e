@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <script defer>
+            (function() {
+                const theme = localStorage.getItem("theme") || 
+                              (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+                document.documentElement.classList.add(theme + "-mode");
+            })();
+        </script>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>About</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+
+    <body class="help-body">
+        <div id="top-bar" class="top-bar" style="position: fixed; top: 0; left: 0; width: 100%; ">
+            <div id="heading">
+                Iociveteres's Pathfinder Spell Table
+            </div>
+        </div>
+
+        <div class="help-content" style="width: 1000px;">
+            <h2>About</h2>
+            
+            e-mail: <a href="mailto:iociveteres@gmail.com" target="_parent">iociveteres@gmail.com</a><br>
+            github repository: <a href="https://github.com/iociveteres/SpellTable-pf1e">https://github.com/iociveteres/SpellTable-pf1e</a>
+
+            <p>This site was born from procrastination over my thesis and completed out of love — 
+            though with Pathfinder now it's a love-hate relationship.<br>
+            I've started building it several times with React, but it felt too complex for the task. 
+            Then, I came across a blog post about how much can be achieved with just HTML, CSS, and 
+            vanilla JavaScript, and leveraged these tools.<br>
+            I hope you find this site enjoyable to use and helpful in your wizardly research.</p>
+
+            <p>I'm currently working on a character sheet for Black Crusade system. I don't like how slow roll20 is, 
+            and character sheets here either have poor design or are somewhat broken. I recommend systems of this family, 
+            they are works of great design and have few flaws. Black Crusade especially, it has a <a href="https://drive.google.com/file/d/1fvzFprwjog_1xdiGrPzUK4__daAKFdUk/view">fun fan mod</a>, 
+            with content from other books and rebalances for the better, but unfortunately, available only in russian.<br>
+            This character sheet will require proper back-end, and when I will host it, I'll also host this site. 
+            GitHub Pages are fine, but cache lives only for 10 minutes and it can not be configurated. I feel 
+            awkward by sending 1 Mb of json if you visit site another day.</p>
+            <p>I’ve also thought about making a similar site for Pathfinder 2e or D&D 5e if this one gets popular and picks up donations. No promises, though.</p>
+
+            <a class="bottom-link" href="index.html" target="_parent">Back to the table</a>
+        </div>
+    </body>
+</html>
