@@ -22,31 +22,6 @@ themeToggleBtn.addEventListener("click", function() {
 });
 
 let table = document.getElementById('table-spells')
-let filterInputs = Array();
-table.querySelectorAll("th").forEach((th, position) => {
-    if (position!= 0) {
-        filterInputs.push(th.querySelector("input"));
-        
-        th.querySelector("button").addEventListener("click", evt => {
-            clearTempRows(table);
-            let newDir = sortTable(table, position, th.getAttribute("dir"));  
-            table.querySelectorAll("th").forEach((th) => {
-                th.setAttribute("dir", "no")
-            });
-            th.setAttribute("dir", newDir);
-            window.scrollTo(0, 0)
-            updateSpellCount();
-        })
-
-        th.querySelector("input").addEventListener("input", debounce(evt => {
-            clearTempRows(table);
-            let filterValues = filterInputs.map((filter) => filter.value);
-            filterTable(table, position, filterValues);
-            window.scrollTo(0, 0)
-            updateSpellCount();
-        }, 300));
-    }
-});
 
 {
     let topFixedBar = document.getElementById("top-bar");
@@ -111,8 +86,34 @@ document.addEventListener("DOMContentLoaded", function () {
                 placeholderElement.remove(); 
             }
             const tbody = table.querySelector('tbody');
-            tbody.innerHTML += out;
-            // console.timeEnd('parse')           
+            tbody.insertAdjacentHTML("beforeend", out);
+            // console.timeEnd('parse')
+            
+            let filterInputs = Array();
+            table.querySelectorAll("th").forEach((th, position) => {
+                if (position!= 0) {
+                    filterInputs.push(th.querySelector("input"));
+                    
+                    th.querySelector("button").addEventListener("click", evt => {
+                        clearTempRows(table);
+                        let newDir = sortTable(table, position, th.getAttribute("dir"));  
+                        table.querySelectorAll("th").forEach((th) => {
+                            th.setAttribute("dir", "no")
+                        });
+                        th.setAttribute("dir", newDir);
+                        window.scrollTo(0, 0)
+                        updateSpellCount();
+                    })
+
+                    th.querySelector("input").addEventListener("input", debounce(evt => {
+                        clearTempRows(table);
+                        let filterValues = filterInputs.map((filter) => filter.value);
+                        filterTable(table, position, filterValues);
+                        window.scrollTo(0, 0)
+                        updateSpellCount();
+                    }, 300));
+                }
+            });
 
             table.addEventListener("change", (evt) => {
                 if (evt.target.matches('td:first-child input[type="checkbox"]')) {
@@ -183,8 +184,12 @@ class Spell {
         this.spellResistance = spellData["Spell Resistance"] === undefined ? "" : spellData["Spell Resistance"];
         this.shortDescription = spellData["Short description"] === undefined ? "" : spellData["Short description"];
         this.fullDescription = spellData["Description"] === undefined ? "" : spellData["Description"];
+        this.source = spellData.Source ===  "None" ? "" : spellData.Source;
+        this.mythicSource = spellData["Mythic Source"] === undefined ? "" : spellData["Mythic Source"]
+        this.mythicDescription = spellData["Mythic"] === undefined ? "" : spellData["Mythic"]
         this.castingTime = spellData["Casting time"];
         this.components = spellData.Components;
+        this.price = spellData.Price === undefined ? "" : spellData.Price
         this.range = spellData.Range;
         this.duration = spellData.Duration;
         this.accessWays = "";
@@ -193,11 +198,14 @@ class Spell {
         this.checked = false;
 
         let result = Object.entries(spellData["access_ways"]).map(([key, value]) => {
-            return value.map(item => {
-                return item.join(' ');
-            }).join('\n');
+            return value.map(item => item.join(' ')).join('\n');
         }).join('\n');
         this.accessWays = result;
+        let resultWithSources = Object.entries(spellData["access_ways"]).map(([key, value]) => {
+            let items = value.map(item => item.join(' ')).join('\n');
+            return `${key}:\n${items}`;
+          }).join('\n\n');
+        this.accessWaysWithSources = resultWithSources
        
         if (countNewLines(this.accessWays) >= 3) {
             this.overflows = " overflows";
@@ -212,16 +220,20 @@ class Spell {
 }
 
 function createTableRow(spell, position) {
+    let mythic = "";
+    if (spell.mythicDescription != "") {
+        mythic = ` mythic-description = "${spell.mythicDescription}" mythic-source = "${spell.mythicSource}"`
+    }
     return `<tr class="data-row hidden-on-scroll" tabindex="0">
                 <td><input type="checkbox" name="${spell.name}"/></td>
                 <td linkAon="${spell.linkAon}" linkD20="${spell.linkD20}">${spell.name}</td>
-                <td title="${spell.fullDescription}">${spell.shortDescription}</td>
+                <td title="${spell.fullDescription}" source="${spell.source}"${mythic}>${spell.shortDescription}</td>
                 <td>${spell.school}</td>
                 <td>${spell.subschool}</td>
                 <td>${spell.descriptors}</td>
-                <td class="access-td"><div class="access-div ${spell.overflows}" title="${spell.accessWays}">${spell.accessWays}</div></td>
+                <td class="access-td"><div class="access-div ${spell.overflows}" title="${spell.accessWaysWithSources}">${spell.accessWays}</div></td>
                 <td data-sort="${spell.parsedCastTime}">${spell.castingTime}</td>
-                <td>${spell.components}</td>
+                <td price="${spell.price}">${spell.components}</td>
                 <td data-sort-code="${spell.rangeCode}" data-sort-dist="${spell.rangeDistance}">${spell.range}</td>
                 <td>${spell.effect}</td>
                 <td>${spell.target}</td>
@@ -251,7 +263,19 @@ function makeDescriptionRow(tr) {
         let newRow = document.createElement('tr');
         let newCell = document.createElement('td');
         newCell.colSpan = "100";
-        let fullDescription = tr.querySelector(`td:nth-child(${colIndex.get("Description")})`).getAttribute("title");
+        let td = tr.querySelector(`td:nth-child(${colIndex.get("Description")})`);
+        let fullDescription = td.getAttribute("title");
+        if (!fullDescription.endsWith("\n")) 
+            fullDescription += '\n'
+        fullDescription += '\n' + td.getAttribute("source");
+        if (td && td.hasAttribute("mythic-description")) {
+            if (!fullDescription.endsWith("\n")) 
+            fullDescription += '\n'
+            fullDescription += '\n<b>Mythic:</b>\n' + td.getAttribute("mythic-description");
+            if (!fullDescription.endsWith("\n")) 
+                fullDescription += '\n'
+            fullDescription += '\n' + td.getAttribute("mythic-source");       
+        }
 
         let accessWays = tr.querySelector(`.access-div`).getAttribute('title').replace("...", "");
         let parentDiv = document.createElement('div');

@@ -170,17 +170,26 @@ th div input {
 	right: 2px; 
 	font-weight: bold;
 }
-
-.spelltable th:nth-child(3), .spelltable td:nth-child(3) {
-    min-width: 15%;
+/* 
+tr th:nth-child(3), tr td:nth-child(3) {
+    min-width: 10%;
 }
 
-.spelltable th:nth-child(7), .spelltable td:nth-child(7) {
+.table-spells thead tr th:nth-child(7), .table-spells tbody tr td:nth-child(7) {
     min-width: 170px;
 }
 
-.spelltable th:nth-child(15), .spelltable td:nth-child(15) {
+.table-spells thead tr th:nth-child(11), .table-spells tbody tr td:nth-child(11) {
+    min-width: 200px;
+}
+
+.stable-spells thead tr th:nth-child(15), .table-spells tbody tr td:nth-child(15) {
     min-width: 100px;
+} 
+*/
+
+ th:nth-child(11), td:nth-child(11) {
+    min-width: 5em;
 }
 
 .hidden-desc {
@@ -209,7 +218,7 @@ th div input {
 }
 
 .dropdown-description {
-	width: 40%;
+	width: 42%;
 	margin-left: 5%;
 	padding: 5px;
 	font-family: monospace;
@@ -218,10 +227,38 @@ th div input {
 	text-indent: 0;
 }
 
+@media (max-width: 1459px) {
+	.dropdown-links {
+		width: 7%;
+		margin-left: 3%;
+		padding: 5px;
+	}
+    .dropdown-description {
+        width: 60%;
+        margin-left: 3%;
+        padding: 5px;
+    }
+}
+
+@media (min-width: 1460px) and (max-width: 1729px) {
+    .dropdown-description {
+        width: 50%;
+        margin-left: 3%;
+        padding: 5px;
+    }
+}
+
+@media (min-width: 1730px) {
+    .dropdown-description {
+        width: 40%;
+        margin-left: 5%;
+        padding: 5px;
+    }
+}
+
 .dropdown-access-ways {
 	font-family: serif;
-	width: 25%;
-	margin-left: 0.5%;
+	margin-left: 5%;
 	padding: 5px;
 	text-align: center;
 }
@@ -231,7 +268,7 @@ th div input {
     overflow: hidden;
 }
 
-a {
+tr div a {
 	display: inline-block;
 	padding: 10px 20px;
 	text-decoration: underline;
@@ -266,7 +303,9 @@ a {
 }
 
 .help-body {
+	margin-top: 100px;
     display: flex;
+	flex-direction: column;
     justify-content: center;
     align-items: center;
     height: auto;
@@ -277,6 +316,11 @@ a {
 
 .help-content {
 	text-align: start; 
+	line-height: 125%;
+}
+
+.help-content ul {
+	margin: 5px;
 }
 
 body {
