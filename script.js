@@ -262,7 +262,7 @@ function makeDescriptionRow(tr) {
         (!nextRow.classList.contains('show-desc') && !nextRow.classList.contains('hidden-desc'))) {
         let newRow = document.createElement('tr');
         let newCell = document.createElement('td');
-        newCell.colSpan = "100";
+        newCell.colSpan = "16";
         let td = tr.querySelector(`td:nth-child(${colIndex.get("Description")})`);
         let fullDescription = td.getAttribute("title");
         if (!fullDescription.endsWith("\n")) 

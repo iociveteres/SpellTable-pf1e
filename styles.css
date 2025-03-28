@@ -5,15 +5,16 @@ body{
 	margin: 0;
 	padding: 0;
 	overflow-y: scroll;
-	overflow-x: hidden;
+	/* overflow-x: hidden; */
 }
 
 .top-bar {
-	max-height: 100px;
+	max-height: 90px;
     width: 100%;
 	display: flex;
     justify-content: center;
     align-items: center;
+	white-space: nowrap;
 }
 	
 .skip-link {
@@ -39,10 +40,26 @@ body{
 }
 
 #heading { 
-	height: 100px;
-	font-size: 150%;
+	height: 90px;
+	font-size: 160%;
 	vertical-align: middle;
-	line-height: 100px;
+	line-height: 90px;
+}
+
+@media (max-width: 460px) {
+    #heading {
+		height: 60px;
+		font-size: 140%;	
+		line-height: 60px;	
+    }
+}
+
+@media (max-height: 500px) {
+    #heading {
+		height: 60px;
+		font-size: 140%;	
+		line-height: 60px;	
+    }
 }
 
 .table-div {
@@ -149,10 +166,10 @@ th div input {
 }
 
 .access-td {
-	position:relative; 
-	white-space:collapse; 
-	word-wrap:break-word; 
-	z-index:1;
+	position: relative; 
+	white-space: collapse; 
+	word-wrap: break-word; 
+	z-index: 1;
 }
 
 .access-div {
@@ -170,23 +187,6 @@ th div input {
 	right: 2px; 
 	font-weight: bold;
 }
-/* 
-tr th:nth-child(3), tr td:nth-child(3) {
-    min-width: 10%;
-}
-
-.table-spells thead tr th:nth-child(7), .table-spells tbody tr td:nth-child(7) {
-    min-width: 170px;
-}
-
-.table-spells thead tr th:nth-child(11), .table-spells tbody tr td:nth-child(11) {
-    min-width: 200px;
-}
-
-.stable-spells thead tr th:nth-child(15), .table-spells tbody tr td:nth-child(15) {
-    min-width: 100px;
-} 
-*/
 
  th:nth-child(11), td:nth-child(11) {
     min-width: 5em;
@@ -264,7 +264,7 @@ tr th:nth-child(3), tr td:nth-child(3) {
 }
 
 .description {
-	height:70px; 
+	height: 70px; 
     overflow: hidden;
 }
 
@@ -303,20 +303,32 @@ tr div a {
 }
 
 .help-body {
-	margin-top: 100px;
     display: flex;
 	flex-direction: column;
     justify-content: center;
     align-items: center;
     height: auto;
-    margin: 0; 
-	font-size: 120%;
+    padding: 0.6em; 
 	font-family: serif;
   }
 
 .help-content {
 	text-align: start; 
-	line-height: 125%;
+	font-size: 120%;
+	line-height: 120%;
+	width: 1000px;
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding-bottom: 5%;
+}
+
+@media (max-width: 1000px) {
+	.help-content {
+		width: 100%;
+	}
 }
 
 .help-content ul {
