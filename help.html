@@ -15,45 +15,47 @@
     </head>
 
     <body class="help-body">
-        <div id="top-bar" class="top-bar" style="position: fixed; top: 0; left: 0; width: 100%; ">
+        <div id="top-bar" class="top-bar">
             <div id="heading">
                 Iociveteres's Pathfinder Spell Table
             </div>
         </div>
 
-        <div class="help-content">
-            <h2>Spell Table Features</h2>
-            <p>Click on row with spell to open it's full description. There are links to AoNPRD and d20PFSRD too.</p>
+        <div class="help-content" style="width: auto;">
+            <div>
+                <h2>Spell Table Features</h2>
+                <p>Click on row with spell to open it's full description. There are links to AoNPRD and d20PFSRD too.</p>
 
-            <p>Click on column names to sort them. Click again to change sorting direction.</p>
+                <p>Click on column names to sort them. Click again to change sorting direction.</p>
 
-            <p>Input fields can be used for simple search, like "Permanency" in Name or "cleric 1" in Access Ways column.<br>
-            Some columns provide input suggestions — press the <i>down arrow key</i> to view them.<br>
-            Filters can be applied to multiple columns simultaneously.</p>
+                <p>Input fields can be used for simple search, like "Permanency" in Name or "cleric 1" in Access Ways column.<br>
+                Some columns provide input suggestions — press the <i>down arrow key</i> to view them.<br>
+                Filters can be applied to multiple columns simultaneously.</p>
 
-            <p>You can make logical expressions using: <b>&</b> (and), <b>|</b> (or), <b>^</b> (xor), <b>!</b> (not) and <b>()</b> (parentheses).<br>
-            Access ways, Casting Time, Range, Duration and Components (with "price:") columns support comparison with <b>&lt;</b>, <b>&gt;</b>, <b>=</b>, <b>&lt;=</b>, <b>&gt;=</b> signs.<br>
-            For example, in respective input fields:
-            <ul>
-                <li>cleric & (!paladin | !wizard) — spells which cleric has, that paladin or wizard does not</li> 
-                <li>cleric &gt;=2 & cleric &lt;=5 — cleric spells between levels 2 and 5</li>
-                <li>ranger &lt; druid — spells that are a lower level for rangers than for druids</li>
-                <li>&lt;=2 hours — durations shorter than 2 hours</li>
-                <li>&gt;touch — ranges greater than touch</li>
-                <li>price: =25 — components cost exactly 25</li>
-            </ul></p>
+                <p>You can make logical expressions using: <b>&</b> (and), <b>|</b> (or), <b>^</b> (xor), <b>!</b> (not) and <b>()</b> (parentheses).<br>
+                Access ways, Casting Time, Range, Duration and Components (with "price:") columns support comparison with <b>&lt;</b>, <b>&gt;</b>, <b>=</b>, <b>&lt;=</b>, <b>&gt;=</b> signs.<br>
+                For example, in respective input fields:
+                <ul>
+                    <li>cleric & (!paladin | !wizard) — spells which cleric has, that paladin or wizard does not</li> 
+                    <li>cleric &gt;=2 & cleric &lt;=5 — cleric spells between levels 2 and 5</li>
+                    <li>ranger &lt; druid — spells that are a lower level for rangers than for druids</li>
+                    <li>&lt;=2 hours — durations shorter than 2 hours</li>
+                    <li>&gt;touch — ranges greater than touch</li>
+                    <li>price: =25 — components cost exactly 25</li>
+                </ul></p>
 
-            <p>By default, Description filter searches short descriptions shown in the table.<br>
-            Using Description filter, you can also search sources and full descriptions of spells with "full desc: <i>your text</i>" and "source: <i>your text</i>".<br>
-            Also using it, you can search for mythic spells and their mythic descriptions with "mythic desc: <i>your text</i>" and "mythic source: <i>your text</i>".<br>
-            If you leave "<i>your text</i>" empty for mythic spells, non mythic spells will be filtered out.</p>
+                <p>By default, Description filter searches short descriptions shown in the table.<br>
+                Using Description filter, you can also search sources and full descriptions of spells with "full desc: <i>your text</i>" and "source: <i>your text</i>".<br>
+                Also using it, you can search for mythic spells and their mythic descriptions with "mythic desc: <i>your text</i>" and "mythic source: <i>your text</i>".<br>
+                If you leave "<i>your text</i>" empty for mythic spells, non mythic spells will be filtered out.</p>
 
-            <p>Check the Pin checkbox to keep a row visible, even when applying filters or sorting.</p>
+                <p>Check the Pin checkbox to keep a row visible, even when applying filters or sorting.</p>
 
-            <p>In the footer you will find buttons to clear input fields and unpin rows, change theme to light/dark, toggle display of the site name.<br>
-            Also there is link for this page, about and donations.<br>
-            In the right part of the footer you will see number of spells satisfying filters.</p>
-            <a class="bottom-link" href="index.html" target="_parent">Back to the table</a>
+                <p>In the footer you will find buttons to clear input fields and unpin rows, change theme to light/dark, toggle display of the site name.<br>
+                Also there is link for this page, about and donations.<br>
+                In the right part of the footer you will see number of spells satisfying filters.</p>
+                <a class="bottom-link" href="index.html" target="_parent">Back to the table</a>
+            </div>
         </div>
     </body>
 </html>
