@@ -37,6 +37,13 @@ document.getElementById('toggle-top-bar').addEventListener("click", evt => {
     toggleTopFixedBar();
 })
 
+const filterInputs = Array();
+table.querySelectorAll("th").forEach((th, position) => {
+    if (position!= 0) {
+        filterInputs.push(th.querySelector("input"));
+    }
+});
+
 document.getElementById('clear-inputs').addEventListener("click", evt => {
     clearInputFields();
     let filterValues = filterInputs.map((filter) => filter.value);
@@ -89,11 +96,9 @@ document.addEventListener("DOMContentLoaded", function () {
             tbody.insertAdjacentHTML("beforeend", out);
             // console.timeEnd('parse')
             
-            let filterInputs = Array();
+
             table.querySelectorAll("th").forEach((th, position) => {
-                if (position!= 0) {
-                    filterInputs.push(th.querySelector("input"));
-                    
+                if (position!= 0) {                   
                     th.querySelector("button").addEventListener("click", evt => {
                         clearTempRows(table);
                         let newDir = sortTable(table, position, th.getAttribute("dir"));  
