@@ -1,7 +1,7 @@
 import './logipar.js';
 import {
     colIndex, divideChecked, hideRowsFiltering, showRowsFiltering,
-    timeUnits, rangeUnits, durationUnits
+    timeUnits, rangeUnits, durationUnits, SourceReleaseDates
 } from './utils.js';
 
 const lp = new window.Logipar();
@@ -478,51 +478,68 @@ class FilterDuration extends FilterBase {
 
 class FilterDescription extends FilterBase {
     constructor(filterValue) {
-        super(filterValue)
+        super(filterValue);
     }
 
-    lookforFullDesc(td) {
-        return td.getAttribute("title").toLowerCase().includes(this.filterValue.replace(/full desc:\s*/, ""));
-    };
-
-    lookforSource(td) {
-        return td.getAttribute("source").toLowerCase().includes(this.filterValue.replace(/source:\s*/, ""));
-    };
-
-    lookforMythicDescription(td) {
-        if (!td.hasAttribute("mythic-description")) {
-            return false
+    /**
+     * Generic method to check if a td attribute contains the filtered value.
+     * @param {HTMLElement} td 
+     * @param {string} attribute - The attribute to check (e.g., "title", "source", "mythic-description").
+     * @param {string} value - The already cleaned filter value.
+     * @returns {boolean}
+     */
+    matchAttribute(td, attribute, value) {
+        if (!td.hasAttribute(attribute)) {
+            return false;
         }
-        let f = this.filterValue.replace(/mythic desc:\s*/, "")
-        if (f == "") {
-            return true
+        if (value === "") {
+            return true;
         }
-        return td.getAttribute("mythic-description").toLowerCase().includes(f);
-    };
+        return td.getAttribute(attribute).toLowerCase().includes(value.toLowerCase());
+    }
 
-    lookforMythicSource(td) {
-        if (!td.hasAttribute("mythic-source")) {
-            return false
-        }
-        let f = this.filterValue.replace(/mythic source:\s*/, "")
-        if (f == "") {
-            return true
-        }
-        return td.getAttribute("mythic-source").toLowerCase().includes(f);
-    };
+    /**
+     * Generic method to check before/after dates for an attribute.
+     * @param {HTMLElement} td 
+     * @param {string} attribute - The attribute to check (e.g., "source" or "mythic-source").
+     * @param {string} date - The cleaned date value (prefix already removed).
+     * @param {boolean} isBefore - If true, checks if date is before; otherwise, after.
+     * @returns {boolean}
+     */
+    matchDate(td, attribute, date, isBefore) {
+        if (date === "") return true;
+        if (!td.hasAttribute(attribute)) return false;
 
+        return td.getAttribute(attribute)
+            .split(/pg\.\s*\d+,?/)
+            .filter(Boolean)
+            .map(s => s.trim())
+            .map(title => SourceReleaseDates.get(title) || "0000-00-00")
+            .some(attrDate => isBefore ? attrDate <= date : attrDate >= date);
+    }
 
     filter(td) {
-        if (this.filterValue.startsWith("full desc:"))
-            return this.lookforFullDesc.bind(this)(td)
-        if (this.filterValue.startsWith("source:"))
-            return this.lookforSource.bind(this)(td)
-        if (this.filterValue.startsWith("mythic desc:"))
-            return this.lookforMythicDescription.bind(this)(td)
-        if (this.filterValue.startsWith("mythic source:"))
-            return this.lookforMythicSource.bind(this)(td)
+        const cleanValue = (prefix) =>
+            this.filterValue.replace(new RegExp(`^${prefix}:\\s*`), "");
 
-        return this.lookforText.bind(this)(td);
+        const filters = {
+            "full desc": () => this.matchAttribute(td, "title", cleanValue("full desc")),
+            "source": () => this.matchAttribute(td, "source", cleanValue("source")),
+            "mythic desc": () => this.matchAttribute(td, "mythic-description", cleanValue("mythic desc")),
+            "mythic source": () => this.matchAttribute(td, "mythic-source", cleanValue("mythic source")),
+            "before": () => this.matchDate(td, "source", cleanValue("before"), true),
+            "after": () => this.matchDate(td, "source", cleanValue("after"), false),
+            "mythic before": () => this.matchDate(td, "mythic-source", cleanValue("mythic before"), true),
+            "mythic after": () => this.matchDate(td, "mythic-source", cleanValue("mythic after"), false),
+        };
+
+        for (let key in filters) {
+            if (this.filterValue.startsWith(`${key}:`)) {
+                return filters[key]();
+            }
+        }
+
+        return this.lookforText(td);
     }
 }
 
