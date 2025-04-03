@@ -1,6 +1,6 @@
 import { colIndex, divideChecked, 
          showRowsSorting, hideRowsSorting, 
-         divideFilteredOut, rowsReveal} from './utils.js';
+         divideFilteredOut, rowsReveal, insertCheckedRows} from './utils.js';
 
 function compareGeneric(a, b) {
     // return -1/0/1 based on what you "know" a and b
@@ -53,7 +53,7 @@ function sortTable(table, colnum, direction) {
     let {visibleRows, filteredOutRows} = divideFilteredOut(tbody);
     let sortableRows = Array.from(visibleRows);
     
-    let {checkedRows, uncheckedRows} = divideChecked(sortableRows);
+    let {checkedRows, checkedDescs, uncheckedRows} = divideChecked(sortableRows);
     uncheckedRows.forEach(row => showRowsSorting(row));
 
     // set up the queryselector for getting the indicated
@@ -80,7 +80,7 @@ function sortTable(table, colnum, direction) {
 
     // and then the magic part that makes the sorting appear on-page:
     // append checked rows first
-    checkedRows.forEach(row => tbody.appendChild(row));
+    insertCheckedRows(tbody, checkedRows, checkedDescs);
 
     // append sorted unchecked rows
     let visibleCount = 0;

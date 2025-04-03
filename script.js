@@ -336,6 +336,7 @@ function makeDescriptionRow(tr) {
         newCell.appendChild(parentDiv);
         newRow.appendChild(newCell);
         newRow.classList.add('show-desc');
+        newRow.setAttribute("data-name", tr.querySelector(`td:nth-child(${colIndex.get("Name")})`).innerText);
         tr.parentNode.insertBefore(newRow, nextRow);
     } else {
         nextRow.classList.toggle('hidden-desc');

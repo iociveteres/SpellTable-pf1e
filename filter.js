@@ -1,7 +1,7 @@
 import './logipar.js';
 import {
     colIndex, divideChecked, hideRowsFiltering, showRowsFiltering,
-    timeUnits, rangeUnits, durationUnits, SourceReleaseDates
+    timeUnits, rangeUnits, durationUnits, SourceReleaseDates, insertCheckedRows
 } from './utils.js';
 
 const lp = new window.Logipar();
@@ -23,7 +23,7 @@ function filterTable(table, colnum, filters) {
     let rows = Array.from(tbody.querySelectorAll(`tr`));
 
     // only unchecked rows need filtering
-    let { checkedRows, uncheckedRows } = divideChecked(rows);
+    let {checkedRows, checkedDescs, uncheckedRows} = divideChecked(rows);
 
     // hide all rows
     uncheckedRows.forEach(row => hideRowsFiltering(row));
@@ -108,16 +108,17 @@ function filterTable(table, colnum, filters) {
         }
     });
     // append checked rows first
-    checkedRows.forEach((row, i) => {
-        row.classList.remove('hidden-on-scroll');
-        tbody.appendChild(row)
-    });
+    checkedRows.forEach(row => row.classList.remove('hidden-on-scroll'));
+    insertCheckedRows(tbody, checkedRows, checkedDescs);
     // show again rows matching all filters
     for (let i = 0; i < result.length; i++) {
         let row = result[i];
         //row.style.display = "table-row";
-        showRowsFiltering(row, i);
+        if (row.querySelector(`td:nth-child(${colIndex.get("Name")})`).innerText === "Abeyance") {
+            let a = 1
+        }
         tbody.appendChild(row);
+        showRowsFiltering(row, i);
     }
     // console.timeEnd('filter')
 }

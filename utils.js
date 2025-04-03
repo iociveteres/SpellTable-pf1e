@@ -8,22 +8,46 @@ thElements.forEach((th, index) => {
 export function divideChecked(rows) {
     let checkedRows = [];
     let uncheckedRows = [];
+    let checkedDescs = new Map();
     let prevRowChecked = false;
+
     rows.forEach(row => {
         let checkbox = row.querySelector('td:first-child input[type="checkbox"]');
+
         if (checkbox && checkbox.checked) {
             checkedRows.push(row);
             prevRowChecked = true;
-        } else if (prevRowChecked && (row.classList.contains('show-row') || row.classList.contains('hidden-row'))) {
-            checkedRows.push(row);
-            prevRowChecked = false;
-        } else {
-            uncheckedRows.push(row);
-            prevRowChecked = false;
+            return;
         }
+
+        if (prevRowChecked && (row.classList.contains('show-desc'))) {
+            let key = row.dataset.name; // Use data-name as the key
+            checkedDescs.set(key, row);
+            prevRowChecked = false;
+            return;
+        }
+
+        uncheckedRows.push(row);
+        prevRowChecked = false;
     });
 
-    return {checkedRows: checkedRows, uncheckedRows: uncheckedRows};
+    return { checkedRows, checkedDescs, uncheckedRows };
+}
+
+export function insertCheckedRows(tbody, checkedRows, checkedDescsMap) {
+    checkedRows.forEach(row => {
+        tbody.appendChild(row);
+
+        let nameCell = row.querySelector(`td:nth-child(${colIndex.get("Name")})`);
+        let name = nameCell ? nameCell.textContent.trim() : null;
+
+        if (name) {
+            let descRow = checkedDescsMap.get(name);
+            if (descRow) {
+                tbody.appendChild(descRow);
+            }
+        }
+    });
 }
 
 export function divideFilteredOut(table) {
