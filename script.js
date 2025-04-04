@@ -1,7 +1,7 @@
 import { sortTable } from './sort.js'
 import { filterTable } from './filter.js';
 import { colIndex, showRowsScrolling, rowsReveal, 
-         timeUnits, rangeUnits, durationUnits } from './utils.js';
+         timeUnits, rangeUnits, durationUnits, SourceReleaseDates } from './utils.js';
 
 const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
 {
@@ -37,7 +37,15 @@ document.getElementById('toggle-top-bar').addEventListener("click", evt => {
     toggleTopFixedBar();
 })
 
+const filterInputs = Array();
+table.querySelectorAll("th").forEach((th, position) => {
+    if (position!= 0) {
+        filterInputs.push(th.querySelector("input"));
+    }
+});
+
 document.getElementById('clear-inputs').addEventListener("click", evt => {
+    clearTempRows(table);
     clearInputFields();
     let filterValues = filterInputs.map((filter) => filter.value);
     filterTable(table, 0, filterValues)
@@ -65,7 +73,7 @@ table.style.tableLayout = 'fixed';
 
 
 document.addEventListener("DOMContentLoaded", function () {
-    fetch("spellList.json")
+    fetch("data/spellList.json")
         .then(function (response) {
             return response.json();
         })
@@ -89,11 +97,9 @@ document.addEventListener("DOMContentLoaded", function () {
             tbody.insertAdjacentHTML("beforeend", out);
             // console.timeEnd('parse')
             
-            let filterInputs = Array();
+
             table.querySelectorAll("th").forEach((th, position) => {
-                if (position!= 0) {
-                    filterInputs.push(th.querySelector("input"));
-                    
+                if (position!= 0) {                   
                     th.querySelector("button").addEventListener("click", evt => {
                         clearTempRows(table);
                         let newDir = sortTable(table, position, th.getAttribute("dir"));  
@@ -267,14 +273,40 @@ function makeDescriptionRow(tr) {
         let fullDescription = td.getAttribute("title");
         if (!fullDescription.endsWith("\n")) 
             fullDescription += '\n'
-        fullDescription += '\n' + td.getAttribute("source");
+        let formattedSources = td.getAttribute("source")
+            .split(/pg\.\s*(\d+),?/)
+            .reduce((acc, curr, i, arr) => {
+                if (i % 2 === 0) return acc; // Skip non-page number parts
+                let title = arr[i - 1].trim();
+                let page = curr.trim();
+                if (!title) return acc;
+        
+                let releaseDate = SourceReleaseDates.get(title) || "Unknown";
+                acc.push(`<span title="Released on ${releaseDate}">${title} pg. ${page}</span>`);
+                return acc;
+            }, [])
+            .join(", ");
+        fullDescription += '\n' + formattedSources;
         if (td && td.hasAttribute("mythic-description")) {
             if (!fullDescription.endsWith("\n")) 
             fullDescription += '\n'
             fullDescription += '\n<b>Mythic:</b>\n' + td.getAttribute("mythic-description");
             if (!fullDescription.endsWith("\n")) 
                 fullDescription += '\n'
-            fullDescription += '\n' + td.getAttribute("mythic-source");       
+            let formattedMythicSources = td.getAttribute("mythic-source")
+            .split(/pg\.\s*(\d+),?/)
+            .reduce((acc, curr, i, arr) => {
+                if (i % 2 === 0) return acc; // Skip non-page number parts
+                let title = arr[i - 1].trim();
+                let page = curr.trim();
+                if (!title) return acc;
+        
+                let releaseDate = SourceReleaseDates.get(title) || "Unknown";
+                acc.push(`<span title="Released on ${releaseDate}">${title} pg. ${page}</span>`);
+                return acc;
+            }, [])
+            .join(", ");
+            fullDescription += '\n' + formattedMythicSources;      
         }
 
         let accessWays = tr.querySelector(`.access-div`).getAttribute('title').replace("...", "");
@@ -304,6 +336,7 @@ function makeDescriptionRow(tr) {
         newCell.appendChild(parentDiv);
         newRow.appendChild(newCell);
         newRow.classList.add('show-desc');
+        newRow.setAttribute("data-name", tr.querySelector(`td:nth-child(${colIndex.get("Name")})`).innerText);
         tr.parentNode.insertBefore(newRow, nextRow);
     } else {
         nextRow.classList.toggle('hidden-desc');

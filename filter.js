@@ -1,7 +1,7 @@
 import './logipar.js';
 import {
     colIndex, divideChecked, hideRowsFiltering, showRowsFiltering,
-    timeUnits, rangeUnits, durationUnits
+    timeUnits, rangeUnits, durationUnits, SourceReleaseDates, insertCheckedRows
 } from './utils.js';
 
 const lp = new window.Logipar();
@@ -16,110 +16,110 @@ const digitRegex = new RegExp(/^(?:<=|>=|[<>=])?\d+$/);
 const compClassesRegex = new RegExp(/([a-zA-Z]+)\s*(?:<=|>=|[<>=])\s*([a-zA-Z]+)/);
 
 function filterTable(table, colnum, filters) {
-    // console.debug('filter: ' + (filters))
-    // console.time('filter')
-    // get all the rows in this table:
-    let tbody = table.getElementsByTagName(`tbody`)[0]
-    let rows = Array.from(tbody.querySelectorAll(`tr`));
+    // Get tbody and all rows
+    let tbody = table.getElementsByTagName('tbody')[0];
+    let rows = Array.from(tbody.querySelectorAll('tr'));
 
-    // only unchecked rows need filtering
-    let { checkedRows, uncheckedRows } = divideChecked(rows);
+    // Divide rows into checked rows (with description rows) and unchecked rows
+    let { checkedRows, checkedDescs, uncheckedRows } = divideChecked(rows);
 
-    // hide all rows
+    // Hide all unchecked rows initially (they'll be shown if they pass filters)
     uncheckedRows.forEach(row => hideRowsFiltering(row));
     let result = uncheckedRows;
 
-    // iteratively filter out rows 
+    // Iteratively filter out rows from the unchecked set
     filters.forEach((filter, position) => {
-        // filter if string is not empty
         if (filter) {
             filter = filter.toLowerCase();
-            // for convinience replace "wizard" with "sorcere/wizard", etc
+            // Adjust filter string based on column-specific logic
             let improvedFilter;
-            switch (position + 2) { // +1 is from Pin without input, +1 because array index starts from 0, really dislike it
+            switch (position + 2) { // +1 for the Pin column, +1 for 0-index adjustment
                 case colIndex.get("Access ways"):
                     improvedFilter = replacePartialWays(filter);
-                    break
+                    break;
                 case colIndex.get("PFS"):
                     improvedFilter = replaceYesNo(filter);
-                    break
+                    break;
                 default:
                     improvedFilter = filter;
             }
 
-            // if expression throws exception when parsed use last saved for this col
+            // Validate filter expression; fallback to last good filter if necessary
             try {
                 lp.parse(improvedFilter);
-                lastGoodFilters.set(position, improvedFilter)
+                lastGoodFilters.set(position, improvedFilter);
             } catch (error) {
                 lp.parse(lastGoodFilters.get(position));
             }
 
-            // use created filter to filter respective column
+            // Build a filter function for the respective column
             let qs = `td:nth-child(${position + 2})`;
             let f = lp.filterFunction((row, filter) => {
                 let t = row.querySelector(qs);
                 switch (position + 2) {
                     case colIndex.get("Description"): {
-                        f = new FilterDescription(filter)
-                        if (f.filter(t))
-                            return true
+                        let fDesc = new FilterDescription(filter);
+                        if (fDesc.filter(t)) return true;
                         break;
                     }
                     case colIndex.get("Access ways"): {
-                        f = new FilterAccessWays(filter)
-                        if (f.filter(t))
-                            return true;
+                        let fAccess = new FilterAccessWays(filter);
+                        if (fAccess.filter(t)) return true;
                         break;
                     }
                     case colIndex.get("Casting Time"): {
-                        f = new FilterCastingTime(filter)
-                        if (f.filter(t))
-                            return true;
+                        let fCast = new FilterCastingTime(filter);
+                        if (fCast.filter(t)) return true;
                         break;
                     }
                     case colIndex.get("Range"): {
-                        f = new FilterRange(filter)
-                        if (f.filter(t))
-                            return true;
+                        let fRange = new FilterRange(filter);
+                        if (fRange.filter(t)) return true;
                         break;
                     }
                     case colIndex.get("Duration"): {
-                        f = new FilterDuration(filter)
-                        if (f.filter(t))
-                            return true;
+                        let fDuration = new FilterDuration(filter);
+                        if (fDuration.filter(t)) return true;
                         break;
                     }
                     case colIndex.get("Components"): {
-                        f = new FilterComponents(filter)
-                        if (f.filter(t))
-                            return true;
+                        let fComponents = new FilterComponents(filter);
+                        if (fComponents.filter(t)) return true;
                         break;
                     }
                     default:
-                        if (t.innerText.toLowerCase().includes(filter))
-                            return true;
+                        if (t.innerText.toLowerCase().includes(filter)) return true;
                 }
                 return false;
             });
 
-            result = result.filter(f);
-            // console.debug(lp.stringify());
+            result = result.filter(row => f(row, improvedFilter));
         }
     });
-    // append checked rows first
-    checkedRows.forEach((row, i) => {
-        row.classList.remove('hidden-on-scroll');
-        tbody.appendChild(row)
+
+    // Now, iterate through all original rows to update their visibility without reordering
+    rows.forEach(row => {
+        if (checkedRows.includes(row)) {
+            // This mostly duplicated insertCheckedRows, but without appending
+            row.classList.remove('hidden-on-scroll');
+            showRowsFiltering(row);
+           
+            let nameCell = row.querySelector(`td:nth-child(${colIndex.get("Name")})`);
+            let name = nameCell ? nameCell.innerText.trim() : '';
+            if (name && checkedDescs.has(name)) {
+                let descRow = checkedDescs.get(name);
+                descRow.classList.remove('hidden-on-scroll');
+                showRowsFiltering(descRow);
+            }
+        } else {
+            // For unchecked rows, show or hide based on whether they pass the filters
+            if (result.includes(row)) {
+                showRowsFiltering(row);
+            } else {
+                hideRowsFiltering(row);
+            }
+        }
     });
-    // show again rows matching all filters
-    for (let i = 0; i < result.length; i++) {
-        let row = result[i];
-        //row.style.display = "table-row";
-        showRowsFiltering(row, i);
-        tbody.appendChild(row);
-    }
-    // console.timeEnd('filter')
 }
 
 
@@ -478,51 +478,68 @@ class FilterDuration extends FilterBase {
 
 class FilterDescription extends FilterBase {
     constructor(filterValue) {
-        super(filterValue)
+        super(filterValue);
     }
 
-    lookforFullDesc(td) {
-        return td.getAttribute("title").toLowerCase().includes(this.filterValue.replace(/full desc:\s*/, ""));
-    };
-
-    lookforSource(td) {
-        return td.getAttribute("source").toLowerCase().includes(this.filterValue.replace(/source:\s*/, ""));
-    };
-
-    lookforMythicDescription(td) {
-        if (!td.hasAttribute("mythic-description")) {
-            return false
+    /**
+     * Generic method to check if a td attribute contains the filtered value.
+     * @param {HTMLElement} td 
+     * @param {string} attribute - The attribute to check (e.g., "title", "source", "mythic-description").
+     * @param {string} value - The already cleaned filter value.
+     * @returns {boolean}
+     */
+    matchAttribute(td, attribute, value) {
+        if (!td.hasAttribute(attribute)) {
+            return false;
         }
-        let f = this.filterValue.replace(/mythic desc:\s*/, "")
-        if (f == "") {
-            return true
+        if (value === "") {
+            return true;
         }
-        return td.getAttribute("mythic-description").toLowerCase().includes(f);
-    };
+        return td.getAttribute(attribute).toLowerCase().includes(value.toLowerCase());
+    }
 
-    lookforMythicSource(td) {
-        if (!td.hasAttribute("mythic-source")) {
-            return false
-        }
-        let f = this.filterValue.replace(/mythic source:\s*/, "")
-        if (f == "") {
-            return true
-        }
-        return td.getAttribute("mythic-source").toLowerCase().includes(f);
-    };
+    /**
+     * Generic method to check before/after dates for an attribute.
+     * @param {HTMLElement} td 
+     * @param {string} attribute - The attribute to check (e.g., "source" or "mythic-source").
+     * @param {string} date - The cleaned date value (prefix already removed).
+     * @param {boolean} isBefore - If true, checks if date is before; otherwise, after.
+     * @returns {boolean}
+     */
+    matchDate(td, attribute, date, isBefore) {
+        if (date === "") return true;
+        if (!td.hasAttribute(attribute)) return false;
 
+        return td.getAttribute(attribute)
+            .split(/pg\.\s*\d+,?/)
+            .filter(Boolean)
+            .map(s => s.trim())
+            .map(title => SourceReleaseDates.get(title) || "0000-00-00")
+            .some(attrDate => isBefore ? attrDate <= date : attrDate >= date);
+    }
 
     filter(td) {
-        if (this.filterValue.startsWith("full desc:"))
-            return this.lookforFullDesc.bind(this)(td)
-        if (this.filterValue.startsWith("source:"))
-            return this.lookforSource.bind(this)(td)
-        if (this.filterValue.startsWith("mythic desc:"))
-            return this.lookforMythicDescription.bind(this)(td)
-        if (this.filterValue.startsWith("mythic source:"))
-            return this.lookforMythicSource.bind(this)(td)
+        const cleanValue = (prefix) =>
+            this.filterValue.replace(new RegExp(`^${prefix}:\\s*`), "");
 
-        return this.lookforText.bind(this)(td);
+        const filters = {
+            "full desc": () => this.matchAttribute(td, "title", cleanValue("full desc")),
+            "source": () => this.matchAttribute(td, "source", cleanValue("source")),
+            "mythic desc": () => this.matchAttribute(td, "mythic-description", cleanValue("mythic desc")),
+            "mythic source": () => this.matchAttribute(td, "mythic-source", cleanValue("mythic source")),
+            "before": () => this.matchDate(td, "source", cleanValue("before"), true),
+            "after": () => this.matchDate(td, "source", cleanValue("after"), false),
+            "mythic before": () => this.matchDate(td, "mythic-source", cleanValue("mythic before"), true),
+            "mythic after": () => this.matchDate(td, "mythic-source", cleanValue("mythic after"), false),
+        };
+
+        for (let key in filters) {
+            if (this.filterValue.startsWith(`${key}:`)) {
+                return filters[key]();
+            }
+        }
+
+        return this.lookforText(td);
     }
 }
 
