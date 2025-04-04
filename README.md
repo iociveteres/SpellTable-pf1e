@@ -1,6 +1,6 @@
 # Pathfinder 1e Spell Table
 
-This site allows user to view, sort and filter 3039 Pathfinder 1e spells.<br>
+This site allows user to view, sort and filter 3040 Pathfinder 1e spells.<br>
 Hosted at: https://iociveteres.github.io/SpellTable-pf1e/
 
 ## Why, or how was it made like this?
