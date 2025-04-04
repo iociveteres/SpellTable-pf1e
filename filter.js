@@ -97,24 +97,23 @@ function filterTable(table, colnum, filters) {
         }
     });
 
-    // Now, iterate through all original rows to update their visibility without reordering
+    let visibleIndex = 0;
+
     rows.forEach(row => {
         if (checkedRows.includes(row)) {
-            // This mostly duplicated insertCheckedRows, but without appending
             row.classList.remove('hidden-on-scroll');
-            showRowsFiltering(row);
-           
+            showRowsFiltering(row, visibleIndex++);
+            
             let nameCell = row.querySelector(`td:nth-child(${colIndex.get("Name")})`);
             let name = nameCell ? nameCell.innerText.trim() : '';
             if (name && checkedDescs.has(name)) {
                 let descRow = checkedDescs.get(name);
                 descRow.classList.remove('hidden-on-scroll');
-                showRowsFiltering(descRow);
+                showRowsFiltering(descRow, visibleIndex++);
             }
         } else {
-            // For unchecked rows, show or hide based on whether they pass the filters
             if (result.includes(row)) {
-                showRowsFiltering(row);
+                showRowsFiltering(row, visibleIndex++);
             } else {
                 hideRowsFiltering(row);
             }
