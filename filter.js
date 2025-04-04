@@ -16,111 +16,110 @@ const digitRegex = new RegExp(/^(?:<=|>=|[<>=])?\d+$/);
 const compClassesRegex = new RegExp(/([a-zA-Z]+)\s*(?:<=|>=|[<>=])\s*([a-zA-Z]+)/);
 
 function filterTable(table, colnum, filters) {
-    // console.debug('filter: ' + (filters))
-    // console.time('filter')
-    // get all the rows in this table:
-    let tbody = table.getElementsByTagName(`tbody`)[0]
-    let rows = Array.from(tbody.querySelectorAll(`tr`));
+    // Get tbody and all rows
+    let tbody = table.getElementsByTagName('tbody')[0];
+    let rows = Array.from(tbody.querySelectorAll('tr'));
 
-    // only unchecked rows need filtering
-    let {checkedRows, checkedDescs, uncheckedRows} = divideChecked(rows);
+    // Divide rows into checked rows (with description rows) and unchecked rows
+    let { checkedRows, checkedDescs, uncheckedRows } = divideChecked(rows);
 
-    // hide all rows
+    // Hide all unchecked rows initially (they'll be shown if they pass filters)
     uncheckedRows.forEach(row => hideRowsFiltering(row));
     let result = uncheckedRows;
 
-    // iteratively filter out rows 
+    // Iteratively filter out rows from the unchecked set
     filters.forEach((filter, position) => {
-        // filter if string is not empty
         if (filter) {
             filter = filter.toLowerCase();
-            // for convinience replace "wizard" with "sorcere/wizard", etc
+            // Adjust filter string based on column-specific logic
             let improvedFilter;
-            switch (position + 2) { // +1 is from Pin without input, +1 because array index starts from 0, really dislike it
+            switch (position + 2) { // +1 for the Pin column, +1 for 0-index adjustment
                 case colIndex.get("Access ways"):
                     improvedFilter = replacePartialWays(filter);
-                    break
+                    break;
                 case colIndex.get("PFS"):
                     improvedFilter = replaceYesNo(filter);
-                    break
+                    break;
                 default:
                     improvedFilter = filter;
             }
 
-            // if expression throws exception when parsed use last saved for this col
+            // Validate filter expression; fallback to last good filter if necessary
             try {
                 lp.parse(improvedFilter);
-                lastGoodFilters.set(position, improvedFilter)
+                lastGoodFilters.set(position, improvedFilter);
             } catch (error) {
                 lp.parse(lastGoodFilters.get(position));
             }
 
-            // use created filter to filter respective column
+            // Build a filter function for the respective column
             let qs = `td:nth-child(${position + 2})`;
             let f = lp.filterFunction((row, filter) => {
                 let t = row.querySelector(qs);
                 switch (position + 2) {
                     case colIndex.get("Description"): {
-                        f = new FilterDescription(filter)
-                        if (f.filter(t))
-                            return true
+                        let fDesc = new FilterDescription(filter);
+                        if (fDesc.filter(t)) return true;
                         break;
                     }
                     case colIndex.get("Access ways"): {
-                        f = new FilterAccessWays(filter)
-                        if (f.filter(t))
-                            return true;
+                        let fAccess = new FilterAccessWays(filter);
+                        if (fAccess.filter(t)) return true;
                         break;
                     }
                     case colIndex.get("Casting Time"): {
-                        f = new FilterCastingTime(filter)
-                        if (f.filter(t))
-                            return true;
+                        let fCast = new FilterCastingTime(filter);
+                        if (fCast.filter(t)) return true;
                         break;
                     }
                     case colIndex.get("Range"): {
-                        f = new FilterRange(filter)
-                        if (f.filter(t))
-                            return true;
+                        let fRange = new FilterRange(filter);
+                        if (fRange.filter(t)) return true;
                         break;
                     }
                     case colIndex.get("Duration"): {
-                        f = new FilterDuration(filter)
-                        if (f.filter(t))
-                            return true;
+                        let fDuration = new FilterDuration(filter);
+                        if (fDuration.filter(t)) return true;
                         break;
                     }
                     case colIndex.get("Components"): {
-                        f = new FilterComponents(filter)
-                        if (f.filter(t))
-                            return true;
+                        let fComponents = new FilterComponents(filter);
+                        if (fComponents.filter(t)) return true;
                         break;
                     }
                     default:
-                        if (t.innerText.toLowerCase().includes(filter))
-                            return true;
+                        if (t.innerText.toLowerCase().includes(filter)) return true;
                 }
                 return false;
             });
 
-            result = result.filter(f);
-            // console.debug(lp.stringify());
+            result = result.filter(row => f(row, improvedFilter));
         }
     });
-    // append checked rows first
-    checkedRows.forEach(row => row.classList.remove('hidden-on-scroll'));
-    insertCheckedRows(tbody, checkedRows, checkedDescs);
-    // show again rows matching all filters
-    for (let i = 0; i < result.length; i++) {
-        let row = result[i];
-        //row.style.display = "table-row";
-        if (row.querySelector(`td:nth-child(${colIndex.get("Name")})`).innerText === "Abeyance") {
-            let a = 1
+
+    // Now, iterate through all original rows to update their visibility without reordering
+    rows.forEach(row => {
+        if (checkedRows.includes(row)) {
+            // This mostly duplicated insertCheckedRows, but without appending
+            row.classList.remove('hidden-on-scroll');
+            showRowsFiltering(row);
+           
+            let nameCell = row.querySelector(`td:nth-child(${colIndex.get("Name")})`);
+            let name = nameCell ? nameCell.innerText.trim() : '';
+            if (name && checkedDescs.has(name)) {
+                let descRow = checkedDescs.get(name);
+                descRow.classList.remove('hidden-on-scroll');
+                showRowsFiltering(descRow);
+            }
+        } else {
+            // For unchecked rows, show or hide based on whether they pass the filters
+            if (result.includes(row)) {
+                showRowsFiltering(row);
+            } else {
+                hideRowsFiltering(row);
+            }
         }
-        tbody.appendChild(row);
-        showRowsFiltering(row, i);
-    }
-    // console.timeEnd('filter')
+    });
 }
 
 
