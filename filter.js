@@ -11,7 +11,7 @@ lp.overwrite(Token.XOR, '^');
 lp.overwrite(Token.NOT, '!');
 
 const lastGoodFilters = new Map();
-const compRegex = new RegExp(/[=<>]/);
+const compRegex = new RegExp(/<=|>=|[<>=]/);
 const digitRegex = new RegExp(/^(?:<=|>=|[<>=])?\d+$/);
 const compClassesRegex = new RegExp(/([a-zA-Z]+)\s*(?:<=|>=|[<>=])\s*([a-zA-Z]+)/);
 
@@ -203,10 +203,8 @@ class FilterAccessWays extends FilterBase {
     }
 
     lookforTextWithComparison(item) {
-        if (!item.startsWith(this.filterValue.slice(0, -2))) return false;
-
         let operator = findOperator(this.filterValue)
-        // if (!operator) return false;
+        if (!item.startsWith(this.filterValue.slice(0, -(1+operator.length)))) return false;
 
         let chunks = this.filterValue.split(operator);
         // The field is before the first operator
