@@ -123,6 +123,10 @@ function filterTable(table, colnum, filters) {
 
 
 function replacePartialWays(string) {
+    if (string.includes("/")) {
+        return string;
+    }
+
     let result = string.replace(/wizard|sorcerer/g, "sorcerer/wizard");
     result = result.replace(/cleric|oracle/g, "cleric/oracle");
     return result;

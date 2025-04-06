@@ -73,7 +73,7 @@ table.style.tableLayout = 'fixed';
 
 
 document.addEventListener("DOMContentLoaded", function () {
-    fetch("data/spellList.json")
+    fetch("data/SpellList.json")
         .then(function (response) {
             return response.json();
         })
