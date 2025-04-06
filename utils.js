@@ -96,6 +96,42 @@ export function hideRowsSorting(row) {
     }
 }
 
+export function extractSortParts(input) {
+    if (!input) return [null, ""];
+
+    // The regex captures:
+    // - Group 1: characters following "sort:" up to the first delimiter (&, |, or ^) (can be empty)
+    // - Group 2: everything after the delimiter (if any)
+    const regex = /sort:\s*([^&|^]*)(?:\s*[&|^]\s*(.*))?/;
+    const match = input.match(regex);
+
+    if (match) {
+        const sortValue = match[1].trim();
+        // If sortValue is non-empty, return it along with any rest (group 2)
+        if (sortValue.length > 0) {
+        return [sortValue, (match[2] || "").trim()];
+        } else {
+        // If the sort part is empty, treat it as no sort; return rest if available
+        return [null, (match[2] || "").trim()];
+        }
+    }
+
+    // If "sort:" isn't found at all, treat the entire input as the rest.
+    return [null, input.trim()];
+}
+
+export function replacePartialWays(string) {
+    let result = string;
+    if (!/sorcerer\/wizard|wizard\/sorcerer/.test(result)) {
+      result = result.replace(/\b(wizard|sorcerer)\b/g, "sorcerer/wizard");
+    }
+    if (!/cleric\/oracle|oracle\/cleric/.test(result)) {
+      result = result.replace(/\b(cleric|oracle)\b/g, "cleric/oracle");
+    }
+  
+    return result;
+  }
+
 export const timeUnits = new Map([
     ["free action", 1], 
     ["immediate action", 2], 

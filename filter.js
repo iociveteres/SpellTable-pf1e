@@ -1,7 +1,8 @@
 import './logipar.js';
 import {
     colIndex, divideChecked, hideRowsFiltering, showRowsFiltering,
-    timeUnits, rangeUnits, durationUnits, SourceReleaseDates, insertCheckedRows
+    timeUnits, rangeUnits, durationUnits, SourceReleaseDates,
+    extractSortParts, replacePartialWays
 } from './utils.js';
 
 const lp = new window.Logipar();
@@ -31,6 +32,7 @@ function filterTable(table, colnum, filters) {
     filters.forEach((filter, position) => {
         if (filter) {
             filter = filter.toLowerCase();
+            [, filter] = extractSortParts(filter)
             // Adjust filter string based on column-specific logic
             let improvedFilter;
             switch (position + 2) { // +1 for the Pin column, +1 for 0-index adjustment
@@ -122,15 +124,6 @@ function filterTable(table, colnum, filters) {
 }
 
 
-function replacePartialWays(string) {
-    if (string.includes("/")) {
-        return string;
-    }
-
-    let result = string.replace(/wizard|sorcerer/g, "sorcerer/wizard");
-    result = result.replace(/cleric|oracle/g, "cleric/oracle");
-    return result;
-}
 
 
 function replaceYesNo(string) {

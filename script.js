@@ -102,7 +102,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (position!= 0) {                   
                     th.querySelector("button").addEventListener("click", evt => {
                         clearTempRows(table);
-                        let newDir = sortTable(table, position, th.getAttribute("dir"));  
+                        let filterValues = filterInputs.map((filter) => filter.value);
+                        let newDir = sortTable(table, position, th.getAttribute("dir"), filterValues);  
                         table.querySelectorAll("th").forEach((th) => {
                             th.setAttribute("dir", "no")
                         });
