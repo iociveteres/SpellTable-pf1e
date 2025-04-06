@@ -34,7 +34,7 @@ function filterTable(table, colnum, filters) {
             // Adjust filter string based on column-specific logic
             let improvedFilter;
             switch (position + 2) { // +1 for the Pin column, +1 for 0-index adjustment
-                case colIndex.get("Access ways"):
+                case colIndex.get("Access Ways"):
                     improvedFilter = replacePartialWays(filter);
                     break;
                 case colIndex.get("PFS"):
@@ -62,7 +62,7 @@ function filterTable(table, colnum, filters) {
                         if (fDesc.filter(t)) return true;
                         break;
                     }
-                    case colIndex.get("Access ways"): {
+                    case colIndex.get("Access Ways"): {
                         let fAccess = new FilterAccessWays(filter);
                         if (fAccess.filter(t)) return true;
                         break;

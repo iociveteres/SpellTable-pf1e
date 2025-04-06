@@ -27,11 +27,20 @@ function compareDuration(dur1, dur2) {
     return Number(dur1.getAttribute("data-sort")) - Number(dur2.getAttribute("data-sort"))
 }
 
+function compareAccessWays(ways1, ways2) {
+    // splitWays1 = ways1.innerText.toLowerCase().split("\n");
+    // splitWays2 = ways2.innerText.toLowerCase().split("\n");
+    return Number(ways1.getAttribute("data-minlvl")) - Number(ways2.getAttribute("data-minlvl"))
+}
+
   
 function sortTable(table, colnum, direction) {
     // console.time('sort')
     let compareFunc;
     switch (colnum + 1) {
+        case colIndex.get("Access Ways"):
+            compareFunc = compareAccessWays
+            break
         case colIndex.get("Casting Time"):
             compareFunc = compareTime
             break
@@ -46,11 +55,10 @@ function sortTable(table, colnum, direction) {
     }
     // get all the rows in this table:
     let tbody = table.querySelector("tbody");
-    let rows = Array.from(tbody.querySelectorAll(`tr`));
 
     // it would be better to divide checked and unchecked rows first
     // but it works this way and is easier, because checked rows are visible
-    let {visibleRows, filteredOutRows} = divideFilteredOut(tbody);
+    let {visibleRows, _} = divideFilteredOut(tbody);
     let sortableRows = Array.from(visibleRows);
     
     let {checkedRows, checkedDescs, uncheckedRows} = divideChecked(sortableRows);

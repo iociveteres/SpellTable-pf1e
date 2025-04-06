@@ -203,6 +203,14 @@ class Spell {
         this.overflows = "";
         this.checked = false;
 
+        this.minLevel = Infinity;
+        Object.values(spellData["access_ways"]).forEach(arr => {
+            arr.forEach(([_, level]) => {
+                if (typeof level === 'number' && level < this.minLevel) {
+                    this.minLevel = level;
+                }
+            });
+        });
         let result = Object.entries(spellData["access_ways"]).map(([key, value]) => {
             return value.map(item => item.join(' ')).join('\n');
         }).join('\n');
@@ -237,7 +245,7 @@ function createTableRow(spell, position) {
                 <td>${spell.school}</td>
                 <td>${spell.subschool}</td>
                 <td>${spell.descriptors}</td>
-                <td class="access-td"><div class="access-div ${spell.overflows}" title="${spell.accessWaysWithSources}">${spell.accessWays}</div></td>
+                <td class="access-td" data-minlvl="${spell.minLevel}"><div class="access-div ${spell.overflows}" title="${spell.accessWaysWithSources}">${spell.accessWays}</div></td>
                 <td data-sort="${spell.parsedCastTime}">${spell.castingTime}</td>
                 <td price="${spell.price}">${spell.components}</td>
                 <td data-sort-code="${spell.rangeCode}" data-sort-dist="${spell.rangeDistance}">${spell.range}</td>
