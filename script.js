@@ -21,11 +21,11 @@ themeToggleBtn.addEventListener("click", function() {
     // console.log("switched to " + theme)
 });
 
-let table = document.getElementById('table-spells')
+const table = document.getElementById('table-spells')
 
 {
-    let topFixedBar = document.getElementById("top-bar");
-    let topFixedBarVisibility = localStorage.getItem('topFixedBarVisibility');
+    const topFixedBar = document.getElementById("top-bar");
+    const topFixedBarVisibility = localStorage.getItem('topFixedBarVisibility');
     if (topFixedBarVisibility === 'true') {
         topFixedBar.classList.add('hidden')
     } else {
@@ -47,7 +47,7 @@ table.querySelectorAll("th").forEach((th, position) => {
 document.getElementById('clear-inputs').addEventListener("click", evt => {
     clearTempRows(table);
     clearInputFields();
-    let filterValues = filterInputs.map((filter) => filter.value);
+    const filterValues = filterInputs.map((filter) => filter.value);
     filterTable(table, 0, filterValues)
     updateSpellCount()
 })
@@ -61,8 +61,8 @@ window.onbeforeunload = function () {
   }
 
 // fix col width
-let thElements = table.querySelectorAll('th');
-let widthMap = [];
+const thElements = table.querySelectorAll('th');
+const widthMap = [];
 thElements.forEach(header => {
     widthMap.push(header.offsetWidth + 'px');
 });
@@ -85,8 +85,8 @@ document.addEventListener("DOMContentLoaded", function () {
             // let uniqueNames = findUniqueValuesByKey(spells, "Casting time");
             // console.log([...uniqueNames]); 
             for (let i = 50; i < spells.length; i++) {
-                let spellJSON = spells[i];
-                let spell = new Spell(spellJSON);
+                const spellJSON = spells[i];
+                const spell = new Spell(spellJSON);
                 out += createTableRow(spell, i);
             }
             const placeholderElement = document.getElementById('placeholder');
@@ -102,8 +102,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (position!= 0) {                   
                     th.querySelector("button").addEventListener("click", evt => {
                         clearTempRows(table);
-                        let filterValues = filterInputs.map((filter) => filter.value);
-                        let newDir = sortTable(table, position, th.getAttribute("dir"), filterValues);  
+                        const filterValues = filterInputs.map((filter) => filter.value);
+                        const newDir = sortTable(table, position, th.getAttribute("dir"), filterValues);  
                         table.querySelectorAll("th").forEach((th) => {
                             th.setAttribute("dir", "no")
                         });
@@ -114,7 +114,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     th.querySelector("input").addEventListener("input", debounce(evt => {
                         clearTempRows(table);
-                        let filterValues = filterInputs.map((filter) => filter.value);
+                        const filterValues = filterInputs.map((filter) => filter.value);
                         filterTable(table, position, filterValues);
                         window.scrollTo(0, 0)
                         updateSpellCount();
@@ -161,7 +161,7 @@ document.addEventListener("DOMContentLoaded", function () {
             window.addEventListener('scroll', function() {
                 if ((window.innerHeight * window.devicePixelRatio + window.scrollY) >= 
                     document.body.offsetHeight - window.screen.height * 0.3 * window.devicePixelRatio) {
-                    let rows = document.querySelectorAll(".hidden-on-scroll");
+                    const rows = document.querySelectorAll(".hidden-on-scroll");
                     for (let i = 0; i < rowsReveal && i < rows.length; i++) {
                         showRowsScrolling(rows[i]);
                     }
@@ -227,7 +227,7 @@ class Spell {
         }
 
         this.parsedCastTime = parseTime(spellData["Casting time"])
-        let parsedRange = parseRange(spellData.Range);
+        const parsedRange = parseRange(spellData.Range);
         this.rangeCode = parsedRange.code;
         this.rangeDistance = parsedRange.distance;
         this.parsedDuration = parseDuration(spellData.Duration);
@@ -271,18 +271,17 @@ function debounce(func, delay=300) {
 }
 
 function makeDescriptionRow(tr) {
-    let innerDivs;
-    let nextRow = tr.nextElementSibling;
+    const nextRow = tr.nextElementSibling;
     if ((nextRow === null && !tr.classList.contains('show-desc') && !tr.classList.contains('hidden-desc')) || 
         (!nextRow.classList.contains('show-desc') && !nextRow.classList.contains('hidden-desc'))) {
-        let newRow = document.createElement('tr');
-        let newCell = document.createElement('td');
+        const newRow = document.createElement('tr');
+        const newCell = document.createElement('td');
         newCell.colSpan = "16";
-        let td = tr.querySelector(`td:nth-child(${colIndex.get("Description")})`);
+        const td = tr.querySelector(`td:nth-child(${colIndex.get("Description")})`);
         let fullDescription = td.getAttribute("title");
         if (!fullDescription.endsWith("\n")) 
             fullDescription += '\n'
-        let formattedSources = td.getAttribute("source")
+        const formattedSources = td.getAttribute("source")
             .split(/pg\.\s*(\d+),?/)
             .reduce((acc, curr, i, arr) => {
                 if (i % 2 === 0) return acc; // Skip non-page number parts
@@ -302,12 +301,12 @@ function makeDescriptionRow(tr) {
             fullDescription += '\n<b>Mythic:</b>\n' + td.getAttribute("mythic-description");
             if (!fullDescription.endsWith("\n")) 
                 fullDescription += '\n'
-            let formattedMythicSources = td.getAttribute("mythic-source")
+            const formattedMythicSources = td.getAttribute("mythic-source")
             .split(/pg\.\s*(\d+),?/)
             .reduce((acc, curr, i, arr) => {
                 if (i % 2 === 0) return acc; // Skip non-page number parts
-                let title = arr[i - 1].trim();
-                let page = curr.trim();
+                const title = arr[i - 1].trim();
+                const page = curr.trim();
                 if (!title) return acc;
         
                 let releaseDate = SourceReleaseDates.get(title) || "Unknown";
@@ -324,13 +323,14 @@ function makeDescriptionRow(tr) {
 
         let aD20 = "";
         let aAon = "";
-        let linkAon = tr.querySelector(`td:nth-child(${colIndex.get("Name")})`).getAttribute("linkAon");
+        const linkAon = tr.querySelector(`td:nth-child(${colIndex.get("Name")})`).getAttribute("linkAon");
         if (linkAon !== "None")
             aAon = `<a href="${linkAon}" target="_new">AoNprd</a>`;
-        let linkD20 = tr.querySelector(`td:nth-child(${colIndex.get("Name")})`).getAttribute("linkD20");
+        const linkD20 = tr.querySelector(`td:nth-child(${colIndex.get("Name")})`).getAttribute("linkD20");
         if (linkD20 !== "None")
             aD20 = `<a href="${linkD20}" target="_new">d20pfsrd</a>`;
 
+        let innerDivs;
         innerDivs = `
             <div class="dropdown-links">
                 ${aAon} \n
@@ -361,7 +361,7 @@ function countNewLines(str) {
 
 
 function clearTempRows(table) {
-    let rows = table.querySelectorAll('tr');
+    const rows = table.querySelectorAll('tr');
     
     let prevRowChecked;
     rows.forEach(row => {
@@ -382,7 +382,7 @@ function clearTempRows(table) {
 
 
 function countUnfilteredRows(table) {
-    let rows = table.querySelectorAll('tr');
+    const rows = table.querySelectorAll('tr');
 
     let unfilteredRowCount = 0;
     for (let i = 1; i < rows.length; i++) {
@@ -396,7 +396,7 @@ function countUnfilteredRows(table) {
 }
 
 function countShownRows(table) {
-    let rows = table.querySelectorAll('tr');
+    const rows = table.querySelectorAll('tr');
 
     let visibleRowCount = 0;
     for (let i = 1; i < rows.length; i++) {
@@ -411,7 +411,7 @@ function countShownRows(table) {
 
 
 function toggleTopFixedBar() {
-    let topFixedBar = document.getElementById("top-bar");
+    const topFixedBar = document.getElementById("top-bar");
     topFixedBar.classList.toggle('hidden');
     localStorage.setItem('topFixedBarVisibility', 
         topFixedBar.classList.contains('hidden'));
@@ -427,11 +427,11 @@ function clearInputFields() {
 
 
 function unpinAll() {
-    let checkboxes = document.querySelectorAll('td:first-child input[type="checkbox"]:checked');
+    const checkboxes = document.querySelectorAll('td:first-child input[type="checkbox"]:checked');
     if (checkboxes == null) {
         return
     }
-    let event = new Event("change", {bubbles: true});
+    const event = new Event("change", {bubbles: true});
     checkboxes.forEach(function(checkbox) {
         checkbox.checked = false;
         checkbox.dispatchEvent(event)
@@ -440,7 +440,7 @@ function unpinAll() {
 
 
 function loadCheckboxStates() {
-    let checkboxes = document.querySelectorAll('td:first-child input[type="checkbox"]');
+    const checkboxes = document.querySelectorAll('td:first-child input[type="checkbox"]');
     checkboxes.forEach(function(checkbox) {
       var checkboxName = checkbox.getAttribute('name');
       var checkboxState = localStorage.getItem(checkboxName);

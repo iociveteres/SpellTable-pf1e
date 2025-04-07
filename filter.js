@@ -18,11 +18,11 @@ const compClassesRegex = new RegExp(/([a-zA-Z]+)\s*(?:<=|>=|[<>=])\s*([a-zA-Z]+)
 
 function filterTable(table, colnum, filters) {
     // Get tbody and all rows
-    let tbody = table.getElementsByTagName('tbody')[0];
-    let rows = Array.from(tbody.querySelectorAll('tr'));
+    const tbody = table.getElementsByTagName('tbody')[0];
+    const rows = Array.from(tbody.querySelectorAll('tr'));
 
     // Divide rows into checked rows (with description rows) and unchecked rows
-    let { checkedRows, checkedDescs, uncheckedRows } = divideChecked(rows);
+    const { checkedRows, checkedDescs, uncheckedRows } = divideChecked(rows);
 
     // Hide all unchecked rows initially (they'll be shown if they pass filters)
     uncheckedRows.forEach(row => hideRowsFiltering(row));
@@ -55,37 +55,37 @@ function filterTable(table, colnum, filters) {
             }
 
             // Build a filter function for the respective column
-            let qs = `td:nth-child(${position + 2})`;
-            let f = lp.filterFunction((row, filter) => {
-                let t = row.querySelector(qs);
+            const qs = `td:nth-child(${position + 2})`;
+            const f = lp.filterFunction((row, filter) => {
+                const t = row.querySelector(qs);
                 switch (position + 2) {
                     case colIndex.get("Description"): {
-                        let fDesc = new FilterDescription(filter);
+                        const fDesc = new FilterDescription(filter);
                         if (fDesc.filter(t)) return true;
                         break;
                     }
                     case colIndex.get("Access Ways"): {
-                        let fAccess = new FilterAccessWays(filter);
+                        const fAccess = new FilterAccessWays(filter);
                         if (fAccess.filter(t)) return true;
                         break;
                     }
                     case colIndex.get("Casting Time"): {
-                        let fCast = new FilterCastingTime(filter);
+                        const fCast = new FilterCastingTime(filter);
                         if (fCast.filter(t)) return true;
                         break;
                     }
                     case colIndex.get("Range"): {
-                        let fRange = new FilterRange(filter);
+                        const fRange = new FilterRange(filter);
                         if (fRange.filter(t)) return true;
                         break;
                     }
                     case colIndex.get("Duration"): {
-                        let fDuration = new FilterDuration(filter);
+                        const fDuration = new FilterDuration(filter);
                         if (fDuration.filter(t)) return true;
                         break;
                     }
                     case colIndex.get("Components"): {
-                        let fComponents = new FilterComponents(filter);
+                        const fComponents = new FilterComponents(filter);
                         if (fComponents.filter(t)) return true;
                         break;
                     }
@@ -106,10 +106,10 @@ function filterTable(table, colnum, filters) {
             row.classList.remove('hidden-on-scroll');
             showRowsFiltering(row, visibleIndex++);
             
-            let nameCell = row.querySelector(`td:nth-child(${colIndex.get("Name")})`);
-            let name = nameCell ? nameCell.innerText.trim() : '';
+            const nameCell = row.querySelector(`td:nth-child(${colIndex.get("Name")})`);
+            const name = nameCell ? nameCell.innerText.trim() : '';
             if (name && checkedDescs.has(name)) {
-                let descRow = checkedDescs.get(name);
+                const descRow = checkedDescs.get(name);
                 descRow.classList.remove('hidden-on-scroll');
                 showRowsFiltering(descRow, visibleIndex++);
             }
@@ -135,13 +135,13 @@ function replaceYesNo(string) {
 
 
 function findOperator(string) {
-    let operatorsExtended = ['<=', '>='];
+    const operatorsExtended = ['<=', '>='];
     let operator;
     operator = operatorsExtended.find(op => string.includes(op));
     if (!(operator === undefined))
         return operator
 
-    let operators = ['=', '<', '>'];
+    const operators = ['=', '<', '>'];
     operator = operators.find(op => string.includes(op));
     return operator
 }
@@ -186,9 +186,9 @@ class FilterAccessWays extends FilterBase {
     }
 
     lookforNumbersWithComparison(item) {
-        let operator = findOperator(this.filterValue)
+        const operator = findOperator(this.filterValue)
 
-        let val = parseInt(this.filterValue.slice(operator.length));
+        const val = parseInt(this.filterValue.slice(operator.length));
         let [className, level] = item.split(' ');
         level = parseInt(level, 10);
 
@@ -196,18 +196,18 @@ class FilterAccessWays extends FilterBase {
     }
 
     lookforTextWithComparison(item) {
-        let operator = findOperator(this.filterValue)
+        const operator = findOperator(this.filterValue)
         if (!item.startsWith(this.filterValue.slice(0, -(1+operator.length)))) return false;
 
-        let chunks = this.filterValue.split(operator);
+        const chunks = this.filterValue.split(operator);
         // The field is before the first operator
-        let field = chunks.shift().trim();
+        const field = chunks.shift().trim();
         // Any subsequent operators should be part of the value we look for
-        let val = chunks.join(operator).trim();
+        const val = chunks.join(operator).trim();
 
         let [className, level] = item.split(' ');
         level = parseInt(level, 10);
-        let parsedItem = { [className]: level };
+        const parsedItem = { [className]: level };
 
         if (parsedItem.hasOwnProperty(field)) {
             return useOperator(operator, parsedItem[field], val)
@@ -216,21 +216,21 @@ class FilterAccessWays extends FilterBase {
     }
 
     lookforClassesWithComparison(td) {
-        let operator = findOperator(this.filterValue)
-        let parts = this.filterValue.split(operator).map(part => part.trim());
+        const operator = findOperator(this.filterValue)
+        const parts = this.filterValue.split(operator).map(part => part.trim());
 
-        let arr = td.innerText.toLowerCase().split("\n");
-        let before = arr.find(item => item.includes(parts[0]));
-        let after = arr.find(item => item.includes(parts[1]));
+        const arr = td.innerText.toLowerCase().split("\n");
+        const before = arr.find(item => item.includes(parts[0]));
+        const after = arr.find(item => item.includes(parts[1]));
 
         if (!(before && after))
             return false
 
         let [className, level] = before.split(' ');
-        let parsedBefore = parseInt(level, 10);
+        const parsedBefore = parseInt(level, 10);
 
         [className, level] = after.split(' ');
-        let parsedAfter = parseInt(level, 10);
+        const parsedAfter = parseInt(level, 10);
 
         return useOperator(operator, parsedBefore, parsedAfter)
     }
@@ -240,7 +240,7 @@ class FilterAccessWays extends FilterBase {
             return this.lookforClassesWithComparison(td)
         }
 
-        let arr = td.innerText.toLowerCase().split("\n");
+        const arr = td.innerText.toLowerCase().split("\n");
 
         let lookforFunc;
         if (digitRegex.test(this.filterValue)) {
@@ -288,10 +288,10 @@ class FilterCastingTime extends FilterBase {
     }
 
     lookforTextWithComparison(td) {
-        let operator = findOperator(this.filterValue)
+        const operator = findOperator(this.filterValue)
 
-        let parsedFilter = this.parseTimeInput(this.filterValue.slice(operator.length));
-        let rowDataValue = parseInt(td.getAttribute("data-sort"));
+        const parsedFilter = this.parseTimeInput(this.filterValue.slice(operator.length));
+        const rowDataValue = parseInt(td.getAttribute("data-sort"));
 
         return useOperator(operator, rowDataValue, parsedFilter)
     };
@@ -340,14 +340,14 @@ class FilterRange extends FilterBase {
                         break;
                     case 5:
                     case 7: {
-                        let match = input.match(regexFt);
+                        const match = input.match(regexFt);
                         if (match && match[1]) {
                             result.distance = parseInt(match[1]);
                             break;
                         }
                     }
                     case 6: {
-                        let match = input.match(regexMiles);
+                        const match = input.match(regexMiles);
                         if (match && match[1]) {
                             result.distance = parseInt(match[1]) * 1000;
                             break;
@@ -364,11 +364,11 @@ class FilterRange extends FilterBase {
     }
 
     lookforTextWithComparison(td) {
-        let operator = findOperator(this.filterValue)
+        const operator = findOperator(this.filterValue)
 
-        let parsedFilter = this.parseRangeInput(this.filterValue.slice(operator.length));
-        let rowCode = parseInt(td.getAttribute("data-sort-code"));
-        let rowDist = parseInt(td.getAttribute("data-sort-dist"));
+        const parsedFilter = this.parseRangeInput(this.filterValue.slice(operator.length));
+        const rowCode = parseInt(td.getAttribute("data-sort-code"));
+        const rowDist = parseInt(td.getAttribute("data-sort-dist"));
 
         switch (operator) {
             case '=':
@@ -453,10 +453,10 @@ class FilterDuration extends FilterBase {
     }
 
     lookforTextWithComparison(td) {
-        let operator = findOperator(this.filterValue)
+        const operator = findOperator(this.filterValue)
 
-        let parsedFilter = this.parseDurationInput(this.filterValue.slice(operator.length));
-        let rowDataValue = parseInt(td.getAttribute("data-sort"));
+        const parsedFilter = this.parseDurationInput(this.filterValue.slice(operator.length));
+        const rowDataValue = parseInt(td.getAttribute("data-sort"));
 
         return useOperator(operator, rowDataValue, parsedFilter)
     };
@@ -555,10 +555,10 @@ class FilterComponents extends FilterBase {
     };
 
     lookforTextWithComparison(td, price) {
-        let operator = findOperator(this.filterValue)
+        const operator = findOperator(this.filterValue)
 
-        let parsedFilter = parseInt(price.slice(operator.length));
-        let rowDataValue = parseInt(td.getAttribute("price"));
+        const parsedFilter = parseInt(price.slice(operator.length));
+        const rowDataValue = parseInt(td.getAttribute("price"));
 
         return useOperator(operator, rowDataValue, parsedFilter)
     };

@@ -6,13 +6,13 @@ thElements.forEach((th, index) => {
 });
 
 export function divideChecked(rows) {
-    let checkedRows = [];
-    let uncheckedRows = [];
-    let checkedDescs = new Map();
+    const checkedRows = [];
+    const uncheckedRows = [];
+    const checkedDescs = new Map();
     let prevRowChecked = false;
 
     rows.forEach(row => {
-        let checkbox = row.querySelector('td:first-child input[type="checkbox"]');
+        const checkbox = row.querySelector('td:first-child input[type="checkbox"]');
 
         if (checkbox && checkbox.checked) {
             checkedRows.push(row);
@@ -21,7 +21,7 @@ export function divideChecked(rows) {
         }
 
         if (prevRowChecked && (row.classList.contains('show-desc'))) {
-            let key = row.dataset.name; // Use data-name as the key
+            const key = row.dataset.name; // Use data-name as the key
             checkedDescs.set(key, row);
             prevRowChecked = false;
             return;
@@ -38,11 +38,11 @@ export function insertCheckedRows(tbody, checkedRows, checkedDescsMap) {
     checkedRows.forEach(row => {
         tbody.appendChild(row);
 
-        let nameCell = row.querySelector(`td:nth-child(${colIndex.get("Name")})`);
-        let name = nameCell ? nameCell.textContent.trim() : null;
+        const nameCell = row.querySelector(`td:nth-child(${colIndex.get("Name")})`);
+        const name = nameCell ? nameCell.textContent.trim() : null;
 
         if (name) {
-            let descRow = checkedDescsMap.get(name);
+            const descRow = checkedDescsMap.get(name);
             if (descRow) {
                 tbody.appendChild(descRow);
             }
@@ -51,8 +51,8 @@ export function insertCheckedRows(tbody, checkedRows, checkedDescsMap) {
 }
 
 export function divideFilteredOut(table) {
-    let filteredOutRows = table.querySelectorAll(".hidden-on-filter");
-    let visibleRows = table.querySelectorAll("tr:not(.hidden-on-filter)");
+    const filteredOutRows = table.querySelectorAll(".hidden-on-filter");
+    const visibleRows = table.querySelectorAll("tr:not(.hidden-on-filter)");
 
     return {visibleRows: visibleRows, filteredOutRows: filteredOutRows};
 }

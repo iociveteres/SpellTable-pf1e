@@ -36,7 +36,7 @@ function compareAccessWays(ways1, ways2) {
 }
 
 // Module-level cache that persists across comparator function instances.
-const accessWaysCache = new WeakMap();
+var accessWaysCache = new WeakMap();
 
 // Shared function to get (or compute) the parsed access ways for a given cell.
 function getParsedWays(td) {
@@ -79,25 +79,25 @@ function makeAccessWaysComparator(sortPart, filterPart) {
 function sortTable(table, colnum, direction, filters) {
     console.time('sort')
     // get all the rows in this table:
-    let tbody = table.querySelector("tbody");
+    const tbody = table.querySelector("tbody");
 
     // it would be better to divide checked and unchecked rows first
     // but it works this way and is easier, because checked rows are visible
-    let { visibleRows, _ } = divideFilteredOut(tbody);
-    let sortableRows = Array.from(visibleRows);
+    const { visibleRows, _ } = divideFilteredOut(tbody);
+    const sortableRows = Array.from(visibleRows);
 
-    let { checkedRows, checkedDescs, uncheckedRows } = divideChecked(sortableRows);
+    const { checkedRows, checkedDescs, uncheckedRows } = divideChecked(sortableRows);
     uncheckedRows.forEach(row => showRowsSorting(row));
 
     // set up the queryselector for getting the indicated
     // column from a row, so we can compare using its value:
-    let qs = `td:nth-child(${colnum + 1})`;
+    const qs = `td:nth-child(${colnum + 1})`;
 
     let compareFunc;
     switch (colnum + 1) {
         case colIndex.get("Access Ways"):
-            let filter = filters[colIndex.get("Access Ways") - 2].toLowerCase();
-            let [sortPart, filterPart] = extractSortParts(filter)
+            const filter = filters[colIndex.get("Access Ways") - 2].toLowerCase();
+            var [sortPart, filterPart] = extractSortParts(filter)
             if (sortPart) {
                 sortPart = replacePartialWays(sortPart);
             }
@@ -124,20 +124,20 @@ function sortTable(table, colnum, direction, filters) {
             compareFunc = compareGeneric
     }
 
-    let d = direction == "asc" ? -1 : 1;
+    const d = direction == "asc" ? -1 : 1;
     // and then just... sort the rows:
     uncheckedRows.sort((r1, r2) => {
         // get each row's relevant column
-        let t1 = r1.querySelector(qs);
-        let t2 = r2.querySelector(qs);
+        const t1 = r1.querySelector(qs);
+        const t2 = r2.querySelector(qs);
 
         // and then effect sorting by comparing their content:
         return d * compareFunc(t1, t2);
     });
 
     checkedRows.sort((r1, r2) => {
-        let t1 = r1.querySelector(qs);
-        let t2 = r2.querySelector(qs);
+        const t1 = r1.querySelector(qs);
+        const t2 = r2.querySelector(qs);
 
         return d * compareFunc(t1, t2);
     });
@@ -149,7 +149,7 @@ function sortTable(table, colnum, direction, filters) {
     // append sorted unchecked rows
     let visibleCount = 0;
     for (let i = 0; i < uncheckedRows.length; i++) {
-        let row = uncheckedRows[i];
+        const row = uncheckedRows[i];
         // I tried to avoid 
         if (visibleCount < rowsReveal && !row.classList.contains('hidden-on-filter'))
             visibleCount++;
