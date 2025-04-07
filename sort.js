@@ -64,7 +64,9 @@ function parseAccessWays(str) {
         .toLowerCase()
         .split("\n")
         .reduce((acc, line) => {
-            let [key, value] = line.split(splitOnNumberRegex); // split on last number
+            const splitLine = line.split(splitOnNumberRegex); // split on last number
+            const key = splitLine[0];
+            const value = splitLine[1];
             if (key && value !== undefined) {
                 acc[key.trim()] = Number(value);
             }

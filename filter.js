@@ -99,20 +99,25 @@ function filterTable(table, colnum, filters) {
         }
     });
 
-    let visibleIndex = 0;
+    // Use a document fragment to preserve the original order of checked rows.
+    const fragment = document.createDocumentFragment();
+    checkedRows.forEach(row => {
+        fragment.appendChild(row);
+        const nameCell = row.querySelector(`td:nth-child(${colIndex.get("Name")})`);
+        const name = nameCell ? nameCell.innerText.trim() : '';
+        if (name && checkedDescs.has(name)) {
+            fragment.appendChild(checkedDescs.get(name));
+        }
+    });
+    // Insert the fragment at the beginning of tbody.
+    tbody.insertBefore(fragment, tbody.firstChild);
 
-    rows.forEach(row => {
+    // Process rows in their current DOM order.
+    let visibleIndex = 0;
+    Array.from(tbody.querySelectorAll('tr')).forEach(row => {
         if (checkedRows.includes(row)) {
             row.classList.remove('hidden-on-scroll');
             showRowsFiltering(row, visibleIndex++);
-            
-            const nameCell = row.querySelector(`td:nth-child(${colIndex.get("Name")})`);
-            const name = nameCell ? nameCell.innerText.trim() : '';
-            if (name && checkedDescs.has(name)) {
-                const descRow = checkedDescs.get(name);
-                descRow.classList.remove('hidden-on-scroll');
-                showRowsFiltering(descRow, visibleIndex);
-            }
         } else {
             if (result.includes(row)) {
                 showRowsFiltering(row, visibleIndex++);
@@ -197,7 +202,7 @@ class FilterAccessWays extends FilterBase {
 
     lookforTextWithComparison(item) {
         const operator = findOperator(this.filterValue)
-        if (!item.startsWith(this.filterValue.slice(0, -(1+operator.length)))) return false;
+        if (!item.startsWith(this.filterValue.slice(0, -(1 + operator.length)))) return false;
 
         const chunks = this.filterValue.split(operator);
         // The field is before the first operator
