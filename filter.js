@@ -111,7 +111,7 @@ function filterTable(table, colnum, filters) {
             if (name && checkedDescs.has(name)) {
                 const descRow = checkedDescs.get(name);
                 descRow.classList.remove('hidden-on-scroll');
-                showRowsFiltering(descRow, visibleIndex++);
+                showRowsFiltering(descRow, visibleIndex);
             }
         } else {
             if (result.includes(row)) {

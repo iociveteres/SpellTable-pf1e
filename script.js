@@ -49,6 +49,7 @@ document.getElementById('clear-inputs').addEventListener("click", evt => {
     clearInputFields();
     const filterValues = filterInputs.map((filter) => filter.value);
     filterTable(table, 0, filterValues)
+    window.scrollTo(0, 0)
     updateSpellCount()
 })
 
@@ -242,12 +243,13 @@ class Spell {
     }
 }
 
+const whitespace = new RegExp(/\s+/g)
 function createTableRow(spell, position) {
     let mythic = "";
     if (spell.mythicDescription != "") {
         mythic = ` mythic-description = "${spell.mythicDescription}" mythic-source = "${spell.mythicSource}"`
     }
-    return `<tr class="data-row hidden-on-scroll" tabindex="0">
+    return `<tr class="data-row hidden-on-scroll" tabindex="0" id="${spell.name.replace(whitespace, '-')}">
                 <td><input type="checkbox" name="${spell.name}"/></td>
                 <td linkAon="${spell.linkAon}" linkD20="${spell.linkD20}">${spell.name}</td>
                 <td title="${spell.fullDescription}" source="${spell.source}"${mythic}>${spell.shortDescription}</td>
