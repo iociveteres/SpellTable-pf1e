@@ -335,6 +335,11 @@ tr div a {
 	margin: 5px;
 }
 
+h3 {
+	font-size: 1.3em;          
+	font-stretch: expanded; 
+  }
+
 body {
 	--time: 1s;
 	--func: ease-out;
@@ -523,8 +528,12 @@ table td{
     background-color: var(--bg-bottom-color);
 }
 
-.bottom-link, .bottom-link:visited {
-	color: var(--link-bottom-color);
+.bottom-link {
+	color: var(--a-color);
+}
+
+.bottom-link:visited {
+	color: var(--a-visited-color);
 }
 
 input[type="text"] {
