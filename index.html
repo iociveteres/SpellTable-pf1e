@@ -32,8 +32,8 @@
             <thead>
                 <tr>
                     <th dir="no" >Pin</th>
-                    <th class="th-cell" dir="asc"><div><input type="text" placeholder="Type here..."><button>Name</button></div></th>
-                    <th class="th-cell" dir="no" ><div><input type="text" list="Description">
+                    <th class="th-cell" dir="asc"><div><input type="text" placeholder="Type here..." id="input-name"><button>Name</button></div></th>
+                    <th class="th-cell" dir="no" ><div><input type="text" list="Description" id="input-description">
                         <datalist id="Description">
                             <option value="full desc:">
                             <option value="source:">
@@ -44,7 +44,7 @@
                             <option value="mythic before:">
                             <option value="mythic after:">
                         </datalist><button>Description</button></div></th>
-                    <th class="th-cell" dir="no" ><div><input type="text" list="School">
+                    <th class="th-cell" dir="no" ><div><input type="text" list="School" id="input-school">
                         <datalist id="School">
                             <option value="abjuration">
                             <option value="conjuration">
@@ -57,7 +57,7 @@
                             <option value="transmutation">
                             <option value="universal">
                         </datalist><button>School</button></div></th>
-                    <th class="th-cell" dir="no" ><div><input type="text" list="Subschool">
+                    <th class="th-cell" dir="no" ><div><input type="text" list="Subschool" id="input-subschool">
                         <datalist id="Subschool">
                             <option value="calling">
                             <option value="charm">
@@ -78,7 +78,7 @@
                             <option value="teleportation">
                             <option value="see text">
                         </datalist><button>Subschool</button></div></th>
-                    <th class="th-cell" dir="no" ><div><input type="text" list="Descriptors"><button>Descriptors</button>
+                    <th class="th-cell" dir="no" ><div><input type="text" list="Descriptors" id="input-descriptors"><button>Descriptors</button>
                         <datalist id="Descriptors">
                             <option value="acid">
                             <option value="air">
@@ -112,8 +112,8 @@
                             <option value="water">
                             <option value="see text">
                         </datalist></div></th>
-                    <th class="th-cell" dir="no" ><div><input type="text"><button>Access Ways</button></div></th>
-                    <th class="th-cell" dir="no" ><div><input type="text" list="Casting_Time">
+                    <th class="th-cell" dir="no" ><div><input type="text" id="input-access-ways"><button>Access Ways</button></div></th>
+                    <th class="th-cell" dir="no" ><div><input type="text" list="Casting_Time" id="input-casting-time">
                         <datalist id="Casting_Time">
                             <option value="immediate action">
                             <option value="swift action">
@@ -128,7 +128,7 @@
                             <option value="see below">
                             <option value="see text">
                         </datalist><button>Casting Time</button></div></th>
-                    <th class="th-cell" dir="no" ><div><input type="text" list="Components">
+                    <th class="th-cell" dir="no" ><div><input type="text" list="Components" id="input-components">
                         <datalist id="Components">
                             <option value="Price: "></option>
                             <option value="V">
@@ -137,7 +137,7 @@
                             <option value="F">
                             <option value="DF">
                         </datalist><button>Components</button></div></th>                      
-                    <th class="th-cell" dir="no" ><div><input type="text" list="Range">
+                    <th class="th-cell" dir="no" ><div><input type="text" list="Range" id="input-range">
                         <datalist id="Range">
                             <option value="personal">
                             <option value="touch">
@@ -150,9 +150,9 @@
                             <option value="unlimited">
                             <option value="see text">
                         </datalist><button>Range</button></div></th>
-                    <th class="th-cell" dir="no" ><div><input type="text"><button>Effect</button></div></th>
-                    <th class="th-cell" dir="no" ><div><input type="text"><button>Target</button></div></th>
-                    <th class="th-cell" dir="no" ><div><input type="text" list="Duration">
+                    <th class="th-cell" dir="no" ><div><input type="text" id="input-effect"><button>Effect</button></div></th>
+                    <th class="th-cell" dir="no" ><div><input type="text" id="input-target"><button>Target</button></div></th>
+                    <th class="th-cell" dir="no" ><div><input type="text" list="Duration" id="input-duration">
                         <datalist id="Duration">
                             <option value="instantaneous">
                             <option value="concentration">
@@ -168,7 +168,7 @@
                             <option value="see">
                             <option value="special">               
                         </datalist><button>Duration</button></div></th>
-                    <th class="th-cell" dir="no" ><div><input type="text" list="Saving_Throw">
+                    <th class="th-cell" dir="no" ><div><input type="text" list="Saving_Throw" id="input-saving-throw">
                         <datalist id="Saving_Throw">
                             <option value="Fortitude">
                             <option value="Reflex">
@@ -181,7 +181,7 @@
                             <option value="none">
                             <option value="see text">    
                         </datalist><button>Saving Throw</button></div></th>
-                    <th class="th-cell" dir="no" ><div><input type="text" list="Spell_Resistance">
+                    <th class="th-cell" dir="no" ><div><input type="text" list="Spell_Resistance" id="input-spell-resistance">
                         <datalist id="Spell_Resistance">
                             <option value="no">
                             <option value="yes">
@@ -189,7 +189,7 @@
                             <option value="object">
                             <option value="see text">
                         </datalist><button>Spell Resistance</button></div></th>
-                    <th class="th-cell" dir="no" ><div><input type="text" list="PFS">
+                    <th class="th-cell" dir="no" ><div><input type="text" list="PFS" id="input-pfs">
                         <datalist id="PFS">
                             <option value="no">
                             <option value="yes">
@@ -204,12 +204,16 @@
                     <td>enchantment</td>
                     <td>compulsion</td>
                     <td>mind-affecting</td>
-                    <td class="access-td"><div class="access-div " title="Level:
+                    <td class="access-td" data-minlvl="1"><div class="access-div  overflows" title="Level:
 cleric/oracle 1
 inquisitor 1
-paladin 1">cleric/oracle 1
+paladin 1
+
+SLA:
+SLA 1">cleric/oracle 1
 inquisitor 1
-paladin 1</div></td>
+paladin 1
+SLA 1</div></td>
                     <td data-sort="501">1 standard action</td>
                     <td price="0">V, S, DF</td>
                     <td data-sort-code="1" data-sort-dist="null">touch</td>
@@ -227,12 +231,16 @@ Abeyance does not allow a creature to divest itself of cursed objects, though it
                     <td>abjuration</td>
                     <td></td>
                     <td></td>
-                    <td class="access-td"><div class="access-div " title="Level:
+                    <td class="access-td" data-minlvl="2"><div class="access-div  overflows" title="Level:
 cleric/oracle 2
 inquisitor 2
-paladin 2">cleric/oracle 2
+paladin 2
+
+SLA:
+SLA 2">cleric/oracle 2
 inquisitor 2
-paladin 2</div></td>
+paladin 2
+SLA 2</div></td>
                     <td data-sort="901">1 minute</td>
                     <td price="25">V, S, M (a flask of holy water worth 25 gp), DF</td>
                     <td data-sort-code="1" data-sort-dist="null">touch</td>
@@ -249,18 +257,22 @@ paladin 2</div></td>
                     <td>abjuration</td>
                     <td></td>
                     <td>force</td>
-                    <td class="access-td"><div class="access-div  overflows" title="Level:
+                    <td class="access-td" data-minlvl="1"><div class="access-div  overflows" title="Level:
 alchemist 1
 bard 1
 magus 1
 occultist 1
 psychic 1
-sorcerer/wizard 1">alchemist 1
+sorcerer/wizard 1
+
+SLA:
+SLA 1">alchemist 1
 bard 1
 magus 1
 occultist 1
 psychic 1
-sorcerer/wizard 1</div></td>
+sorcerer/wizard 1
+SLA 1</div></td>
                     <td data-sort="501">1 standard action</td>
                     <td price="0">V, S, M (a rabbit's foot)</td>
                     <td data-sort-code="0" data-sort-dist="null">personal</td>
@@ -277,7 +289,7 @@ sorcerer/wizard 1</div></td>
                     <td>conjuration</td>
                     <td>creation</td>
                     <td>force</td>
-                    <td class="access-td"><div class="access-div  overflows" title="Level:
+                    <td class="access-td" data-minlvl="2"><div class="access-div  overflows" title="Level:
 alchemist 2
 bloodrager 2
 magus 2
@@ -285,14 +297,18 @@ occultist 2
 psychic 3
 sorcerer/wizard 3
 summoner 2
-unchained summoner 3">alchemist 2
+unchained summoner 3
+
+SLA:
+SLA 3">alchemist 2
 bloodrager 2
 magus 2
 occultist 2
 psychic 3
 sorcerer/wizard 3
 summoner 2
-unchained summoner 3</div></td>
+unchained summoner 3
+SLA 3</div></td>
                     <td data-sort="501">1 standard action</td>
                     <td price="0">V, S, M (a piece of metal cut from a shield)</td>
                     <td data-sort-code="1" data-sort-dist="null">touch</td>
@@ -311,8 +327,12 @@ The sphere is 1 inch thick per caster level, has hardness 5, and 3 hit points pe
                     <td>abjuration</td>
                     <td></td>
                     <td></td>
-                    <td class="access-td"><div class="access-div " title="Level:
-sorcerer/wizard 3">sorcerer/wizard 3</div></td>
+                    <td class="access-td" data-minlvl="3"><div class="access-div " title="Level:
+sorcerer/wizard 3
+
+SLA:
+SLA 3">sorcerer/wizard 3
+SLA 3</div></td>
                     <td data-sort="501">1 standard action</td>
                     <td price="10">V, S, M (a crystalline sphere worth 10 gp)</td>
                     <td data-sort-code="0" data-sort-dist="null">personal</td>
@@ -329,18 +349,22 @@ sorcerer/wizard 3">sorcerer/wizard 3</div></td>
                     <td>transmutation</td>
                     <td></td>
                     <td></td>
-                    <td class="access-td"><div class="access-div  overflows" title="Level:
+                    <td class="access-td" data-minlvl="2"><div class="access-div  overflows" title="Level:
 cleric/oracle 2
 druid 2
 hunter 2
 red mantiss assasin 2
 sorcerer/wizard 2
-witch 2">cleric/oracle 2
+witch 2
+
+SLA:
+SLA 2">cleric/oracle 2
 druid 2
 hunter 2
 red mantiss assasin 2
 sorcerer/wizard 2
-witch 2</div></td>
+witch 2
+SLA 2</div></td>
                     <td data-sort="501">1 standard action</td>
                     <td price="0">V, S, M/DF (piece of seaweed)</td>
                     <td data-sort-code="1" data-sort-dist="null">touch</td>
@@ -359,10 +383,14 @@ If using the honor subsystem (Pathfinder RPG Ultimate Campaign 160), casting abs
                     <td>abjuration</td>
                     <td></td>
                     <td></td>
-                    <td class="access-td"><div class="access-div " title="Level:
+                    <td class="access-td" data-minlvl="4"><div class="access-div " title="Level:
 cleric/oracle 4
-paladin 4">cleric/oracle 4
-paladin 4</div></td>
+paladin 4
+
+SLA:
+SLA 4">cleric/oracle 4
+paladin 4
+SLA 4</div></td>
                     <td data-sort="801">1 round</td>
                     <td price="0">V, S, M (a vial of holy water), DF</td>
                     <td data-sort-code="1" data-sort-dist="null">touch</td>
@@ -381,16 +409,20 @@ Absorb rune I affects only runes whose effects are equivalent to a spell of 3rd 
                     <td>abjuration</td>
                     <td></td>
                     <td></td>
-                    <td class="access-td"><div class="access-div  overflows" title="Level:
+                    <td class="access-td" data-minlvl="4"><div class="access-div  overflows" title="Level:
 bard 4
 cleric/oracle 4
 magus 4
 occultist 4
-sorcerer/wizard 4">bard 4
+sorcerer/wizard 4
+
+SLA:
+SLA 4">bard 4
 cleric/oracle 4
 magus 4
 occultist 4
-sorcerer/wizard 4</div></td>
+sorcerer/wizard 4
+SLA 4</div></td>
                     <td data-sort="501">1 standard action</td>
                     <td price="25">V, S, M (a white silk glove worth 25 gp)</td>
                     <td data-sort-code="1" data-sort-dist="null">touch</td>
@@ -407,16 +439,20 @@ sorcerer/wizard 4</div></td>
                     <td>abjuration</td>
                     <td></td>
                     <td></td>
-                    <td class="access-td"><div class="access-div  overflows" title="Level:
+                    <td class="access-td" data-minlvl="6"><div class="access-div  overflows" title="Level:
 bard 6
 cleric/oracle 6
 magus 6
 occultist 6
-sorcerer/wizard 6">bard 6
+sorcerer/wizard 6
+
+SLA:
+SLA 6">bard 6
 cleric/oracle 6
 magus 6
 occultist 6
-sorcerer/wizard 6</div></td>
+sorcerer/wizard 6
+SLA 6</div></td>
                     <td data-sort="501">1 standard action</td>
                     <td price="25">V, S, M (a white silk glove worth 25 gp)</td>
                     <td data-sort-code="1" data-sort-dist="null">touch</td>
@@ -433,10 +469,14 @@ sorcerer/wizard 6</div></td>
                     <td>abjuration</td>
                     <td></td>
                     <td></td>
-                    <td class="access-td"><div class="access-div " title="Level:
+                    <td class="access-td" data-minlvl="9"><div class="access-div " title="Level:
 cleric/oracle 9
-sorcerer/wizard 9">cleric/oracle 9
-sorcerer/wizard 9</div></td>
+sorcerer/wizard 9
+
+SLA:
+SLA 9">cleric/oracle 9
+sorcerer/wizard 9
+SLA 9</div></td>
                     <td data-sort="501">1 standard action</td>
                     <td price="25">V, S, M (a white silk glove worth 25 gp)</td>
                     <td data-sort-code="1" data-sort-dist="null">touch</td>
@@ -455,18 +495,22 @@ If the spell’s duration expires before you have transferred the affliction, yo
                     <td>necromancy</td>
                     <td></td>
                     <td></td>
-                    <td class="access-td"><div class="access-div  overflows" title="Level:
+                    <td class="access-td" data-minlvl="3"><div class="access-div  overflows" title="Level:
 alchemist 3
 druid 4
 hunter 4
 psychic 5
 sorcerer/wizard 5
-witch 4">alchemist 3
+witch 4
+
+SLA:
+SLA 5">alchemist 3
 druid 4
 hunter 4
 psychic 5
 sorcerer/wizard 5
-witch 4</div></td>
+witch 4
+SLA 5</div></td>
                     <td data-sort="501">1 standard action</td>
                     <td price="0">V, S, M (a thorn from a poisonous plant)</td>
                     <td data-sort-code="0" data-sort-dist="null">personal</td>
@@ -484,14 +528,18 @@ Creatures and objects in the warded area gain damage reduction 20/magic against 
                     <td>abjuration</td>
                     <td></td>
                     <td></td>
-                    <td class="access-td"><div class="access-div  overflows" title="Level:
+                    <td class="access-td" data-minlvl="4"><div class="access-div  overflows" title="Level:
 alchemist 4
 sorcerer/wizard 4
 summoner 4
-unchained summoner 4">alchemist 4
+unchained summoner 4
+
+SLA:
+SLA 4">alchemist 4
 sorcerer/wizard 4
 summoner 4
-unchained summoner 4</div></td>
+unchained summoner 4
+SLA 4</div></td>
                     <td data-sort="501">1 standard action</td>
                     <td price="0">V, S, F (a jagged scrap of metal)</td>
                     <td data-sort-code="3" data-sort-dist="100">medium (100 ft. + 10 ft./level)</td>
@@ -509,20 +557,24 @@ While inhaled, the cloud does not harm you. You may keep the cloud harmlessly co
                     <td>transmutation</td>
                     <td></td>
                     <td>air</td>
-                    <td class="access-td"><div class="access-div  overflows" title="Level:
+                    <td class="access-td" data-minlvl="4"><div class="access-div  overflows" title="Level:
 alchemist 4
 bloodrager 4
 druid 4
 hunter 4
 red mantiss assasin 4
 sahirafiyun 4
-sorcerer/wizard 4">alchemist 4
+sorcerer/wizard 4
+
+SLA:
+SLA 4">alchemist 4
 bloodrager 4
 druid 4
 hunter 4
 red mantiss assasin 4
 sahirafiyun 4
-sorcerer/wizard 4</div></td>
+sorcerer/wizard 4
+SLA 4</div></td>
                     <td data-sort="501">1 standard action</td>
                     <td price="0">V, S</td>
                     <td data-sort-code="2" data-sort-dist="25">close (25 ft. + 5 ft./2 levels)</td>
@@ -540,7 +592,7 @@ An absorbed object melds with your hand and cannot be targeted, but the object�
                     <td>transmutation</td>
                     <td></td>
                     <td></td>
-                    <td class="access-td"><div class="access-div " title="Level:
+                    <td class="access-td" data-minlvl="3"><div class="access-div " title="Level:
 alchemist 3">alchemist 3</div></td>
                     <td data-sort="501">1 standard action</td>
                     <td price="0">S</td>
@@ -558,16 +610,20 @@ alchemist 3">alchemist 3</div></td>
                     <td>transmutation</td>
                     <td></td>
                     <td></td>
-                    <td class="access-td"><div class="access-div  overflows" title="Level:
+                    <td class="access-td" data-minlvl="1"><div class="access-div  overflows" title="Level:
 bard 1
 cleric/oracle 1
 druid 1
 hunter 1
-witch 1">bard 1
+witch 1
+
+SLA:
+SLA 1">bard 1
 cleric/oracle 1
 druid 1
 hunter 1
-witch 1</div></td>
+witch 1
+SLA 1</div></td>
                     <td data-sort="501">1 standard action</td>
                     <td price="0">V</td>
                     <td data-sort-code="1" data-sort-dist="null">touch</td>
@@ -586,16 +642,20 @@ However, target creatures also have serious difficulty noticing potential threat
                     <td>illusion</td>
                     <td>phantasm</td>
                     <td>emotion, mind-affecting</td>
-                    <td class="access-td"><div class="access-div  overflows" title="Level:
+                    <td class="access-td" data-minlvl="2"><div class="access-div  overflows" title="Level:
 bard 2
 medium 2
 mesmerist 2
 psychic 2
-spiritualist 2">bard 2
+spiritualist 2
+
+SLA:
+SLA 2">bard 2
 medium 2
 mesmerist 2
 psychic 2
-spiritualist 2</div></td>
+spiritualist 2
+SLA 2</div></td>
                     <td data-sort="501">1 standard action</td>
                     <td price="0">V, S</td>
                     <td data-sort-code="3" data-sort-dist="100">medium (100 ft. + 10 ft./level)</td>
@@ -612,18 +672,22 @@ spiritualist 2</div></td>
                     <td>conjuration</td>
                     <td>summoning</td>
                     <td></td>
-                    <td class="access-td"><div class="access-div  overflows" title="Level:
+                    <td class="access-td" data-minlvl="1"><div class="access-div  overflows" title="Level:
 bard 1
 cleric/oracle 1
 hunter 1
 psychic 1
 ranger 1
-sorcerer/wizard 1">bard 1
+sorcerer/wizard 1
+
+SLA:
+SLA 1">bard 1
 cleric/oracle 1
 hunter 1
 psychic 1
 ranger 1
-sorcerer/wizard 1</div></td>
+sorcerer/wizard 1
+SLA 1</div></td>
                     <td data-sort="501">1 standard action</td>
                     <td price="0">V, S, M/DF (a single piece of ammunition)</td>
                     <td data-sort-code="10" data-sort-dist="null"></td>
@@ -640,16 +704,20 @@ sorcerer/wizard 1</div></td>
                     <td>transmutation</td>
                     <td></td>
                     <td></td>
-                    <td class="access-td"><div class="access-div  overflows" title="Level:
+                    <td class="access-td" data-minlvl="2"><div class="access-div  overflows" title="Level:
 antipaladin 2
 cleric/oracle 4
 red mantiss assasin 4
 sorcerer/wizard 4
-witch 4">antipaladin 2
+witch 4
+
+SLA:
+SLA 4">antipaladin 2
 cleric/oracle 4
 red mantiss assasin 4
 sorcerer/wizard 4
-witch 4</div></td>
+witch 4
+SLA 4</div></td>
                     <td data-sort="501">1 standard action</td>
                     <td price="0">V, S</td>
                     <td data-sort-code="2" data-sort-dist="25">close (25 ft. + 5 ft./2 levels)</td>
@@ -660,41 +728,13 @@ witch 4</div></td>
                     <td>yes</td>
                     <td> </td>                                    
                 </tr><tr class="data-row displayed" tabindex="0">
-                    <td><input type="checkbox" name="Accept Affliction"></td>
-                    <td linkaon="https://www.aonprd.com/SpellDisplay.aspx?ItemName=Accept%20Affliction" linkd20="https://www.d20pfsrd.com/magic/all-spells/a/accept-affliction">Accept Affliction</td>
-                    <td title="The caster can transfer the effects of afflictions such as curses, diseases, and poisons from the target creature to himself. This spell can also transfer the blinded, deafened, fatigued, nauseated, shaken, and sickened conditions. All aspects of the transferred afflictions (save DCs, remaining duration, removal conditions, and so on) remain the same, but affect the caster instead of the original target. After transferring the affliction or condition, the caster is free to cure it in any way he can." source="Champions of Purity pg. 28">Transfer the effects of afflictions from someone else to yourself</td>
-                    <td>conjuration</td>
-                    <td>healing</td>
-                    <td>good</td>
-                    <td class="access-td"><div class="access-div  overflows" title="Level:
-bard 3
-cleric/oracle 3
-druid 3
-hunter 3
-paladin 3
-witch 3">bard 3
-cleric/oracle 3
-druid 3
-hunter 3
-paladin 3
-witch 3</div></td>
-                    <td data-sort="501">1 standard action</td>
-                    <td price="0">V, S, M/DF (dove's heart)</td>
-                    <td data-sort-code="1" data-sort-dist="null">touch</td>
-                    <td></td>
-                    <td>creature touched</td>
-                    <td data-sort="1">instantaneous</td>
-                    <td>Fortitude negates (harmless)</td>
-                    <td>yes (harmless)</td>
-                    <td>✔</td>                                    
-                </tr><tr class="data-row displayed" tabindex="0">
                     <td><input type="checkbox" name="Accelerate Poison"></td>
                     <td linkaon="https://www.aonprd.com/SpellDisplay.aspx?ItemName=Accelerate%20Poison" linkd20="https://www.d20pfsrd.com/magic/all-spells/a/accelerate-poison">Accelerate Poison</td>
                     <td title="You hasten the onset of poison in the target. If the poison normally has an onset time, its effects begin immediately. If the poison has no onset time, its frequency is doubled, requiring two saving throws and inflicting damage twice per round or minute, though its duration is halved. Accelerate poison does not change the cure condition for the poison. If the target is affected by more than one poison, you may choose which is affected if you administered the poison; otherwise, randomly determine which poison is affected." source="Advanced Player's Guide pg. 201">Hastens targeted poison's onset</td>
                     <td>transmutation</td>
                     <td></td>
                     <td>poison</td>
-                    <td class="access-td"><div class="access-div  overflows" title="Level:
+                    <td class="access-td" data-minlvl="2"><div class="access-div  overflows" title="Level:
 druid 2
 hunter 2
 occultist 2
@@ -703,13 +743,17 @@ red mantiss assasin 2
 sorcerer/wizard 2
 
 Elemental School:
-water 2">druid 2
+water 2
+
+SLA:
+SLA 2">druid 2
 hunter 2
 occultist 2
 ranger 2
 red mantiss assasin 2
 sorcerer/wizard 2
-water 2</div></td>
+water 2
+SLA 2</div></td>
                     <td data-sort="501">1 standard action</td>
                     <td price="0">V, S, M (a thorn)</td>
                     <td data-sort-code="1" data-sort-dist="null">touch</td>
@@ -720,18 +764,54 @@ water 2</div></td>
                     <td>yes</td>
                     <td>✔</td>                                    
                 </tr><tr class="data-row displayed" tabindex="0">
+                    <td><input type="checkbox" name="Accept Affliction"></td>
+                    <td linkaon="https://www.aonprd.com/SpellDisplay.aspx?ItemName=Accept%20Affliction" linkd20="https://www.d20pfsrd.com/magic/all-spells/a/accept-affliction">Accept Affliction</td>
+                    <td title="The caster can transfer the effects of afflictions such as curses, diseases, and poisons from the target creature to himself. This spell can also transfer the blinded, deafened, fatigued, nauseated, shaken, and sickened conditions. All aspects of the transferred afflictions (save DCs, remaining duration, removal conditions, and so on) remain the same, but affect the caster instead of the original target. After transferring the affliction or condition, the caster is free to cure it in any way he can." source="Champions of Purity pg. 28">Transfer the effects of afflictions from someone else to yourself</td>
+                    <td>conjuration</td>
+                    <td>healing</td>
+                    <td>good</td>
+                    <td class="access-td" data-minlvl="3"><div class="access-div  overflows" title="Level:
+bard 3
+cleric/oracle 3
+druid 3
+hunter 3
+paladin 3
+witch 3
+
+SLA:
+SLA 3">bard 3
+cleric/oracle 3
+druid 3
+hunter 3
+paladin 3
+witch 3
+SLA 3</div></td>
+                    <td data-sort="501">1 standard action</td>
+                    <td price="0">V, S, M/DF (dove's heart)</td>
+                    <td data-sort-code="1" data-sort-dist="null">touch</td>
+                    <td></td>
+                    <td>creature touched</td>
+                    <td data-sort="1">instantaneous</td>
+                    <td>Fortitude negates (harmless)</td>
+                    <td>yes (harmless)</td>
+                    <td>✔</td>                                    
+                </tr><tr class="data-row displayed" tabindex="0">
                     <td><input type="checkbox" name="Accursed Glare"></td>
                     <td linkaon="https://www.aonprd.com/SpellDisplay.aspx?ItemName=Accursed%20Glare" linkd20="https://www.d20pfsrd.com/magic/all-spells/a/accursed-glare">Accursed Glare</td>
                     <td title="You channel a fell curse through your glare. If the target fails its saving throw, it begins to obsessively secondguess its actions and attract bad luck. Whenever the target attempts an attack roll or saving throw while the curse lasts, it must roll twice and take the lower result. While you cast this spell, an ally within range of the subject can attempt an Intimidate check as a move action (DC = save DC of this spell); on a success, the ally adds its own glare to yours, granting you a +2 bonus on your caster level check to overcome spell resistance (if any). Multiple allies can attempt Intimidate checks; this bonus stacks." source="Blood of the Moon pg. 9">Channel a fell curse through your gaze</td>
                     <td>necromancy</td>
                     <td></td>
                     <td>curse</td>
-                    <td class="access-td"><div class="access-div " title="Level:
+                    <td class="access-td" data-minlvl="3"><div class="access-div  overflows" title="Level:
 antipaladin 3
 sorcerer/wizard 3
-witch 3">antipaladin 3
+witch 3
+
+SLA:
+SLA 3">antipaladin 3
 sorcerer/wizard 3
-witch 3</div></td>
+witch 3
+SLA 3</div></td>
                     <td data-sort="801">1 round</td>
                     <td price="0">V, S</td>
                     <td data-sort-code="2" data-sort-dist="25">close (25 ft. + 5 ft./2 levels)</td>
@@ -748,16 +828,20 @@ witch 3</div></td>
                     <td>conjuration</td>
                     <td>creation</td>
                     <td>acid</td>
-                    <td class="access-td"><div class="access-div  overflows" title="Level:
+                    <td class="access-td" data-minlvl="2"><div class="access-div  overflows" title="Level:
 bloodrager 2
 magus 2
 sorcerer/wizard 2
 
 Elemental School:
-earth 2">bloodrager 2
+earth 2
+
+SLA:
+SLA 2">bloodrager 2
 magus 2
 sorcerer/wizard 2
-earth 2</div></td>
+earth 2
+SLA 2</div></td>
                     <td data-sort="501">1 standard action</td>
                     <td price="0">V, S, M (rhubarb leaf and an adder's stomach), F (a dart)</td>
                     <td data-sort-code="4" data-sort-dist="400">long (400 ft. + 40 ft./level)</td>
@@ -774,16 +858,20 @@ earth 2</div></td>
                     <td>conjuration</td>
                     <td>creation</td>
                     <td>acid</td>
-                    <td class="access-td"><div class="access-div  overflows" title="Level:
+                    <td class="access-td" data-minlvl="6"><div class="access-div  overflows" title="Level:
 magus 6
 sorcerer/wizard 6
 unchained summoner 6
 
 Elemental School:
-earth 6">magus 6
+earth 6
+
+SLA:
+SLA 6">magus 6
 sorcerer/wizard 6
 unchained summoner 6
-earth 6</div></td>
+earth 6
+SLA 6</div></td>
                     <td data-sort="501">1 standard action</td>
                     <td price="0">V, S, M (powdered peas and an animal hoof)</td>
                     <td data-sort-code="3" data-sort-dist="100">medium (100 ft. + 10 ft./level)</td>
@@ -800,12 +888,16 @@ earth 6</div></td>
                     <td>transmutation</td>
                     <td></td>
                     <td>acid</td>
-                    <td class="access-td"><div class="access-div " title="Level:
+                    <td class="access-td" data-minlvl="1"><div class="access-div  overflows" title="Level:
 druid 1
 hunter 1
-ranger 1">druid 1
+ranger 1
+
+SLA:
+SLA 1">druid 1
 hunter 1
-ranger 1</div></td>
+ranger 1
+SLA 1</div></td>
                     <td data-sort="501">1 standard action</td>
                     <td price="0">V, S, DF</td>
                     <td data-sort-code="2" data-sort-dist="25">close (25 ft. + 5 ft./2 levels)</td>
@@ -822,16 +914,20 @@ ranger 1</div></td>
                     <td>conjuration</td>
                     <td>creation</td>
                     <td>acid</td>
-                    <td class="access-td"><div class="access-div  overflows" title="Level:
+                    <td class="access-td" data-minlvl="4"><div class="access-div  overflows" title="Level:
 sorcerer/wizard 4
 summoner 4
 unchained summoner 4
 
 Elemental School:
-earth 4">sorcerer/wizard 4
+earth 4
+
+SLA:
+SLA 4">sorcerer/wizard 4
 summoner 4
 unchained summoner 4
-earth 4</div></td>
+earth 4
+SLA 4</div></td>
                     <td data-sort="501">1 standard action</td>
                     <td price="10">V, S, M (drop of acid), F (Fine shovel worth 10 gp)</td>
                     <td data-sort-code="3" data-sort-dist="100">medium (100 ft. + 10 ft./level)</td>
@@ -848,7 +944,7 @@ earth 4</div></td>
                     <td>conjuration</td>
                     <td>creation</td>
                     <td>acid</td>
-                    <td class="access-td"><div class="access-div  overflows" title="Level:
+                    <td class="access-td" data-minlvl="0"><div class="access-div  overflows" title="Level:
 inquisitor 0
 magus 0
 sorcerer/wizard 0
@@ -856,12 +952,16 @@ summoner 0
 unchained summoner 0
 
 Elemental School:
-earth 0">inquisitor 0
+earth 0
+
+SLA:
+SLA 0">inquisitor 0
 magus 0
 sorcerer/wizard 0
 summoner 0
 unchained summoner 0
-earth 0</div></td>
+earth 0
+SLA 0</div></td>
                     <td data-sort="501">1 standard action</td>
                     <td price="0">V, S</td>
                     <td data-sort-code="2" data-sort-dist="25">close (25 ft. + 5 ft./2 levels)</td>
@@ -872,46 +972,20 @@ earth 0</div></td>
                     <td>no</td>
                     <td>✔</td>                                    
                 </tr><tr class="data-row displayed" tabindex="0">
-                    <td><input type="checkbox" name="Acute Senses"></td>
-                    <td linkaon="https://www.aonprd.com/SpellDisplay.aspx?ItemName=Acute%20Senses" linkd20="https://www.d20pfsrd.com/magic/all-spells/a/acute-senses">Acute Senses</td>
-                    <td title="The target gains a +10 enhancement bonus on Perception checks. The bonus increases to +20 at caster level 8th, and +30 (the maximum) at caster level 16th." source="Ultimate Magic pg. 205">Subject gains a bonus on Perception checks</td>
-                    <td>transmutation</td>
-                    <td></td>
-                    <td></td>
-                    <td class="access-td"><div class="access-div  overflows" title="Level:
-alchemist 2
-bard 2
-hunter 2
-inquisitor 2
-psychic 2
-ranger 2
-skald 2">alchemist 2
-bard 2
-hunter 2
-inquisitor 2
-psychic 2
-ranger 2
-skald 2</div></td>
-                    <td data-sort="501">1 standard action</td>
-                    <td price="0">V, S, M (a glass lens)</td>
-                    <td data-sort-code="1" data-sort-dist="null">touch</td>
-                    <td></td>
-                    <td>creature touched</td>
-                    <td data-sort="401">1 minute/level</td>
-                    <td>Will negates (harmless)</td>
-                    <td>yes</td>
-                    <td>✔</td>                                    
-                </tr><tr class="data-row displayed" tabindex="0">
                     <td><input type="checkbox" name="Acidic Spray"></td>
                     <td linkaon="https://www.aonprd.com/SpellDisplay.aspx?ItemName=Acidic%20Spray" linkd20="https://www.d20pfsrd.com/magic/all-spells/a/acidic-spray">Acidic Spray</td>
                     <td title="A spray of acid erupts from your outstretched hand, dealing 1d6 points of acid damage per caster level (maximum 15d6) to each creature within its area (Reflex half). This acid continues to burn for 1 round, dealing 1d6 points of acid damage per two caster levels (maximum 7d6) to any creature that failed its saving throw against the spell (a second Reflex save on the creature's turn negates this additional damage)." source="Ultimate Magic pg. 204">1d6/level acid damage plus 1 round of acid</td>
                     <td>conjuration</td>
                     <td>creation</td>
                     <td>acid</td>
-                    <td class="access-td"><div class="access-div " title="Level:
+                    <td class="access-td" data-minlvl="5"><div class="access-div " title="Level:
 magus 5
-sorcerer/wizard 5">magus 5
-sorcerer/wizard 5</div></td>
+sorcerer/wizard 5
+
+SLA:
+SLA 5">magus 5
+sorcerer/wizard 5
+SLA 5</div></td>
                     <td data-sort="501">1 standard action</td>
                     <td price="10">V, S, M (a vial of acid worth 10 gp)</td>
                     <td data-sort-code="5" data-sort-dist="60">60 ft.</td>
@@ -922,24 +996,62 @@ sorcerer/wizard 5</div></td>
                     <td>yes</td>
                     <td>✔</td>                                    
                 </tr><tr class="data-row displayed" tabindex="0">
+                    <td><input type="checkbox" name="Acute Senses"></td>
+                    <td linkaon="https://www.aonprd.com/SpellDisplay.aspx?ItemName=Acute%20Senses" linkd20="https://www.d20pfsrd.com/magic/all-spells/a/acute-senses">Acute Senses</td>
+                    <td title="The target gains a +10 enhancement bonus on Perception checks. The bonus increases to +20 at caster level 8th, and +30 (the maximum) at caster level 16th." source="Ultimate Magic pg. 205">Subject gains a bonus on Perception checks</td>
+                    <td>transmutation</td>
+                    <td></td>
+                    <td></td>
+                    <td class="access-td" data-minlvl="2"><div class="access-div  overflows" title="Level:
+alchemist 2
+bard 2
+hunter 2
+inquisitor 2
+psychic 2
+ranger 2
+skald 2
+
+SLA:
+SLA 2">alchemist 2
+bard 2
+hunter 2
+inquisitor 2
+psychic 2
+ranger 2
+skald 2
+SLA 2</div></td>
+                    <td data-sort="501">1 standard action</td>
+                    <td price="0">V, S, M (a glass lens)</td>
+                    <td data-sort-code="1" data-sort-dist="null">touch</td>
+                    <td></td>
+                    <td>creature touched</td>
+                    <td data-sort="401">1 minute/level</td>
+                    <td>Will negates (harmless)</td>
+                    <td>yes</td>
+                    <td>✔</td>                                    
+                </tr><tr class="data-row displayed" tabindex="0">
                     <td><input type="checkbox" name="Adhesive Blood"></td>
                     <td linkaon="https://www.aonprd.com/SpellDisplay.aspx?ItemName=Adhesive%20Blood" linkd20="https://www.d20pfsrd.com/magic/all-spells/a/adhesive-blood">Adhesive Blood</td>
                     <td title="Your blood thickens to becomes a glue-like substance upon contact with air. A piercing or slashing weapon that deals hit point damage to you is stuck fast unless the wielder succeeds at a Reflex save. A creature can pry off a stuck weapon on its turn as a standard action with a successful Strength check against the spell’s DC. Strong alcohol or universal solvent dissolves the adhesive. The glue breaks down 5 rounds after you die, or when the duration ends. This glue has no effect while underwater or in environments that lack air." source="Advanced Class Guide pg. 172">Attackers’ weapons stick to your gluey blood</td>
                     <td>transmutation</td>
                     <td></td>
                     <td></td>
-                    <td class="access-td"><div class="access-div  overflows" title="Level:
+                    <td class="access-td" data-minlvl="2"><div class="access-div  overflows" title="Level:
 alchemist 2
 bloodrager 2
 psychic 2
 red mantiss assasin 2
 sorcerer/wizard 2
-witch 2">alchemist 2
+witch 2
+
+SLA:
+SLA 2">alchemist 2
 bloodrager 2
 psychic 2
 red mantiss assasin 2
 sorcerer/wizard 2
-witch 2</div></td>
+witch 2
+SLA 2</div></td>
                     <td data-sort="501">1 standard action</td>
                     <td price="0">V, S</td>
                     <td data-sort-code="0" data-sort-dist="null">personal</td>
@@ -956,14 +1068,18 @@ witch 2</div></td>
                     <td>conjuration</td>
                     <td>creation</td>
                     <td></td>
-                    <td class="access-td"><div class="access-div  overflows" title="Level:
+                    <td class="access-td" data-minlvl="1"><div class="access-div  overflows" title="Level:
 alchemist 1
 psychic 1
 sorcerer/wizard 1
-witch 1">alchemist 1
+witch 1
+
+SLA:
+SLA 1">alchemist 1
 psychic 1
 sorcerer/wizard 1
-witch 1</div></td>
+witch 1
+SLA 1</div></td>
                     <td data-sort="501">1 standard action</td>
                     <td price="0">V, S</td>
                     <td data-sort-code="5" data-sort-dist="15">15 ft.</td>
@@ -980,7 +1096,7 @@ witch 1</div></td>
                     <td>illusion</td>
                     <td>glamer</td>
                     <td></td>
-                    <td class="access-td"><div class="access-div  overflows" title="Level:
+                    <td class="access-td" data-minlvl="3"><div class="access-div  overflows" title="Level:
 alchemist 3
 antipaladin 3
 bard 3
@@ -991,7 +1107,10 @@ occultist 3
 psychic 3
 red mantiss assasin 3
 sorcerer/wizard 3
-witch 3">alchemist 3
+witch 3
+
+SLA:
+SLA 3">alchemist 3
 antipaladin 3
 bard 3
 inquisitor 3
@@ -1001,7 +1120,8 @@ occultist 3
 psychic 3
 red mantiss assasin 3
 sorcerer/wizard 3
-witch 3</div></td>
+witch 3
+SLA 3</div></td>
                     <td data-sort="501">1 standard action</td>
                     <td price="0">V, S</td>
                     <td data-sort-code="0" data-sort-dist="null">personal</td>
@@ -1018,7 +1138,7 @@ witch 3</div></td>
                     <td>transmutation</td>
                     <td>polymorph</td>
                     <td></td>
-                    <td class="access-td"><div class="access-div  overflows" title="Level:
+                    <td class="access-td" data-minlvl="4"><div class="access-div  overflows" title="Level:
 alchemist 4
 bard 4
 magus 4
@@ -1029,7 +1149,10 @@ shaman 4
 sorcerer/wizard 4
 summoner 4
 unchained summoner 4
-witch 4">alchemist 4
+witch 4
+
+SLA:
+SLA 4">alchemist 4
 bard 4
 magus 4
 medium 4
@@ -1039,7 +1162,8 @@ shaman 4
 sorcerer/wizard 4
 summoner 4
 unchained summoner 4
-witch 4</div></td>
+witch 4
+SLA 4</div></td>
                     <td data-sort="501">1 standard action</td>
                     <td price="0">V, S, M (a small piece of doppelganger flesh)</td>
                     <td data-sort-code="0" data-sort-dist="null">personal</td>
@@ -1056,10 +1180,14 @@ witch 4</div></td>
                     <td>evocation</td>
                     <td></td>
                     <td>force</td>
-                    <td class="access-td"><div class="access-div " title="Level:
+                    <td class="access-td" data-minlvl="2"><div class="access-div " title="Level:
 cleric/oracle 2
-sorcerer/wizard 2">cleric/oracle 2
-sorcerer/wizard 2</div></td>
+sorcerer/wizard 2
+
+SLA:
+SLA 2">cleric/oracle 2
+sorcerer/wizard 2
+SLA 2</div></td>
                     <td data-sort="501">1 standard action</td>
                     <td price="0">V, S</td>
                     <td data-sort-code="2" data-sort-dist="25">close (25 ft. + 5 ft./2 levels)</td>
@@ -1076,16 +1204,20 @@ sorcerer/wizard 2</div></td>
                     <td>enchantment</td>
                     <td></td>
                     <td>emotion, mind-affecting</td>
-                    <td class="access-td"><div class="access-div  overflows" title="Level:
+                    <td class="access-td" data-minlvl="1"><div class="access-div  overflows" title="Level:
 bard 1
 mesmerist 1
 psychic 2
 sorcerer/wizard 2
-witch 2">bard 1
+witch 2
+
+SLA:
+SLA 2">bard 1
 mesmerist 1
 psychic 2
 sorcerer/wizard 2
-witch 2</div></td>
+witch 2
+SLA 2</div></td>
                     <td data-sort="501">1 standard action</td>
                     <td price="0">V, S</td>
                     <td data-sort-code="2" data-sort-dist="25">close (25 ft. + 5 ft./2 levels)</td>
@@ -1102,8 +1234,12 @@ witch 2</div></td>
                     <td>transmutation</td>
                     <td></td>
                     <td></td>
-                    <td class="access-td"><div class="access-div " title="Level:
-    sorcerer/wizard 3">sorcerer/wizard 3</div></td>
+                    <td class="access-td" data-minlvl="3"><div class="access-div " title="Level:
+sorcerer/wizard 3
+
+SLA:
+SLA 3">sorcerer/wizard 3
+SLA 3</div></td>
                     <td data-sort="501">1 standard action</td>
                     <td price="0">V, S</td>
                     <td data-sort-code="1" data-sort-dist="null">touch</td>
@@ -1120,12 +1256,16 @@ witch 2</div></td>
                     <td>necromancy</td>
                     <td></td>
                     <td>disease, evil</td>
-                    <td class="access-td"><div class="access-div " title="Level:
+                    <td class="access-td" data-minlvl="1"><div class="access-div  overflows" title="Level:
 cleric/oracle 1
 druid 1
-hunter 1">cleric/oracle 1
+hunter 1
+
+SLA:
+SLA 1">cleric/oracle 1
 druid 1
-hunter 1</div></td>
+hunter 1
+SLA 1</div></td>
                     <td data-sort="501">1 standard action</td>
                     <td price="0">V, S</td>
                     <td data-sort-code="1" data-sort-dist="null">touch</td>
@@ -1142,16 +1282,20 @@ hunter 1</div></td>
                     <td>divination</td>
                     <td></td>
                     <td>air</td>
-                    <td class="access-td"><div class="access-div  overflows" title="Level:
+                    <td class="access-td" data-minlvl="3"><div class="access-div  overflows" title="Level:
 druid 4
 hunter 3
 inquisitor 4
 ranger 3
-shaman 4">druid 4
+shaman 4
+
+SLA:
+SLA 4">druid 4
 hunter 3
 inquisitor 4
 ranger 3
-shaman 4</div></td>
+shaman 4
+SLA 4</div></td>
                     <td data-sort="501">1 standard action</td>
                     <td price="0">V, S</td>
                     <td data-sort-code="3" data-sort-dist="100">medium (100 ft. + 10 ft./level)</td>
@@ -1162,22 +1306,134 @@ shaman 4</div></td>
                     <td>no</td>
                     <td>✔</td>                                    
                 </tr><tr class="data-row displayed" tabindex="0">
+                    <td><input type="checkbox" name="Age Resistance"></td>
+                    <td linkaon="https://www.aonprd.com/SpellDisplay.aspx?ItemName=Age%20Resistance" linkd20="https://www.d20pfsrd.com/magic/all-spells/a/age-resistance">Age Resistance</td>
+                    <td title="This spell functions as lesser age resistance, except you ignore the Strength, Dexterity, and Constitution penalties gained at middle and old age." source="Ultimate Magic pg. 205">Ignore penalties from old age</td>
+                    <td>transmutation</td>
+                    <td></td>
+                    <td></td>
+                    <td class="access-td" data-minlvl="3"><div class="access-div  overflows" title="Level:
+alchemist 3
+druid 4
+hunter 4
+occultist 3
+psychic 4
+red mantiss assasin 4
+sorcerer/wizard 4
+witch 4
+
+SLA:
+SLA 4">alchemist 3
+druid 4
+hunter 4
+occultist 3
+psychic 4
+red mantiss assasin 4
+sorcerer/wizard 4
+witch 4
+SLA 4</div></td>
+                    <td data-sort="501">1 standard action</td>
+                    <td price="0">V, S</td>
+                    <td data-sort-code="0" data-sort-dist="null">personal</td>
+                    <td></td>
+                    <td>you</td>
+                    <td data-sort="924">24 hours</td>
+                    <td></td>
+                    <td></td>
+                    <td>✔</td>                                    
+                </tr><tr class="data-row displayed" tabindex="0">
+                    <td><input type="checkbox" name="Age Resistance, Greater"></td>
+                    <td linkaon="https://www.aonprd.com/SpellDisplay.aspx?ItemName=Age%20Resistance,%20Greater" linkd20="https://www.d20pfsrd.com/magic/all-spells/a/age-resistance">Age Resistance, Greater</td>
+                    <td title="This spell functions as lesser age resistance, except you ignore all Strength, Dexterity, and Constitution penalties gained from middle age, old age, and venerable age." source="Ultimate Magic pg. 205">Ignore penalties from venerable age</td>
+                    <td>transmutation</td>
+                    <td></td>
+                    <td></td>
+                    <td class="access-td" data-minlvl="5"><div class="access-div  overflows" title="Level:
+alchemist 5
+druid 7
+occultist 5
+psychic 7
+sorcerer/wizard 7
+witch 7
+
+Bloodline:
+imperious 7
+
+SLA:
+SLA 7">alchemist 5
+druid 7
+occultist 5
+psychic 7
+sorcerer/wizard 7
+witch 7
+imperious 7
+SLA 7</div></td>
+                    <td data-sort="501">1 standard action</td>
+                    <td price="0">V, S</td>
+                    <td data-sort-code="0" data-sort-dist="null">personal</td>
+                    <td></td>
+                    <td>you</td>
+                    <td data-sort="924">24 hours</td>
+                    <td></td>
+                    <td></td>
+                    <td>✔</td>                                    
+                </tr><tr class="data-row displayed" tabindex="0">
+                    <td><input type="checkbox" name="Age Resistance, Lesser"></td>
+                    <td linkaon="https://www.aonprd.com/SpellDisplay.aspx?ItemName=Age%20Resistance,%20Lesser" linkd20="https://www.d20pfsrd.com/magic/all-spells/a/age-resistance">Age Resistance, Lesser</td>
+                    <td title="You ignore the physical detriments of being middle-aged. This spell does not cause you to look younger, nor does it prevent you from dying of old age, but as long as the spell is in effect, you ignore the –1 penalties to Strength, Dexterity, and Constitution that accrue once you become middle-aged. You retain the age-related bonuses to Intelligence, Wisdom, and Charisma while under the effects of this spell. Additional penalties that you accrue upon becoming old or venerable apply in full." source="Ultimate Magic pg. 205">Ignore penalties from middle age</td>
+                    <td>transmutation</td>
+                    <td></td>
+                    <td></td>
+                    <td class="access-td" data-minlvl="3"><div class="access-div  overflows" title="Level:
+alchemist 3
+druid 4
+hunter 4
+occultist 3
+psychic 4
+red mantiss assasin 4
+sorcerer/wizard 4
+witch 4
+
+SLA:
+SLA 4">alchemist 3
+druid 4
+hunter 4
+occultist 3
+psychic 4
+red mantiss assasin 4
+sorcerer/wizard 4
+witch 4
+SLA 4</div></td>
+                    <td data-sort="501">1 standard action</td>
+                    <td price="0">V, S</td>
+                    <td data-sort-code="0" data-sort-dist="null">personal</td>
+                    <td></td>
+                    <td>you</td>
+                    <td data-sort="924">24 hours</td>
+                    <td></td>
+                    <td></td>
+                    <td>✔</td>                                    
+                </tr><tr class="data-row displayed" tabindex="0">
                     <td><input type="checkbox" name="Aggravate Affliction"></td>
                     <td linkaon="https://www.aonprd.com/SpellDisplay.aspx?ItemName=Aggravate%20Affliction" linkd20="https://www.d20pfsrd.com/magic/all-spells/a/aggravate-affliction">Aggravate Affliction</td>
                     <td title="All recurring afflictions (those with a frequency,including curses, diseases, and poison) possessed by the targeted creature immediately trigger, requiring an immediate saving throw (as described in the affliction) to avoid suffering their effects. A successful saving throw does not count toward ending the affliction, and this extra save does not change the timing of the next save against the affliction. Afflictions without a frequency are unaffected by this spell." source="Pathfinder #82:Secrets of the Sphinx pg. 75">Force ongoing afflictions to trigger</td>
                     <td>necromancy</td>
                     <td></td>
                     <td></td>
-                    <td class="access-td"><div class="access-div  overflows" title="Level:
+                    <td class="access-td" data-minlvl="3"><div class="access-div  overflows" title="Level:
 cleric/oracle 3
 druid 3
 hunter 3
 sorcerer/wizard 4
-witch 3">cleric/oracle 3
+witch 3
+
+SLA:
+SLA 4">cleric/oracle 3
 druid 3
 hunter 3
 sorcerer/wizard 4
-witch 3</div></td>
+witch 3
+SLA 4</div></td>
                     <td data-sort="501">1 standard action</td>
                     <td price="0">V, S</td>
                     <td data-sort-code="2" data-sort-dist="25">close (25 ft. + 5 ft./2 levels)</td>
@@ -1188,38 +1444,6 @@ witch 3</div></td>
                     <td>yes</td>
                     <td>✔</td>                                    
                 </tr><tr class="data-row displayed" tabindex="0">
-                    <td><input type="checkbox" name="Age Resistance"></td>
-                    <td linkaon="https://www.aonprd.com/SpellDisplay.aspx?ItemName=Age%20Resistance" linkd20="https://www.d20pfsrd.com/magic/all-spells/a/age-resistance">Age Resistance</td>
-                    <td title="This spell functions as lesser age resistance, except you ignore the Strength, Dexterity, and Constitution penalties gained at middle and old age." source="Ultimate Magic pg. 205">Ignore penalties from old age</td>
-                    <td>transmutation</td>
-                    <td></td>
-                    <td></td>
-                    <td class="access-td"><div class="access-div  overflows" title="Level:
-alchemist 3
-druid 4
-hunter 4
-occultist 3
-psychic 4
-red mantiss assasin 4
-sorcerer/wizard 4
-witch 4">alchemist 3
-druid 4
-hunter 4
-occultist 3
-psychic 4
-red mantiss assasin 4
-sorcerer/wizard 4
-witch 4</div></td>
-                    <td data-sort="501">1 standard action</td>
-                    <td price="0">V, S</td>
-                    <td data-sort-code="0" data-sort-dist="null">personal</td>
-                    <td></td>
-                    <td>you</td>
-                    <td data-sort="924">24 hours</td>
-                    <td></td>
-                    <td></td>
-                    <td>✔</td>                                    
-                </tr><tr class="data-row displayed" tabindex="0">
                     <td><input type="checkbox" name="Aggressive Thundercloud"></td>
                     <td linkaon="https://www.aonprd.com/SpellDisplay.aspx?ItemName=Aggressive%20Thundercloud" linkd20="https://www.d20pfsrd.com/magic/all-spells/a/aggressive-thundercloud">Aggressive Thundercloud</td>
                     <td title="A crackling, spherical storm cloud flies in whichever direction you point and deals electricity damage to those it strikes. It has a fly speed of 20 feet with perfect maneuverability. If it enters a space that contains a creature, the storm stops moving for the round and deals 3d6 points of electricity damage to that creature, though a successful Reflex save negates that damage. It provides concealment (20% miss chance) to anything within it, and its flickering light illuminates the same area a candle would.
@@ -1227,16 +1451,20 @@ The sphere moves as long as you actively direct it (as a move action for you); o
                     <td>evocation</td>
                     <td></td>
                     <td>electricity</td>
-                    <td class="access-td"><div class="access-div  overflows" title="Level:
+                    <td class="access-td" data-minlvl="2"><div class="access-div  overflows" title="Level:
 druid 2
 hunter 2
 magus 2
 sorcerer/wizard 2
-witch 2">druid 2
+witch 2
+
+SLA:
+SLA 2">druid 2
 hunter 2
 magus 2
 sorcerer/wizard 2
-witch 2</div></td>
+witch 2
+SLA 2</div></td>
                     <td data-sort="501">1 standard action</td>
                     <td price="0">V, S, M/DF (a piece of a tree struck by lightning)</td>
                     <td data-sort-code="3" data-sort-dist="100">medium (100 ft. + 10 ft./level)</td>
@@ -1247,146 +1475,26 @@ witch 2</div></td>
                     <td>yes</td>
                     <td>✔</td>                                    
                 </tr><tr class="data-row displayed" tabindex="0">
-                    <td><input type="checkbox" name="Age Resistance, Lesser"></td>
-                    <td linkaon="https://www.aonprd.com/SpellDisplay.aspx?ItemName=Age%20Resistance,%20Lesser" linkd20="https://www.d20pfsrd.com/magic/all-spells/a/age-resistance">Age Resistance, Lesser</td>
-                    <td title="You ignore the physical detriments of being middle-aged. This spell does not cause you to look younger, nor does it prevent you from dying of old age, but as long as the spell is in effect, you ignore the –1 penalties to Strength, Dexterity, and Constitution that accrue once you become middle-aged. You retain the age-related bonuses to Intelligence, Wisdom, and Charisma while under the effects of this spell. Additional penalties that you accrue upon becoming old or venerable apply in full." source="Ultimate Magic pg. 205">Ignore penalties from middle age</td>
-                    <td>transmutation</td>
-                    <td></td>
-                    <td></td>
-                    <td class="access-td"><div class="access-div  overflows" title="Level:
-alchemist 3
-druid 4
-hunter 4
-occultist 3
-psychic 4
-red mantiss assasin 4
-sorcerer/wizard 4
-witch 4">alchemist 3
-druid 4
-hunter 4
-occultist 3
-psychic 4
-red mantiss assasin 4
-sorcerer/wizard 4
-witch 4</div></td>
-                    <td data-sort="501">1 standard action</td>
-                    <td price="0">V, S</td>
-                    <td data-sort-code="0" data-sort-dist="null">personal</td>
-                    <td></td>
-                    <td>you</td>
-                    <td data-sort="924">24 hours</td>
-                    <td></td>
-                    <td></td>
-                    <td>✔</td>                                    
-                </tr><tr class="data-row displayed" tabindex="0">
-                    <td><input type="checkbox" name="Agonize"></td>
-                    <td linkaon="https://www.aonprd.com/SpellDisplay.aspx?ItemName=Agonize" linkd20="https://www.d20pfsrd.com/magic/all-spells/a/agonize">Agonize</td>
-                    <td title="You afflict a creature you have conjured via planar ally (or a similar spell) with bolts of vicious energy. These foul energies inflict terrible pain upon the conjured creature, torturing it to make it more pliant to your will. The targeted creature must make a Fortitude save or take a –1 penalty for every 2 levels you possess (maximum –10) on all saves and checks made against you for the next hour. In addition, creatures that demand payment for their services reduce the payment by 20% for every 4 levels you possess (maximum 60% reduction). However, beings tortured by this spell quickly come to resent you, making them more likely to try to pervert your orders to malicious ends or try to seek retribution after their release. This spell has no effect on creatures that are immune to nonlethal damage." source="Ultimate Magic pg. 205, Book of the Damned - Volume 1:Princes of Darkness pg. 46">Pain encourages an outsider to obey you</td>
-                    <td>evocation</td>
-                    <td></td>
-                    <td>evil, pain</td>
-                    <td class="access-td"><div class="access-div  overflows" title="Level:
-cleric/oracle 3
-occultist 3
-psychic 4
-sorcerer/wizard 4
-summoner 3
-unchained summoner 4
-
-Subdomain:
-kyton (evil, law) 3">cleric/oracle 3
-occultist 3
-psychic 4
-sorcerer/wizard 4
-summoner 3
-unchained summoner 4
-kyton (evil, law) 3</div></td>
-                    <td data-sort="501">1 standard action</td>
-                    <td price="0">V, S</td>
-                    <td data-sort-code="2" data-sort-dist="25">close (25 ft. + 5 ft./2 levels)</td>
-                    <td></td>
-                    <td>one conjured outsider or elemental (see text)</td>
-                    <td data-sort="301">1 round</td>
-                    <td>Fortitude negates</td>
-                    <td>yes</td>
-                    <td>✔</td>                                    
-                </tr><tr class="data-row displayed" tabindex="0">
-                    <td><input type="checkbox" name="Age Resistance, Greater"></td>
-                    <td linkaon="https://www.aonprd.com/SpellDisplay.aspx?ItemName=Age%20Resistance,%20Greater" linkd20="https://www.d20pfsrd.com/magic/all-spells/a/age-resistance">Age Resistance, Greater</td>
-                    <td title="This spell functions as lesser age resistance, except you ignore all Strength, Dexterity, and Constitution penalties gained from middle age, old age, and venerable age." source="Ultimate Magic pg. 205">Ignore penalties from venerable age</td>
-                    <td>transmutation</td>
-                    <td></td>
-                    <td></td>
-                    <td class="access-td"><div class="access-div  overflows" title="Level:
-alchemist 5
-druid 7
-occultist 5
-psychic 7
-sorcerer/wizard 7
-witch 7
-
-Bloodline:
-imperious 7">alchemist 5
-druid 7
-occultist 5
-psychic 7
-sorcerer/wizard 7
-witch 7
-imperious 7</div></td>
-                    <td data-sort="501">1 standard action</td>
-                    <td price="0">V, S</td>
-                    <td data-sort-code="0" data-sort-dist="null">personal</td>
-                    <td></td>
-                    <td>you</td>
-                    <td data-sort="924">24 hours</td>
-                    <td></td>
-                    <td></td>
-                    <td>✔</td>                                    
-                </tr><tr class="data-row displayed" tabindex="0">
-                    <td><input type="checkbox" name="Agonizing Rebuke"></td>
-                    <td linkaon="https://www.aonprd.com/SpellDisplay.aspx?ItemName=Agonizing%20Rebuke" linkd20="https://www.d20pfsrd.com/magic/all-spells/a/agonizing-rebuke">Agonizing Rebuke</td>
-                    <td title="With a word and a gesture, you instill such apprehension about attacking you in your target that doing so causes it mental distress and pain. Each time the target makes an attack against you, targets you with a harmful spell, or otherwise takes and action that would harm you, it takes 2d6 points of nonlethal damage." source="Advanced Race Guide pg. 126">Force your attacker to suffer mental pain when harming you</td>
-                    <td>illusion</td>
-                    <td>phantasm</td>
-                    <td>emotion, mind-affecting, pain</td>
-                    <td class="access-td"><div class="access-div  overflows" title="Level:
-antipaladin 2
-cleric/oracle 3
-inquisitor 3
-mesmerist 3
-psychic 3
-witch 3">antipaladin 2
-cleric/oracle 3
-inquisitor 3
-mesmerist 3
-psychic 3
-witch 3</div></td>
-                    <td data-sort="501">1 standard action</td>
-                    <td price="0">V, S</td>
-                    <td data-sort-code="2" data-sort-dist="25">close (25 ft. + 5 ft./2 levels)</td>
-                    <td></td>
-                    <td>one living creature</td>
-                    <td data-sort="201">1 round/level</td>
-                    <td>Will negates</td>
-                    <td>yes.</td>
-                    <td> </td>                                    
-                </tr><tr class="data-row displayed" tabindex="0">
                     <td><input type="checkbox" name="Aggressive Thundercloud, Greater"></td>
                     <td linkaon="https://www.aonprd.com/SpellDisplay.aspx?ItemName=Aggressive%20Thundercloud,%20Greater" linkd20="https://www.d20pfsrd.com/magic/all-spells/a/aggressive-thundercloud">Aggressive Thundercloud, Greater</td>
                     <td title="This spell functions as aggressive thundercloud, except it deals 6d6 points of electricity damage to any creature it strikes. The first creature damaged by the cloud is also stunned for 1 round (Fortitude negates); this is a sonic effect." source="Advanced Class Guide pg. 172">Flying storm cloud deals 6d6 electricity damage</td>
                     <td>evocation</td>
                     <td></td>
                     <td>electricity, sonic</td>
-                    <td class="access-td"><div class="access-div  overflows" title="Level:
+                    <td class="access-td" data-minlvl="4"><div class="access-div  overflows" title="Level:
 druid 4
 hunter 4
 magus 4
 sorcerer/wizard 4
-witch 4">druid 4
+witch 4
+
+SLA:
+SLA 4">druid 4
 hunter 4
 magus 4
 sorcerer/wizard 4
-witch 4</div></td>
+witch 4
+SLA 4</div></td>
                     <td data-sort="501">1 standard action</td>
                     <td price="0">V, S, M/DF (a piece of a tree struck by lightning)</td>
                     <td data-sort-code="3" data-sort-dist="100">medium (100 ft. + 10 ft./level)</td>
@@ -1397,43 +1505,73 @@ witch 4</div></td>
                     <td>yes</td>
                     <td>✔</td>                                    
                 </tr><tr class="data-row displayed" tabindex="0">
-                    <td><input type="checkbox" name="Air Breathing"></td>
-                    <td linkaon="https://www.aonprd.com/SpellDisplay.aspx?ItemName=Air%20Breathing" linkd20="https://www.d20pfsrd.com/magic/all-spells/a/air-breathing">Air Breathing</td>
-                    <td title="The transmuted creatures can breathe air freely. Divide the duration evenly among all the creatures you touch. The spell doesn’t make creatures unable to breathe water." source="Monster Codex pg. 189">Allow creatures to breathe air</td>
-                    <td>transmutation</td>
+                    <td><input type="checkbox" name="Agonize"></td>
+                    <td linkaon="https://www.aonprd.com/SpellDisplay.aspx?ItemName=Agonize" linkd20="https://www.d20pfsrd.com/magic/all-spells/a/agonize">Agonize</td>
+                    <td title="You afflict a creature you have conjured via planar ally (or a similar spell) with bolts of vicious energy. These foul energies inflict terrible pain upon the conjured creature, torturing it to make it more pliant to your will. The targeted creature must make a Fortitude save or take a –1 penalty for every 2 levels you possess (maximum –10) on all saves and checks made against you for the next hour. In addition, creatures that demand payment for their services reduce the payment by 20% for every 4 levels you possess (maximum 60% reduction). However, beings tortured by this spell quickly come to resent you, making them more likely to try to pervert your orders to malicious ends or try to seek retribution after their release. This spell has no effect on creatures that are immune to nonlethal damage." source="Ultimate Magic pg. 205, Book of the Damned - Volume 1:Princes of Darkness pg. 46">Pain encourages an outsider to obey you</td>
+                    <td>evocation</td>
                     <td></td>
-                    <td></td>
-                    <td class="access-td"><div class="access-div  overflows" title="Level:
-alchemist 3
-bloodrager 3
+                    <td>evil, pain</td>
+                    <td class="access-td" data-minlvl="3"><div class="access-div  overflows" title="Level:
 cleric/oracle 3
-druid 3
-hunter 3
-magus 3
-psychic 3
-shaman 3
-sorcerer/wizard 3
+occultist 3
+psychic 4
+sorcerer/wizard 4
 summoner 3
-unchained summoner 3">alchemist 3
-bloodrager 3
-cleric/oracle 3
-druid 3
-hunter 3
-magus 3
-psychic 3
-shaman 3
-sorcerer/wizard 3
+unchained summoner 4
+
+Subdomain:
+kyton (evil, law) 3
+
+SLA:
+SLA 4">cleric/oracle 3
+occultist 3
+psychic 4
+sorcerer/wizard 4
 summoner 3
-unchained summoner 3</div></td>
+unchained summoner 4
+kyton (evil, law) 3
+SLA 4</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td price="0">V, S, M/DF (flower or piece of grass)</td>
-                    <td data-sort-code="1" data-sort-dist="null">touch</td>
+                    <td price="0">V, S</td>
+                    <td data-sort-code="2" data-sort-dist="25">close (25 ft. + 5 ft./2 levels)</td>
                     <td></td>
-                    <td>living aquatic creatures touched</td>
-                    <td data-sort="902">2 hours/level; see text</td>
-                    <td>Will negates (harmless)</td>
-                    <td>yes (harmless)</td>
+                    <td>one conjured outsider or elemental (see text)</td>
+                    <td data-sort="301">1 round</td>
+                    <td>Fortitude negates</td>
+                    <td>yes</td>
                     <td>✔</td>                                    
+                </tr><tr class="data-row displayed" tabindex="0">
+                    <td><input type="checkbox" name="Agonizing Rebuke"></td>
+                    <td linkaon="https://www.aonprd.com/SpellDisplay.aspx?ItemName=Agonizing%20Rebuke" linkd20="https://www.d20pfsrd.com/magic/all-spells/a/agonizing-rebuke">Agonizing Rebuke</td>
+                    <td title="With a word and a gesture, you instill such apprehension about attacking you in your target that doing so causes it mental distress and pain. Each time the target makes an attack against you, targets you with a harmful spell, or otherwise takes and action that would harm you, it takes 2d6 points of nonlethal damage." source="Advanced Race Guide pg. 126">Force your attacker to suffer mental pain when harming you</td>
+                    <td>illusion</td>
+                    <td>phantasm</td>
+                    <td>emotion, mind-affecting, pain</td>
+                    <td class="access-td" data-minlvl="2"><div class="access-div  overflows" title="Level:
+antipaladin 2
+cleric/oracle 3
+inquisitor 3
+mesmerist 3
+psychic 3
+witch 3
+
+SLA:
+SLA 3">antipaladin 2
+cleric/oracle 3
+inquisitor 3
+mesmerist 3
+psychic 3
+witch 3
+SLA 3</div></td>
+                    <td data-sort="501">1 standard action</td>
+                    <td price="0">V, S</td>
+                    <td data-sort-code="2" data-sort-dist="25">close (25 ft. + 5 ft./2 levels)</td>
+                    <td></td>
+                    <td>one living creature</td>
+                    <td data-sort="201">1 round/level</td>
+                    <td>Will negates</td>
+                    <td>yes.</td>
+                    <td> </td>                                    
                 </tr><tr class="data-row displayed" tabindex="0">
                     <td><input type="checkbox" name="Aid"></td>
                     <td linkaon="https://www.aonprd.com/SpellDisplay.aspx?ItemName=Aid" linkd20="https://www.d20pfsrd.com/magic/all-spells/a/aid">Aid</td>
@@ -1441,7 +1579,7 @@ unchained summoner 3</div></td>
                     <td>enchantment</td>
                     <td>compulsion</td>
                     <td>mind-affecting</td>
-                    <td class="access-td"><div class="access-div  overflows" title="Level:
+                    <td class="access-td" data-minlvl="2"><div class="access-div  overflows" title="Level:
 adept 2
 alchemist 2
 cleric/oracle 2
@@ -1454,7 +1592,10 @@ Domain:
 luck 2
 
 Subdomain:
-tactics 2">adept 2
+tactics 2
+
+SLA:
+SLA 2">adept 2
 alchemist 2
 cleric/oracle 2
 inquisitor 2
@@ -1462,7 +1603,8 @@ medium 2
 shaman 2
 spiritualist 2
 luck 2
-tactics 2</div></td>
+tactics 2
+SLA 2</div></td>
                     <td data-sort="501">1 standard action</td>
                     <td price="0">V, S, DF</td>
                     <td data-sort-code="1" data-sort-dist="null">touch</td>
@@ -1473,34 +1615,46 @@ tactics 2</div></td>
                     <td>yes (harmless)</td>
                     <td>✔</td>                                    
                 </tr><tr class="data-row displayed" tabindex="0">
-                    <td><input type="checkbox" name="Air Geyser"></td>
-                    <td linkaon="https://www.aonprd.com/SpellDisplay.aspx?ItemName=Air%20Geyser" linkd20="https://www.d20pfsrd.com/magic/all-spells/a/air-geyser">Air Geyser</td>
-                    <td title="You create a powerful blast of air capable of flinging an opponent upward. If the target fails its Reflex save, the force of the air deals 2d6 points of bludgeoning damage and hurls the target upward a number of feet equal to 5 × your caster level. If a solid object (such as a ceiling) is encountered, the target strikes the object in the same manner as it would during a normal fall. After this blast of air ceases, the target falls down (unless it was flying), taking falling damage as normal. A successful save means the target takes half damage from the air blast but is not moved by it." source="Advanced Class Guide pg. 173">Blast of air deals 2d6 bludgeoning damage and knocks opponent upward</td>
-                    <td>evocation</td>
+                    <td><input type="checkbox" name="Air Breathing"></td>
+                    <td linkaon="https://www.aonprd.com/SpellDisplay.aspx?ItemName=Air%20Breathing" linkd20="https://www.d20pfsrd.com/magic/all-spells/a/air-breathing">Air Breathing</td>
+                    <td title="The transmuted creatures can breathe air freely. Divide the duration evenly among all the creatures you touch. The spell doesn’t make creatures unable to breathe water." source="Monster Codex pg. 189">Allow creatures to breathe air</td>
+                    <td>transmutation</td>
                     <td></td>
-                    <td>air</td>
-                    <td class="access-td"><div class="access-div  overflows" title="Level:
+                    <td></td>
+                    <td class="access-td" data-minlvl="3"><div class="access-div  overflows" title="Level:
+alchemist 3
 bloodrager 3
+cleric/oracle 3
 druid 3
 hunter 3
 magus 3
-shaman 4
+psychic 3
+shaman 3
 sorcerer/wizard 3
-witch 3">bloodrager 3
+summoner 3
+unchained summoner 3
+
+SLA:
+SLA 3">alchemist 3
+bloodrager 3
+cleric/oracle 3
 druid 3
 hunter 3
 magus 3
-shaman 4
+psychic 3
+shaman 3
 sorcerer/wizard 3
-witch 3</div></td>
+summoner 3
+unchained summoner 3
+SLA 3</div></td>
                     <td data-sort="501">1 standard action</td>
-                    <td price="0">V, S</td>
-                    <td data-sort-code="2" data-sort-dist="25">close (25 ft. + 5 ft./2 levels)</td>
+                    <td price="0">V, S, M/DF (flower or piece of grass)</td>
+                    <td data-sort-code="1" data-sort-dist="null">touch</td>
                     <td></td>
-                    <td>one creature or object up to Large size</td>
-                    <td data-sort="1">instantaneous</td>
-                    <td>Reflex partial (see text)</td>
-                    <td>yes</td>
+                    <td>living aquatic creatures touched</td>
+                    <td data-sort="902">2 hours/level; see text</td>
+                    <td>Will negates (harmless)</td>
+                    <td>yes (harmless)</td>
                     <td>✔</td>                                    
                 </tr><tr class="data-row displayed" tabindex="0">
                     <td><input type="checkbox" name="Air Bubble"></td>
@@ -1510,20 +1664,24 @@ A firearm within an air bubble can be loaded—assuming the black powder comes f
                     <td>conjuration</td>
                     <td>creation</td>
                     <td></td>
-                    <td class="access-td"><div class="access-div  overflows" title="Level:
+                    <td class="access-td" data-minlvl="1"><div class="access-div  overflows" title="Level:
 cleric/oracle 1
 druid 1
 hunter 1
 psychic 1
 ranger 1
 sorcerer/wizard 1
-witch 1">cleric/oracle 1
+witch 1
+
+SLA:
+SLA 1">cleric/oracle 1
 druid 1
 hunter 1
 psychic 1
 ranger 1
 sorcerer/wizard 1
-witch 1</div></td>
+witch 1
+SLA 1</div></td>
                     <td data-sort="501">1 standard action</td>
                     <td price="0">S, M/DF (a small bladder filled with air)</td>
                     <td data-sort-code="1" data-sort-dist="null">touch</td>
@@ -1534,16 +1692,54 @@ witch 1</div></td>
                     <td>yes (harmless)</td>
                     <td>✔</td>                                    
                 </tr><tr class="data-row displayed" tabindex="0">
+                    <td><input type="checkbox" name="Air Geyser"></td>
+                    <td linkaon="https://www.aonprd.com/SpellDisplay.aspx?ItemName=Air%20Geyser" linkd20="https://www.d20pfsrd.com/magic/all-spells/a/air-geyser">Air Geyser</td>
+                    <td title="You create a powerful blast of air capable of flinging an opponent upward. If the target fails its Reflex save, the force of the air deals 2d6 points of bludgeoning damage and hurls the target upward a number of feet equal to 5 × your caster level. If a solid object (such as a ceiling) is encountered, the target strikes the object in the same manner as it would during a normal fall. After this blast of air ceases, the target falls down (unless it was flying), taking falling damage as normal. A successful save means the target takes half damage from the air blast but is not moved by it." source="Advanced Class Guide pg. 173">Blast of air deals 2d6 bludgeoning damage and knocks opponent upward</td>
+                    <td>evocation</td>
+                    <td></td>
+                    <td>air</td>
+                    <td class="access-td" data-minlvl="3"><div class="access-div  overflows" title="Level:
+bloodrager 3
+druid 3
+hunter 3
+magus 3
+shaman 4
+sorcerer/wizard 3
+witch 3
+
+SLA:
+SLA 3">bloodrager 3
+druid 3
+hunter 3
+magus 3
+shaman 4
+sorcerer/wizard 3
+witch 3
+SLA 3</div></td>
+                    <td data-sort="501">1 standard action</td>
+                    <td price="0">V, S</td>
+                    <td data-sort-code="2" data-sort-dist="25">close (25 ft. + 5 ft./2 levels)</td>
+                    <td></td>
+                    <td>one creature or object up to Large size</td>
+                    <td data-sort="1">instantaneous</td>
+                    <td>Reflex partial (see text)</td>
+                    <td>yes</td>
+                    <td>✔</td>                                    
+                </tr><tr class="data-row displayed" tabindex="0">
                     <td><input type="checkbox" name="Air of Authority"></td>
                     <td linkaon="https://www.aonprd.com/SpellDisplay.aspx?ItemName=Air%20of%20Authority" linkd20="https://www.d20pfsrd.com/magic/all-spells/a/air-of-authority">Air of Authority</td>
                     <td title="You gain an unmistakable air of authority, which clouds creatures’ minds and causes them to believe that you are their direct superior. Each creature with whom you attempt to leverage your newfound authority receives a Will save to disbelieve the illusion. Otherwise, it treats you as it would its direct superior. Creatures with different direct superiors see you in different ways, which can potentially lead to conflicts that allow additional saving throws (for instance, if a cook sees you as the head chef, he might be quite perplexed to see the vizier treating you as if you were the king)." source="Inner Sea Races pg. 218">Creatures believe you are their direct superior</td>
                     <td>illusion</td>
                     <td>glamer</td>
                     <td></td>
-                    <td class="access-td"><div class="access-div " title="Level:
+                    <td class="access-td" data-minlvl="3"><div class="access-div " title="Level:
 bard 3
-skald 3">bard 3
-skald 3</div></td>
+skald 3
+
+SLA:
+SLA 3">bard 3
+skald 3
+SLA 3</div></td>
                     <td data-sort="501">1 standard action</td>
                     <td price="0">V, S</td>
                     <td data-sort-code="0" data-sort-dist="null">personal</td>
