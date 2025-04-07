@@ -25,7 +25,8 @@
         <div class="help-content" style="width: auto;">
             <div>
                 <h2>Spell Table Features</h2>
-                <p>Click on row with spell to open it's full description. There are links to AoNPRD and d20PFSRD too.<br>
+                <p><h3>Basics</h3>   
+                Click on row with spell to open it's full description. There are links to AoNPRD and d20PFSRD too.<br>
                 Hover over printed books to see their publication date.</p>
 
                 <p>Click on column names to sort them. Click again to change sorting direction.</p>
@@ -34,7 +35,12 @@
                 Some columns provide input suggestions — press the <i>down arrow key</i> to view them.<br>
                 Filters can be applied to multiple columns simultaneously.</p>
 
-                <p>You can make logical expressions using: <b>&</b> (and), <b>|</b> (or), <b>^</b> (xor), <b>!</b> (not) and <b>()</b> (parentheses).<br>
+                <p>In the right part of the footer you will see number of spells satisfying filters.<br>
+                In the footer you will find buttons to clear input fields and unpin rows, change theme to light/dark, toggle display of the site name.<br>
+                Also there is link for this page, about and donations.</p>
+
+                <p><h3>Filtering</h3>    
+                You can make logical expressions using: <b>&</b> (and), <b>|</b> (or), <b>^</b> (xor), <b>!</b> (not) and <b>()</b> (parentheses).<br>
                 Access ways, Casting Time, Range, Duration and Components (with "price:") columns support comparison with <b>&lt;</b>, <b>&gt;</b>, <b>=</b>, <b>&lt;=</b>, <b>&gt;=</b> signs.<br>
                 For example, in respective input fields:
                 <ul>
@@ -43,9 +49,22 @@
                     <li>ranger &lt; druid — spells that are a lower level for rangers than for druids</li>
                     <li>&lt;=2 hours — durations shorter than 2 hours</li>
                     <li>&gt;touch — ranges greater than touch</li>
+                    <li>price: >=25 — spells with components that cost more than 25 gp</li>
                 </ul></p>
 
-                <p>By default, Description filter searches short descriptions shown in the table.<br>
+                <p><h3>Sorting Access Ways</h3>    
+                Sorting works for all columns based on either the order of possible values or alphabetically. Access Ways, however, are a bit more complex.<br>
+                <ul>
+                    <li>If the corresponding filter is empty, sorting is based on the lowest level at which the spell is available by any access way.</li> 
+                    <li>If you filter by a single class name (e.g., "paladin"), sorting uses the level at which that class gains access to the spell.</li>
+                    <li>If multiple class names are provided, sorting defaults to the lowest overall access level.</li>
+                    <li>If you specify "sort: <i>some class name</i>", sorting is based specifically on that class’s access level.<br>
+                        Class provided in "sort: " is discarded from filtering, but should be followed by "&", like a part of filter.<br>
+                        For example, "sort: paladin & oracle/cleric >2" will filter cleric spells with level greater than 2, and sorting will be based on paladin levels.</li>
+                </ul></p>
+
+                <p><h3>Searching Descriptions</h3>   
+                By default, Description filter searches short descriptions shown in the table.<br>
                 Using Description filter, you can also search sources and full descriptions of spells with "full desc: <i>your text</i>" and "source: <i>your text</i>".<br>
                 Also using it, you can search for mythic spells and their mythic descriptions with "mythic desc: <i>your text</i>" and "mythic source: <i>your text</i>".<br>
                 If you leave "<i>your text</i>" empty for mythic spells, non mythic spells will be filtered out.<br>
@@ -55,12 +74,6 @@
                     <li>before: 2014-06-15 — spells that were printed before June 15, 2014</li> 
                     <li>mythic desc: d20 — spells, which mythic description mentions d20</li>
                 </ul></p>
-
-                <p>Check the Pin checkbox to keep a row visible, even when applying filters or sorting.</p>
-
-                <p>In the footer you will find buttons to clear input fields and unpin rows, change theme to light/dark, toggle display of the site name.<br>
-                Also there is link for this page, about and donations.<br>
-                In the right part of the footer you will see number of spells satisfying filters.</p>
                 <a class="bottom-link" href="index.html" target="_parent">Back to the table</a>
             </div>
         </div>
