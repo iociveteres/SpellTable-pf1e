@@ -35,45 +35,70 @@ function compareAccessWays(ways1, ways2) {
     return Number(ways1.getAttribute("data-minlvl")) - Number(ways2.getAttribute("data-minlvl"))
 }
 
-// Module-level cache that persists across comparator function instances.
+// Exported function to cache data when JSON is parsed
 var accessWaysCache = new WeakMap();
 
-// Shared function to get (or compute) the parsed access ways for a given cell.
 function getParsedWays(td) {
-  if (!accessWaysCache.has(td)) {
-    const parsed = parseAccessWays(td.innerText.toLowerCase().split("\n"));
-    accessWaysCache.set(td, parsed);
-  }
-  return accessWaysCache.get(td);
+    if (!accessWaysCache.has(td)) {
+        // Store a promise in the cache to indicate parsing is in progress
+        const promise = new Promise((resolve) => {
+            const parsed = parseAccessWays(td.innerText);
+            resolve(parsed);
+        });
+        accessWaysCache.set(td, promise);
+    }
+    return accessWaysCache.get(td);
+}
+
+export function cacheAllAccessTds() {
+    const tds = document.querySelectorAll('td.access-td');
+    tds.forEach(td => {
+        // Initiate parsing if not started
+        getParsedWays(td);
+    });
+}
+
+const splitOnNumberRegex = new RegExp(/\s+(\d+)$/);
+function parseAccessWays(str) {
+    return str
+        .toLowerCase()
+        .split("\n")
+        .reduce((acc, line) => {
+            let [key, value] = line.split(splitOnNumberRegex); // split on last number
+            if (key && value !== undefined) {
+                acc[key.trim()] = Number(value);
+            }
+            return acc;
+        }, {});
 }
 
 function makeAccessWaysComparator(sortPart, filterPart) {
-  function compareFor(td1, td2, part) {
-    const parsed1 = getParsedWays(td1);
-    const parsed2 = getParsedWays(td2);
-    const value1 = parsed1[part] ?? null;
-    const value2 = parsed2[part] ?? null;
+    function compareFor(td1, td2, part) {
+        const parsed1 = getParsedWays(td1);
+        const parsed2 = getParsedWays(td2);
+        const value1 = parsed1[part] ?? null;
+        const value2 = parsed2[part] ?? null;
 
-    // Explicitly compare even if values are 0.
-    if (value1 !== null && value2 !== null) return value1 - value2;
-    if (value1 !== null && value2 === null) return -1;
-    if (value1 === null && value2 !== null) return 1;
-    return 0;
-  }
-
-  return function(t1, t2) {
-    if (sortPart) {
-      const cmp = compareFor(t1, t2, sortPart);
-      if (cmp !== 0) return cmp;
+        // Explicitly compare even if values are 0.
+        if (value1 !== null && value2 !== null) return value1 - value2;
+        if (value1 !== null && value2 === null) return -1;
+        if (value1 === null && value2 !== null) return 1;
+        return 0;
     }
 
-    if (filterPart) {
-      const cmp = compareFor(t1, t2, filterPart);
-      if (cmp !== 0) return cmp;
-    }
-    
-    return compareAccessWays(t1, t2);
-  };
+    return function (t1, t2) {
+        if (sortPart) {
+            const cmp = compareFor(t1, t2, sortPart);
+            if (cmp !== 0) return cmp;
+        }
+
+        if (filterPart) {
+            const cmp = compareFor(t1, t2, filterPart);
+            if (cmp !== 0) return cmp;
+        }
+
+        return compareAccessWays(t1, t2);
+    };
 }
 
 function sortTable(table, colnum, direction, filters) {
@@ -160,18 +185,6 @@ function sortTable(table, colnum, direction, filters) {
     console.timeEnd('sort')
 
     return direction == "asc" ? "desc" : "asc";
-}
-
-const splitOnNumberRegex = new RegExp(/\s+(\d+)$/);
-function parseAccessWays(arr) {
-    return arr
-        .reduce((acc, line) => {
-            let [key, value] = line.split(splitOnNumberRegex); // split on last number
-            if (key && value !== undefined) {
-                acc[key.trim()] = Number(value);
-            }
-            return acc;
-        }, {});
 }
 
 export {

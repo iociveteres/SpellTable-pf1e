@@ -1,4 +1,4 @@
-import { sortTable } from './sort.js'
+import { sortTable, cacheAllAccessTds } from './sort.js'
 import { filterTable } from './filter.js';
 import { colIndex, showRowsScrolling, rowsReveal, 
          timeUnits, rangeUnits, durationUnits, SourceReleaseDates } from './utils.js';
@@ -173,6 +173,14 @@ document.addEventListener("DOMContentLoaded", function () {
             let filterValues = filterInputs.map((filter) => filter.value);
             filterTable(table, 0, filterValues)
             updateSpellCount()
+
+            // Cache access ways
+            if (window.requestIdleCallback) {
+                requestIdleCallback(cacheAllAccessTds);
+              } else {
+                // Fallback for browsers that don't support requestIdleCallback
+                setTimeout(cacheAllAccessTds, 0);
+              }
         });
 });
 
