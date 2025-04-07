@@ -379,25 +379,25 @@ class FilterRange extends FilterBase {
                 if (rowCode > parsedFilter.code)
                     return true
                 else if (rowCode == parsedFilter.code)
-                    return rowDist > parsedFilter.length
+                    return rowDist > parsedFilter.distance
                 break
             case '<':
                 if (rowCode < parsedFilter.code)
                     return true
                 else if (rowCode == parsedFilter.code)
-                    return rowDist < parsedFilter.length
+                    return rowDist < parsedFilter.distance
                 break
             case '>=':
-                if (rowCode >= parsedFilter.code)
+                if (rowCode > parsedFilter.code)
                     return true
                 else if (rowCode == parsedFilter.code)
-                    return rowDist >= parsedFilter.length
+                    return rowDist >= parsedFilter.distance
                 break
             case '<=':
-                if (rowCode <= parsedFilter.code)
+                if (rowCode < parsedFilter.code)
                     return true
                 else if (rowCode == parsedFilter.code)
-                    return rowDist <= parsedFilter.length
+                    return rowDist <= parsedFilter.distance
                 break
         }
 
