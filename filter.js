@@ -129,8 +129,6 @@ function filterTable(table, colnum, filters) {
 }
 
 
-
-
 function replaceYesNo(string) {
     let result = string.replace(/yes/g, "✔")
     result = result.replace(/no/g, "!✔")
